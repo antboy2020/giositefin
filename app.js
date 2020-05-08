@@ -1,25 +1,44 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+require('./models');
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
+const expressSession = require('express-session');
+const passport = require('passport');
+const localStrategy = require('passport-local').Strategy;
+
+//User object for log-in and sign-up
+const User = mongoose.model('User');
 
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSession(
+  { secret: "sjdhfwlj49283hfsjh4952985yhwfqwnau9w45y" }
+));
 app.set('view engine', 'ejs');
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Mongo URI
 const mongoURI = 'mongodb://127.0.0.1:27017/gio-site-data';
+mongoose.connect(mongoURI, { useUnifiedTopology: true, useNewUrlParser: true });
 
 // Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
+const conn = mongoose.connection;
 
 // Init gfs
 let gfs;
@@ -54,6 +73,7 @@ const upload = multer({ storage });
 // @route GET /
 // @desc Loads form
 app.get('/', (req, res) => {
+  let data = {title: "junk1", authenticated: req.session.authenticated};
   gfs.files.find().toArray((err, files) => {
     // Check if files
     if (!files || files.length === 0) {
@@ -69,7 +89,7 @@ app.get('/', (req, res) => {
           file.isImage = false;
         }
       });
-      res.render('index', { files: files });
+      res.render('index', { files: files, data: data });
     }
   });
 });
@@ -146,6 +166,97 @@ app.delete('/files/:id', (req, res) => {
 
     res.redirect('/');
   });
+});
+
+//signup page
+app.get('/adminsignup', function (req, res) {
+  res.render('admin-signup', { title: "LeGeit Admins Sign Up", badEmail: false })
+});
+
+// admin signup
+app.post('/adminsignup', function (req, res, next) {
+  passport.authenticate('local-signup', function (err, user, info) {
+    if (err) { return next(err); }
+    if (!user) { return res.redirect('/adminlogin'); }
+    if (req.body.email.toString().toLowerCase() == "legeitstudio@gmail.com") {
+      req.session.authenticated = true;
+      return res.redirect('/');
+    } else {
+      res.render('admin-signup', { title: "LeGeit Admins Sign Up", badEmail: true })
+    }
+  })(req, res, next);
+});
+
+passport.use('local-signup', new localStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+  session: true
+}, function (email, password, next) {
+  User.findOne({ email: email }, (err, user) => {
+    if (err) return err
+    if (user) return next({ message: "User already exists" })
+
+    if (email.toLowerCase() == "legeitstudio@gmail.com") {
+      let newUser = new User({
+        email: email,
+        passwordHash: bcrypt.hashSync(password, 10)
+      });
+      newUser.save(function (err) {
+        next(err, newUser);
+      });
+    } else {
+      let newUser = new User({
+        email: email,
+        passwordHash: bcrypt.hashSync(password, 10)
+      });
+      return next(err, newUser);
+    }
+  });
+}));
+
+// login page
+app.get('/adminlogin', function (req, res, next) {
+  res.render('admin-login', { title: "LeGeit Admins Login" })
+});
+
+// admin login
+app.post('/adminlogin', passport.authenticate('local', { failureRedirect: '/adminlogin' }),
+  function (req, res, next) {
+    req.session.authenticated = true;
+    res.redirect('/');
+  }
+);
+
+passport.use(new localStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+  session: true
+}, function (email, password, next) {
+  User.findOne({
+    email: email
+  }, function (err, user) {
+    if (err) return next(err);
+    if (!user | (user & !bcrypt.compareSync(password, user.passwordHash))) {
+      return next({ message: 'Email or password incorrect' })
+    }
+    next(null, user);
+  });
+}));
+
+passport.serializeUser(function (user, next) {
+  next(null, user._id);
+});
+
+passport.deserializeUser(function (id, next) {
+  User.findById(id, function (err, user) {
+    next(err, user);
+  });
+});
+
+//admin logout
+app.get('/logout', function (req, res, next) {
+  req.session.destroy();
+  res.redirect('/');
 });
 
 const port = 5000;

@@ -5,55 +5,145 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <style>
     img {
       width: 100%;
     }
   </style>
   <title>Mongo File Uploads</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet'
+    type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="css/agency.min.css" rel="stylesheet">
+  <link href="stylesheets/indexstyles.css" rel="stylesheet">
+
 </head>
 
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 m-auto">
-        <h1 class="text-center display-4 my-4">Mongo File Uploads</h1>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-          <div class="custom-file mb-3">
-            <input type="file" name="file" id="file" class="custom-file-input">
-            <label for="file" class="custom-file-label">Choose File</label>
-          </div>
-          <input type="submit" value="Submit" class="btn btn-primary btn-block">
-        </form>
-        <hr>
-        <% if(files){ %>
-          <% files.forEach(function(file) { %>
-            <div class="card card-body mb-3">
-              <% if(file.isImage) { %>
-                <img src="image/<%= file.filename %>" alt="">
-                <% } else { %>
-                  <%= file.filename %>
-                    <% } %>
-                      <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
-                        <button class="btn btn-danger btn-block mt-4">Delete</button>
-                      </form>
-            </div>
-            <% }) %>
-              <% } else { %>
-                <p>No files to show</p>
-                <% } %>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+      <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Le Geit</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+        aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav text-uppercase ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#shop">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#team">Team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger"
+              href="https://booksy.com/en-us/instant-experiences/widget/38311?instant_experiences_enabled=true&ig_ix=true">Booking</a>
+          </li>
+          <% if(data.authenticated) {%>
+          <li class="nav-item">
+            <a href="logout">logout</a>
+          </li>
+          <%}%>
+        </ul>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+  <!-- Header -->
+  <header class="masthead">
+    <div class="container">
+      <div class="intro-text">
+        <div class="intro-lead-in">Welcome To Our Studio!</div>
+        <div class="intro-heading text-uppercase">It's Nice To Meet You</div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- photos -->
+  <% if(data.authenticated) {%>
+          <div class="col-md-6 m-auto">
+            <h1 class="text-center display-4 my-4">Upload a file</h1>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+              <div class="custom-file mb-3">
+                <input type="file" name="file" id="file" class="custom-file-input">
+                <label for="file" class="custom-file-label">Choose File</label>
+              </div>
+              <input type="submit" value="Submit" class="btn btn-primary btn-block">
+            </form>
+          </div>
+          <hr>
+          <%} else { %>
+          <br>
+          <%}%>
+  <% if(files){ %>
+          <div class="container">
+            <div class="row">
+              <% files.forEach(function(file) { %>
+              <div class="col-md-4 col-sm-6 portfolio-item">
+                <% if(file.isImage) { %>
+                <a>
+                  <!-- <div class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                          <i class="fas fa-plus fa-3x"></i>
+                        </div>
+                      </div> -->
+                  <img class="img-fluid image-resize" src="image/<%= file.filename %>" alt="">
+                </a>
+                <div class="portfolio-caption">
+                  <h4>Threads</h4>
+                  <p class="text-muted">Illustration</p>
+                </div>
+                <% } else { %>
+                <%= file.filename %>
+                <% } %>
+                <% if(data.authenticated){ %>
+                <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
+                  <button class="btn btn-danger btn-block mt-4">Delete</button>
+                </form>
+                <% } %>
+
+              </div>
+              <% }) %>
+            </div>
+          </div>
+          <% } else { %>
+          <p>No files to show</p>
+          <% } %>
+          <br>
+          <!-- </div> -->
+
+          <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 </body>
 
 </html>
