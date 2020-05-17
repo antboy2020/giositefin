@@ -17,6 +17,9 @@ const localStrategy = require('passport-local').Strategy;
 //User object for log-in and sign-up
 const User = mongoose.model('User');
 
+//Store item object for item details
+const StoreItem = mongoose.model('StoreItem');
+
 const app = express();
 
 // Middleware
@@ -60,23 +63,35 @@ const storage = new GridFsStorage({
         }
         gfs.files.find().toArray((err, files) => {
           files.forEach((file) => {
-            if(file.filename == req.body.name)
+            if (file.filename == req.body.name)
               reject("filename exists");
           });
           const fileInfo = {
-            filename: req.body.name.toString(),
+            filename: req.body.name,
             bucketName: 'uploads'
-            // storename: req.body.name,
-            // price: req.body.price,
-            // description: req.body.description,
-            // xs: req.body.xs,
-            // s: req.body.s,
-            // m: req.body.m,
-            // l: req.body.l,
-            // xl: req.body.xl
           };
+          StoreItem.findOne({ filename: req.body.name }, (err, file) => {
+            if (err) return err;
+            if (file) return reject("filename exists");
+            let newStoreItem = new StoreItem({
+              filename: req.body.name,
+              price: req.body.price,
+              description: req.body.description,
+              xs: req.body.xs,
+              s: req.body.s,
+              m: req.body.m,
+              l: req.body.l,
+              xl: req.body.xl
+            });
+            newStoreItem.save(function (err) {
+              if(err){
+                console.log("could not save the storeitem");
+                reject("could not save the storeitem");
+              }
+            });
+          })
           resolve(fileInfo);
-        });        
+        });
       });
     });
   }
@@ -86,23 +101,37 @@ const upload = multer({ storage });
 // @route GET /
 // @desc Loads form
 app.get('/', (req, res) => {
-  let data = {title: "junk1", authenticated: req.session.authenticated};
-  gfs.files.find().toArray((err, files) => {
-    // Check if files
-    if (!files || files.length === 0) {
-      res.render('index', { files: false, data: data });
+  let data = { title: "junk1", authenticated: req.session.authenticated };
+  StoreItem.find({}, function(err, fileInfo) {
+    if(err) {
+      res.render('index', {files: false, data:data});
     } else {
-      files.map(file => {
-        if (
-          file.contentType === 'image/jpeg' ||
-          file.contentType === 'image/png'
-        ) {
-          file.isImage = true;
+      gfs.files.find().toArray((err, files) => {
+        // Check if files
+        if (!files || files.length === 0) {
+          res.render('index', { files: false, data: data });
         } else {
-          file.isImage = false;
+          files.map(file => {
+            if (
+              file.contentType === 'image/jpeg' ||
+              file.contentType === 'image/png'
+            ) {
+              file.isImage = true;
+              let thisFileInfo = fileInfo.find((info) => info.filename == file.filename);
+              file.price = thisFileInfo.price;
+              file.description = thisFileInfo.description;
+              file.xs = thisFileInfo.xs;
+              file.s = thisFileInfo.s;
+              file.m = thisFileInfo.m;
+              file.l = thisFileInfo.l;
+              file.xl = thisFileInfo.xl;
+            } else {
+              file.isImage = false;
+            }
+          });
+          res.render('index', { files: files, data: data });
         }
       });
-      res.render('index', { files: files, data: data });
     }
   });
 });
