@@ -35,6 +35,13 @@
       let uploadForm = document.getElementById('uploadForm');
       let form = new FormData(uploadForm);
       console.log(form.get("price"));
+      xhr.onreadystatechange = function(res) {
+        if(res.currentTarget.status == 500) {
+        document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
+        } else if (res.currentTarget.status == 200) {
+          window.location.href="/";
+        }
+      }
       xhr.open("POST", "/upload");
       xhr.send(form);
     }
@@ -97,6 +104,7 @@
   <% if(data.authenticated) {%>
           <div class="col-md-6 m-auto">
             <h1 class="text-center display-4 my-4">Upload a file</h1>
+            <h1 id="uploadError" style="color: red;"></h1>
             <form id="uploadForm">
               <div class="row">
                 <div class="col">
@@ -112,16 +120,16 @@
                   xs: <input type="text" name="xs" id="xs" class="form-control mb-3" />
                 </div>
                 <div class="col">
-                s: <input type="text" name="s" id="s" class="form-control mb-3" />
+                  s: <input type="text" name="s" id="s" class="form-control mb-3" />
                 </div>
                 <div class="col">
-                m: <input type="text" name="m" id="m" class="form-control mb-3" />
+                  m: <input type="text" name="m" id="m" class="form-control mb-3" />
                 </div>
                 <div class="col">
-                l: <input type="text" name="l" id="l" class="form-control mb-3" />
+                  l: <input type="text" name="l" id="l" class="form-control mb-3" />
                 </div>
                 <div class="col">
-                xl: <input type="text" name="xl" id="xl" class="form-control mb-3" />
+                  xl: <input type="text" name="xl" id="xl" class="form-control mb-3" />
                 </div>
               </div>
               <div class="custom-file mb-3">
