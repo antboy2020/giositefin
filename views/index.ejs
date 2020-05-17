@@ -29,6 +29,17 @@
   <link href="css/agency.min.css" rel="stylesheet">
   <link href="stylesheets/indexstyles.css" rel="stylesheet">
 
+  <script>
+    function sendPicture() {
+      let xhr = new XMLHttpRequest();
+      let uploadForm = document.getElementById('uploadForm');
+      let form = new FormData(uploadForm);
+      console.log(form.get("price"));
+      xhr.open("POST", "/upload");
+      xhr.send(form);
+    }
+  </script>
+
 </head>
 
 <body>
@@ -86,13 +97,39 @@
   <% if(data.authenticated) {%>
           <div class="col-md-6 m-auto">
             <h1 class="text-center display-4 my-4">Upload a file</h1>
-            <form action="/upload" method="POST" enctype="multipart/form-data">
+            <form id="uploadForm">
+              <div class="row">
+                <div class="col">
+                  Name: <input type="text" name="name" id="name" class="form-control mb-3" />
+                </div>
+                <div class="col">
+                  Price: <input type="text" name="price" id="price" class="form-control mb-3" />
+                </div>
+              </div>
+              Description: <input type="text" name="description" id="description" class="form-control mb-3" />
+              <div class="row">
+                <div class="col">
+                  xs: <input type="text" name="xs" id="xs" class="form-control mb-3" />
+                </div>
+                <div class="col">
+                s: <input type="text" name="s" id="s" class="form-control mb-3" />
+                </div>
+                <div class="col">
+                m: <input type="text" name="m" id="m" class="form-control mb-3" />
+                </div>
+                <div class="col">
+                l: <input type="text" name="l" id="l" class="form-control mb-3" />
+                </div>
+                <div class="col">
+                xl: <input type="text" name="xl" id="xl" class="form-control mb-3" />
+                </div>
+              </div>
               <div class="custom-file mb-3">
-                <input type="file" name="file" id="file" class="custom-file-input">
+                <input type="file" name="file" id="file" class="custom-file-input" />
                 <label for="file" class="custom-file-label">Choose File</label>
               </div>
-              <input type="submit" value="Submit" class="btn btn-primary btn-block">
             </form>
+            <button onclick="sendPicture()" class="btn btn-primary btn-block">Upload</button>
           </div>
           <hr>
           <%} else { %>
@@ -114,13 +151,13 @@
                   <img class="img-fluid image-resize" src="image/<%= file.filename %>" alt="">
                 </a>
                 <div class="portfolio-caption">
-                  <h4>Threads</h4>
+                  <h4><%= file.filename %></h4>
                   <p class="text-muted">Illustration</p>
                 </div>
                 <% } else { %>
                 <%= file.filename %>
                 <% } %>
-                <% if(data.authenticated){ %>
+                <% if(!data.authenticated){ %>
                 <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
                   <button class="btn btn-danger btn-block mt-4">Delete</button>
                 </form>

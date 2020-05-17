@@ -58,12 +58,25 @@ const storage = new GridFsStorage({
         if (err) {
           return reject(err);
         }
-        const filename = buf.toString('hex') + path.extname(file.originalname);
-        const fileInfo = {
-          filename: filename,
-          bucketName: 'uploads'
-        };
-        resolve(fileInfo);
+        gfs.files.find().toArray((err, files) => {
+          files.forEach((file) => {
+            if(file.filename == req.body.name)
+              reject("filename exists");
+          });
+          const fileInfo = {
+            filename: req.body.name.toString(),
+            bucketName: 'uploads'
+            // storename: req.body.name,
+            // price: req.body.price,
+            // description: req.body.description,
+            // xs: req.body.xs,
+            // s: req.body.s,
+            // m: req.body.m,
+            // l: req.body.l,
+            // xl: req.body.xl
+          };
+          resolve(fileInfo);
+        });        
       });
     });
   }
