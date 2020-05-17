@@ -157,7 +157,7 @@
                 <% } else { %>
                 <%= file.filename %>
                 <% } %>
-                <% if(!data.authenticated){ %>
+                <% if(data.authenticated){ %>
                 <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
                   <button class="btn btn-danger btn-block mt-4">Delete</button>
                 </form>
