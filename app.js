@@ -131,8 +131,7 @@ app.delete('/files/:id/:filename', (req, res) => {
     if (err) {
       return res.status(404).json({ err: err });
     } else {
-      // mongooseJS.StoreItem.deleteOne({filename: req});
-      mongooseJS.StoreItem.find({filename: req.params.filename}).remove((err) => {
+      mongooseJS.StoreItem.deleteOne({filename: req.params.filename}, (err) => {
         if(err) {
           console.log(err);
         }
