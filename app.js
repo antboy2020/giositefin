@@ -2,23 +2,12 @@ const express = require('express');
 // const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const crypto = require('crypto');
-const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
 require('./models');
-const multer = require('multer');
-const GridFsStorage = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream');
+const mongooseJS = require('./script/setMongoose');
+const manageFiles = require('./script/manageFiles');
+const setPassport = require('./script/setPassport');
 const methodOverride = require('method-override');
 const expressSession = require('express-session');
-const passport = require('passport');
-const localStrategy = require('passport-local').Strategy;
-
-//User object for log-in and sign-up
-const User = mongoose.model('User');
-
-//Store item object for item details
-const StoreItem = mongoose.model('StoreItem');
 
 const app = express();
 
@@ -33,80 +22,18 @@ app.use(expressSession(
   { secret: "sjdhfwlj49283hfsjh4952985yhwfqwnau9w45y" }
 ));
 app.set('view engine', 'ejs');
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Mongo URI
-const mongoURI = 'mongodb://127.0.0.1:27017/gio-site-data';
-mongoose.connect(mongoURI, { useUnifiedTopology: true, useNewUrlParser: true });
-
-// Create mongo connection
-const conn = mongoose.connection;
-
-// Init gfs
-let gfs;
-
-conn.once('open', () => {
-  // Init stream
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('uploads');
-});
-
-// Create storage engine
-const storage = new GridFsStorage({
-  url: mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err);
-        }
-        gfs.files.find().toArray((err, files) => {
-          files.forEach((file) => {
-            if (file.filename == req.body.name)
-              reject("filename exists");
-          });
-          const fileInfo = {
-            filename: req.body.name,
-            bucketName: 'uploads'
-          };
-          StoreItem.findOne({ filename: req.body.name }, (err, file) => {
-            if (err) return err;
-            if (file) return reject("filename exists");
-            let newStoreItem = new StoreItem({
-              filename: req.body.name,
-              price: req.body.price,
-              description: req.body.description,
-              xs: req.body.xs,
-              s: req.body.s,
-              m: req.body.m,
-              l: req.body.l,
-              xl: req.body.xl
-            });
-            newStoreItem.save(function (err) {
-              if(err){
-                console.log("could not save the storeitem");
-                reject("could not save the storeitem");
-              }
-            });
-          })
-          resolve(fileInfo);
-        });
-      });
-    });
-  }
-});
-const upload = multer({ storage });
+app.use(setPassport.passport.initialize());
+app.use(setPassport.passport.session());
 
 // @route GET /
 // @desc Loads form
 app.get('/', (req, res) => {
   let data = { title: "junk1", authenticated: req.session.authenticated };
-  StoreItem.find({}, function(err, fileInfo) {
-    if(err) {
-      res.render('index', {files: false, data:data});
+  mongooseJS.StoreItem.find({}, function (err, fileInfo) {
+    if (err) {
+      res.render('index', { files: false, data: data });
     } else {
-      gfs.files.find().toArray((err, files) => {
+      mongooseJS.gfs.files.find().toArray((err, files) => {
         // Check if files
         if (!files || files.length === 0) {
           res.render('index', { files: false, data: data });
@@ -138,15 +65,14 @@ app.get('/', (req, res) => {
 
 // @route POST /upload
 // @desc  Uploads file to DB
-app.post('/upload', upload.single('file'), (req, res) => {
-  // res.json({ file: req.file });
+app.post('/upload', manageFiles.upload.single('file'), (req, res) => {
   res.redirect('/');
 });
 
 // @route GET /files
 // @desc  Display all files in JSON
 app.get('/files', (req, res) => {
-  gfs.files.find().toArray((err, files) => {
+  mongooseJS.gfs.files.find().toArray((err, files) => {
     // Check if files
     if (!files || files.length === 0) {
       return res.status(404).json({
@@ -162,7 +88,7 @@ app.get('/files', (req, res) => {
 // @route GET /files/:filename
 // @desc  Display single file object
 app.get('/files/:filename', (req, res) => {
-  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+  mongooseJS.gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0) {
       return res.status(404).json({
@@ -177,7 +103,7 @@ app.get('/files/:filename', (req, res) => {
 // @route GET /image/:filename
 // @desc Display Image
 app.get('/image/:filename', (req, res) => {
-  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+  mongooseJS.gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0) {
       return res.status(404).json({
@@ -188,7 +114,7 @@ app.get('/image/:filename', (req, res) => {
     // Check if image
     if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
       // Read output to browser
-      const readstream = gfs.createReadStream(file.filename);
+      const readstream = mongooseJS.gfs.createReadStream(file.filename);
       readstream.pipe(res);
     } else {
       res.status(404).json({
@@ -200,10 +126,17 @@ app.get('/image/:filename', (req, res) => {
 
 // @route DELETE /files/:id
 // @desc  Delete file
-app.delete('/files/:id', (req, res) => {
-  gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
+app.delete('/files/:id/:filename', (req, res) => {
+  mongooseJS.gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
     if (err) {
       return res.status(404).json({ err: err });
+    } else {
+      // mongooseJS.StoreItem.deleteOne({filename: req});
+      mongooseJS.StoreItem.find({filename: req.params.filename}).remove((err) => {
+        if(err) {
+          console.log(err);
+        }
+      });
     }
 
     res.redirect('/');
@@ -217,7 +150,7 @@ app.get('/adminsignup', function (req, res) {
 
 // admin signup
 app.post('/adminsignup', function (req, res, next) {
-  passport.authenticate('local-signup', function (err, user, info) {
+  setPassport.passport.authenticate('local-signup', function (err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/adminlogin'); }
     if (req.body.email.toString().toLowerCase() == "legeitstudio@gmail.com") {
@@ -229,71 +162,18 @@ app.post('/adminsignup', function (req, res, next) {
   })(req, res, next);
 });
 
-passport.use('local-signup', new localStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-  session: true
-}, function (email, password, next) {
-  User.findOne({ email: email }, (err, user) => {
-    if (err) return err
-    if (user) return next({ message: "User already exists" })
-
-    if (email.toLowerCase() == "legeitstudio@gmail.com") {
-      let newUser = new User({
-        email: email,
-        passwordHash: bcrypt.hashSync(password, 10)
-      });
-      newUser.save(function (err) {
-        next(err, newUser);
-      });
-    } else {
-      let newUser = new User({
-        email: email,
-        passwordHash: bcrypt.hashSync(password, 10)
-      });
-      return next(err, newUser);
-    }
-  });
-}));
-
 // login page
 app.get('/adminlogin', function (req, res, next) {
   res.render('admin-login', { title: "LeGeit Admins Login" })
 });
 
 // admin login
-app.post('/adminlogin', passport.authenticate('local', { failureRedirect: '/adminlogin' }),
+app.post('/adminlogin', setPassport.passport.authenticate('local', { failureRedirect: '/adminlogin' }),
   function (req, res, next) {
     req.session.authenticated = true;
     res.redirect('/');
   }
 );
-
-passport.use(new localStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-  session: true
-}, function (email, password, next) {
-  User.findOne({
-    email: email
-  }, function (err, user) {
-    if (err) return next(err);
-    if (!user | (user & !bcrypt.compareSync(password, user.passwordHash))) {
-      return next({ message: 'Email or password incorrect' })
-    }
-    next(null, user);
-  });
-}));
-
-passport.serializeUser(function (user, next) {
-  next(null, user._id);
-});
-
-passport.deserializeUser(function (id, next) {
-  User.findById(id, function (err, user) {
-    next(err, user);
-  });
-});
 
 //admin logout
 app.get('/logout', function (req, res, next) {
