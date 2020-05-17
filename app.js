@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
   gfs.files.find().toArray((err, files) => {
     // Check if files
     if (!files || files.length === 0) {
-      res.render('index', { files: false });
+      res.render('index', { files: false, data: data });
     } else {
       files.map(file => {
         if (
