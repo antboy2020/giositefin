@@ -9,10 +9,10 @@ mongoose.model('StoreItem', new mongoose.Schema({
     filename: String,
     price: Number,
     description: String,
-    xs: String,
-    s: String,
-    m: String,
-    l: String,
-    xl: String,
+    xs: Number,
+    s: Number,
+    m: Number,
+    l: Number,
+    xl: Number,
     type: String
 }));

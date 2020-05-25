@@ -72,17 +72,27 @@ app.post('/upload', manageFiles.upload.single('file'), (req, res) => {
 
 // @route POST /cart
 // @desc add items to cart
-app.post('/cart/:filename', (req, res) => {
+app.post('/cart/:filename/:sizing', (req, res) => {
   mongooseJS.StoreItem.find({ filename: req.params.filename }, function (err, fileInfo) {
     if (err) {
       res.render('index', { files: false, data: data });
     } else {
       let cart = req.session.cart || {};
-      cart[req.params.filename] = { price: fileInfo[0].price, type: fileInfo[0].type, count: 1 };
+      cart[req.params.filename + " (" + req.params.sizing + ")"] = { price: fileInfo[0].price, type: fileInfo[0].type, count: "1", size: req.params.sizing };
       req.session.cart = cart;
       req.session.save();
     }
   });
+});
+
+app.post('/updateCart/:filename/:count', (req, res) => {
+  if(req.params.count == 0) {
+    delete req.session.cart[req.params.filename];
+    req.session.save();
+  } else if(req.params.count > 0) {
+    req.session.cart[req.params.filename].count = req.params.count; 
+    req.session.save();
+  }
 });
 
 // @route DELETE /cart
@@ -143,6 +153,10 @@ app.get('/product/:filename', (req, res) => {
       });
     }
   });
+});
+
+app.get('/updateCart/:filename', (req, res) => {
+  res.render('updatecart', {data: req.session.cart, filename: req.params.filename});
 });
 
 // @route GET /image/:filename

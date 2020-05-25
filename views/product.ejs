@@ -23,21 +23,22 @@
     <!-- Custom styles for this template -->
     <link href="css/agency.min.css" rel="stylesheet">
     <link href="stylesheets/indexstyles.css" rel="stylesheet">
-    <!-- <link href="./styles3.css" rel="stylesheet"> -->
 
     <script>
         function addToCart() {
             let xhr = new XMLHttpRequest();
             if (document.getElementById('addtocartbutt').innerText ==
                 'add to cart') {
-                document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn btn-outline-warning mb-2" onclick="addToCart();">remove</button>';
-                document.getElementById('viewcartbutt').innerHTML = '<button type="button" class="btn btn-outline-warning" onclick="openNav()" id="addtocartbutt">view cart</button>';
-                document.getElementById('checkoutbutt').innerHTML = '<button type="button" class="btn btn-outline-warning" onclick="openNav()" id="checkoutbutt">checkout</button>';
-                let url = "/cart/" + document.getElementById('filename').innerText;
+                // document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn mb-2">In Cart</button>';
+                document.getElementById('viewcartbutt').innerHTML = '<a href="updateCart/<%= file.filename %>"><button type="button" class="btn btn-outline-warning" id="addtocartbutt">view cart</button></a>';
+                document.getElementById('checkoutbutt').innerHTML = '<button type="button" class="btn btn-outline-warning" id="checkoutbutt">checkout</button>';
+                let dropDown = document.getElementById("sizing");
+                let selectedSize = dropDown.options[dropDown.selectedIndex].value;
+                let url = "/cart/" + document.getElementById('filename').innerText + "/" + selectedSize;
                 xhr.open("POST", url);
                 xhr.send();
             } else {
-                document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn btn-outline-warning mb-2" onclick="addToCart();">add to cart</button>';
+                // document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn btn-outline-warning mb-2" onclick="addToCart();">add to cart</button>';
                 document.getElementById('viewcartbutt').innerHTML = '';
                 document.getElementById('checkoutbutt').innerHTML = '';
                 let url = "/cart/" + document.getElementById('filename').innerText;;
@@ -45,26 +46,11 @@
                 xhr.send();
             }
         }
-
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "100%";
-            console.log('<%= file.filename%>');
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
     </script>
 
 </head>
 
 <body>
-    <!-- sliding sidenav for  cart and checkout-->
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <h1><%= data.inCart['shirt1'].price%></h1>
-    </div>
-
     <!-- Header -->
     <header class="py-5 mb-4">
         <div class="text-center container">
@@ -93,16 +79,26 @@
             </div>
             <div class="col">
                 <!-- Display the expanded buttons if this item is already in cart otherwise display the regular view -->
-                <% if(data.inCart[file.filename]) {%>
-                <div id="addtocartbutt"><button type="button" class="btn btn-outline-warning mb-2"
-                        onclick="addToCart(true);">remove</button></div>
-                <div id="viewcartbutt" class="mb-2"><button type="button" class="btn btn-outline-warning"
-                        onclick="openNav()" id="addtocartbutt">view cart</button></div>
-                <div id="checkoutbutt"><button type="button" class="btn btn-outline-warning" onclick="openNav()"
-                        id="checkoutbutt">checkout</button></div>
-                <% } else {%>
+                <select id="sizing" aria-labelledby="size-select" class="form-control mb-3">
+                    <% if(file.xs) {%> <option value="xs">XS</option><% }%>
+                    <% if(file.s) {%> <option value="s">S</option><% }%>
+                    <% if(file.m) {%> <option value="m">M</option><% }%>
+                    <% if(file.l) {%> <option value="l">L</option><% }%>
+                    <% if(file.xl) {%> <option value="xl">XL</option><% }%>
+                </select>
                 <div id="addtocartbutt"><button type="button" class="btn btn-outline-warning mb-2"
                         onclick="addToCart();">add to cart</button></div>
+                <% if(data.inCart[file.filename + " (xs)"] || 
+                data.inCart[file.filename + " (s)"] || 
+                data.inCart[file.filename + " (m)"] || 
+                data.inCart[file.filename + " (l)"] || 
+                data.inCart[file.filename + " (xs)"]
+                ) {%>
+                <div id="viewcartbutt" class="mb-2"><a href="updateCart/<%= file.filename %>"><button type="button"
+                            class="btn btn-outline-warning" id="addtocartbutt">view cart</button></a></div>
+                <div id="checkoutbutt"><button type="button" class="btn btn-outline-warning"
+                        id="checkoutbutt">checkout</button></div>
+                <% } else {%>
                 <div id="viewcartbutt" class="mb-2"></div>
                 <div id="checkoutbutt"></div>
                 <% } %>
