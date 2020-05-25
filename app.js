@@ -69,6 +69,18 @@ app.post('/upload', manageFiles.upload.single('file'), (req, res) => {
   res.redirect('/');
 });
 
+// @route POST /cart
+// @desc add items to cart
+app.post('/cart/:filename', (req, res) => {
+  console.log(req.params.filename);
+});
+
+// @route DELETE /cart
+// @desc add items to cart
+app.delete('/cart/:filename', (req, res) => {
+  console.log("delete" + req.params.filename);
+});
+
 // @route GET /files
 // @desc  Display all files in JSON
 app.get('/files', (req, res) => {
@@ -87,16 +99,39 @@ app.get('/files', (req, res) => {
 
 // @route GET /files/:filename
 // @desc  Display single file object
-app.get('/files/:filename', (req, res) => {
-  mongooseJS.gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    // Check if file
-    if (!file || file.length === 0) {
-      return res.status(404).json({
-        err: 'No file exists'
+app.get('/product/:filename', (req, res) => {
+  let data = { title: "junk1", authenticated: req.session.authenticated };
+  mongooseJS.StoreItem.find({filename: req.params.filename}, function (err, fileInfo) {
+    if (err) {
+      res.render('index', { files: false, data: data });
+    } else {
+      mongooseJS.gfs.files.find().toArray((err, files) => {
+        // Check if files
+        if (!files || files.length === 0) {
+          res.render('index', { files: false, data: data });
+        } else {
+          files.map(file => {
+            if (
+              file.contentType === 'image/jpeg' ||
+              file.contentType === 'image/png'
+            ) {
+              file.isImage = true;
+              let thisFileInfo = fileInfo.find((info) => info.filename == file.filename);
+              file.price = thisFileInfo.price;
+              file.description = thisFileInfo.description;
+              file.xs = thisFileInfo.xs;
+              file.s = thisFileInfo.s;
+              file.m = thisFileInfo.m;
+              file.l = thisFileInfo.l;
+              file.xl = thisFileInfo.xl;
+            } else {
+              file.isImage = false;
+            }
+          });
+          res.render('product', { files: files, data: data });
+        }
       });
     }
-    // File exists
-    return res.json(file);
   });
 });
 
@@ -131,8 +166,8 @@ app.delete('/files/:id/:filename', (req, res) => {
     if (err) {
       return res.status(404).json({ err: err });
     } else {
-      mongooseJS.StoreItem.deleteOne({filename: req.params.filename}, (err) => {
-        if(err) {
+      mongooseJS.StoreItem.deleteOne({ filename: req.params.filename }, (err) => {
+        if (err) {
           console.log(err);
         }
       });

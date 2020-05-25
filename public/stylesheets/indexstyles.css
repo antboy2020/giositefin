@@ -2,10 +2,34 @@
 
 .image-resize {
     max-width: 100%;
-      width: 225px;
-      height: 200px;
+    width: 225px;
+    height: 200px;
   }
 
 .button-width {
   width: 70%;
 }
+
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+      .picture-gallery{
+          margin-left: 10%;
+          margin-right: 10%;
+      }
+}
+
+  /* Portrait and Landscape */
+  @media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2) { 
+    .image-resize {
+        height: 50%;
+    }
+
+    .portfolio-item {
+      width: 50%;
+    }
+  }
