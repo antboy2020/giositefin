@@ -13,5 +13,6 @@ mongoose.model('StoreItem', new mongoose.Schema({
     s: String,
     m: String,
     l: String,
-    xl: String
+    xl: String,
+    type: String
 }));

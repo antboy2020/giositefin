@@ -14,6 +14,9 @@ const User = mongoose.model('User');
 //Store item object for item details
 const StoreItem = mongoose.model('StoreItem');
 
+//Cart for session
+// const Cart = mongoose.model('Cart');
+
 // Init gfs
 var gfs;
 
@@ -27,3 +30,4 @@ conn.once('open', () => {
 exports.mongoURI = mongoURI;
 exports.User = User;
 exports.StoreItem = StoreItem;
+// exports.Cart = Cart;

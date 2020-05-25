@@ -52,6 +52,7 @@ app.get('/', (req, res) => {
               file.m = thisFileInfo.m;
               file.l = thisFileInfo.l;
               file.xl = thisFileInfo.xl;
+              file.type = thisFileInfo.type;
             } else {
               file.isImage = false;
             }
@@ -72,13 +73,23 @@ app.post('/upload', manageFiles.upload.single('file'), (req, res) => {
 // @route POST /cart
 // @desc add items to cart
 app.post('/cart/:filename', (req, res) => {
-  console.log(req.params.filename);
+  mongooseJS.StoreItem.find({ filename: req.params.filename }, function (err, fileInfo) {
+    if (err) {
+      res.render('index', { files: false, data: data });
+    } else {
+      let cart = req.session.cart || {};
+      cart[req.params.filename] = { price: fileInfo[0].price, type: fileInfo[0].type, count: 1 };
+      req.session.cart = cart;
+      req.session.save();
+    }
+  });
 });
 
 // @route DELETE /cart
 // @desc add items to cart
 app.delete('/cart/:filename', (req, res) => {
-  console.log("delete" + req.params.filename);
+  delete req.session.cart[req.params.filename];
+  req.session.save();
 });
 
 // @route GET /files
@@ -100,35 +111,34 @@ app.get('/files', (req, res) => {
 // @route GET /files/:filename
 // @desc  Display single file object
 app.get('/product/:filename', (req, res) => {
-  let data = { title: "junk1", authenticated: req.session.authenticated };
-  mongooseJS.StoreItem.find({filename: req.params.filename}, function (err, fileInfo) {
+  let data = { title: "junk1", authenticated: req.session.authenticated, inCart: req.session.cart? req.session.cart : false };
+  mongooseJS.StoreItem.find({ filename: req.params.filename }, function (err, fileInfo) {
     if (err) {
-      res.render('index', { files: false, data: data });
+      res.render('index', { file: false, data: data });
     } else {
-      mongooseJS.gfs.files.find().toArray((err, files) => {
+      mongooseJS.gfs.files.find({ filename: req.params.filename }).toArray((err, file) => {
         // Check if files
-        if (!files || files.length === 0) {
+        if (!file || file.length === 0) {
           res.render('index', { files: false, data: data });
         } else {
-          files.map(file => {
+          file.map(file => {
             if (
               file.contentType === 'image/jpeg' ||
               file.contentType === 'image/png'
             ) {
               file.isImage = true;
-              let thisFileInfo = fileInfo.find((info) => info.filename == file.filename);
-              file.price = thisFileInfo.price;
-              file.description = thisFileInfo.description;
-              file.xs = thisFileInfo.xs;
-              file.s = thisFileInfo.s;
-              file.m = thisFileInfo.m;
-              file.l = thisFileInfo.l;
-              file.xl = thisFileInfo.xl;
+              file.price = fileInfo[0].price;
+              file.description = fileInfo[0].description;
+              file.xs = fileInfo[0].xs;
+              file.s = fileInfo[0].s;
+              file.m = fileInfo[0].m;
+              file.l = fileInfo[0].l;
+              file.xl = fileInfo[0].xl;
             } else {
               file.isImage = false;
             }
           });
-          res.render('product', { files: files, data: data });
+          res.render('product', { file: file[0], data: data });
         }
       });
     }

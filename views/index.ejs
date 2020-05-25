@@ -12,7 +12,7 @@
       width: 100%;
     }
   </style>
-  <title>Mongo File Uploads</title>
+  <title>LeGeit</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -34,12 +34,11 @@
       let xhr = new XMLHttpRequest();
       let uploadForm = document.getElementById('uploadForm');
       let form = new FormData(uploadForm);
-      console.log(form.get("price"));
-      xhr.onreadystatechange = function(res) {
-        if(res.currentTarget.status == 500) {
-        document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
+      xhr.onreadystatechange = function (res) {
+        if (res.currentTarget.status == 500) {
+          document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
         } else if (res.currentTarget.status == 200) {
-          window.location.href="/";
+          window.location.href = "/";
         }
       }
       xhr.open("POST", "/upload");
@@ -90,7 +89,7 @@
   </nav>
 
   <!-- Header -->
-  <header class="masthead">
+  <header class="masthead picture-gallery">
     <div class="container">
       <div class="intro-text">
         <div class="intro-lead-in">Welcome To Our Studio!</div>
@@ -104,7 +103,7 @@
   <% if(data.authenticated) {%>
           <div class="col-md-6 m-auto">
             <h1 class="text-center display-4 my-4">Upload a file</h1>
-            <h1 id="uploadError" style="color: red;"></h1>
+            <h1 id="uploadError"></h1>
             <form id="uploadForm">
               <div class="row">
                 <div class="col">
@@ -115,6 +114,11 @@
                 </div>
               </div>
               Description: <input type="text" name="description" id="description" class="form-control mb-3" />
+              <label for="type">Choose a type:</label>
+              <select name="type" id="type" class="form-control mb-3">
+                <option value="barbering">barbering</option>
+                <option value="clothing">clothing</option>
+              </select>
               <div class="row">
                 <div class="col">
                   xs: <input type="text" name="xs" id="xs" class="form-control mb-3" />
@@ -148,24 +152,16 @@
           <div class="container">
             <div class="row">
               <% files.forEach(function(file) { %>
-              <div class="col-md-4 col-sm-6 portfolio-item">
+              <div class="col-md-3 col-sm-6 portfolio-item">
                 <% if(file.isImage) { %>
-                <a>
-                  <!-- <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                          <i class="fas fa-plus fa-3x"></i>
-                        </div>
-                      </div> -->
+                <a href="/product/<%= file.filename %>">
                   <img class="img-fluid image-resize" src="image/<%= file.filename %>" alt="">
                 </a>
                 <div class="portfolio-caption">
                   <h4><%= file.filename %></h4>
                   <div class="row">
                     <div class="col">
-                      <p class="text-muted"><%= file.price %></p>
-                    </div>
-                    <div class="col">
-                      <p class="text-muted"><%= file.description %></p>
+                      <p><%= file.price %></p>
                     </div>
                   </div>
                 </div>
@@ -173,7 +169,7 @@
                 <%= file.filename %>
                 <% } %>
                 <% if(data.authenticated){ %>
-                <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
+                <form method="POST" action="/files/<%= file._id %>/<%= file.filename %>?_method=DELETE">
                   <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
                 </form>
                 <% } %>
@@ -186,7 +182,22 @@
           <p>No files to show</p>
           <% } %>
           <br>
-          <!-- </div> -->
+
+          <!-- Footer-->
+          <footer class="footer py-4">
+            <div class="container">
+              <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-left">Copyright © Your Website 2020</div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                  <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a><a
+                    class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a><a
+                    class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-right"><a class="mr-3" href="#!">Privacy Policy</a><a href="#!">Terms of
+                    Use</a></div>
+              </div>
+            </div>
+          </footer>
 
           <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

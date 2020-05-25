@@ -42,7 +42,8 @@ function addStoreItem(req, fileInfo) {
       s: req.body.s,
       m: req.body.m,
       l: req.body.l,
-      xl: req.body.xl
+      xl: req.body.xl,
+      type: req.body.type
     });
     newStoreItem.save(function (err) {
       if (err) {
