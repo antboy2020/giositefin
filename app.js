@@ -28,8 +28,8 @@ app.use(setPassport.passport.session());
 // @route GET /
 // @desc Loads form
 app.get('/', (req, res) => {
-  let data = { title: "junk1", authenticated: req.session.authenticated };
-  mongooseJS.StoreItem.find({}, function (err, fileInfo) {
+  let data = { title: "junk1", authenticated: req.session.authenticated, cart: req.session.cart };
+  mongooseJS.StoreItem.find({ featured: true }, function (err, fileInfo) {
     if (err) {
       res.render('index', { files: false, data: data });
     } else {
@@ -37,6 +37,61 @@ app.get('/', (req, res) => {
         // Check if files
         if (!files || files.length === 0) {
           res.render('index', { files: false, data: data });
+        } else {
+          let featuredFileNames = [];
+          fileInfo.forEach((info) => {
+            if (info.featured) {
+              featuredFileNames.push(info.filename);
+            }
+          });
+          featuredFiles = files.filter((file) => featuredFileNames.includes(file.filename));
+          featuredFiles.map(file => {
+            if (
+              file.contentType === 'image/jpeg' ||
+              file.contentType === 'image/png'
+            ) {
+              file.isImage = true;
+              let thisFileInfo = fileInfo.find((info) => info.filename == file.filename);
+              file.price = thisFileInfo.price;
+              file.description = thisFileInfo.description;
+              file.xs = thisFileInfo.xs;
+              file.s = thisFileInfo.s;
+              file.m = thisFileInfo.m;
+              file.l = thisFileInfo.l;
+              file.xl = thisFileInfo.xl;
+              file.type = thisFileInfo.type;
+              file.ml30 = thisFileInfo.ml30;
+              file.ml50 = thisFileInfo.ml50;
+              file.ml100 = thisFileInfo.ml100;
+              file.ml250 = thisFileInfo.ml250;
+              file.g100 = thisFileInfo.g100;
+              file.wholecount = thisFileInfo.wholecount;
+              file.featured = thisFileInfo.featured;
+            } else {
+              file.isImage = false;
+            }
+          });
+          res.render('index', { files: featuredFiles, data: data });
+        }
+      });
+    }
+  });
+});
+
+// @route GET /products
+// full products page
+// @route GET /
+// @desc Loads form
+app.get('/products', (req, res) => {
+  let data = { title: "junk1", authenticated: req.session.authenticated, cart: req.session.cart };
+  mongooseJS.StoreItem.find({}, function (err, fileInfo) {
+    if (err) {
+      res.render('products', { files: false, data: data });
+    } else {
+      mongooseJS.gfs.files.find().toArray((err, files) => {
+        // Check if files
+        if (!files || files.length === 0) {
+          res.render('products', { files: false, data: data });
         } else {
           files.map(file => {
             if (
@@ -53,11 +108,18 @@ app.get('/', (req, res) => {
               file.l = thisFileInfo.l;
               file.xl = thisFileInfo.xl;
               file.type = thisFileInfo.type;
+              file.ml30 = thisFileInfo.ml30;
+              file.ml50 = thisFileInfo.ml50;
+              file.ml100 = thisFileInfo.ml100;
+              file.ml250 = thisFileInfo.ml250;
+              file.g100 = thisFileInfo.g100;
+              file.wholecount = thisFileInfo.wholecount;
+              file.featured = thisFileInfo.featured;
             } else {
               file.isImage = false;
             }
           });
-          res.render('index', { files: files, data: data });
+          res.render('products', { files: files, data: data });
         }
       });
     }
@@ -85,13 +147,18 @@ app.post('/cart/:filename/:sizing', (req, res) => {
   });
 });
 
+//route for updating the cart object in session
 app.post('/updateCart/:filename/:count', (req, res) => {
-  if(req.params.count == 0) {
+  if (req.params.count == 0) {
     delete req.session.cart[req.params.filename];
     req.session.save();
-  } else if(req.params.count > 0) {
-    req.session.cart[req.params.filename].count = req.params.count; 
+    res.render('index', { files: false, data: data });
+  } else if (req.params.count > 0) {
+    req.session.cart[req.params.filename].count = req.params.count;
     req.session.save();
+    res.render('index', { files: false, data: data });
+  } else {
+    res.sendStatus(500);
   }
 });
 
@@ -121,7 +188,7 @@ app.get('/files', (req, res) => {
 // @route GET /files/:filename
 // @desc  Display single file object
 app.get('/product/:filename', (req, res) => {
-  let data = { title: "junk1", authenticated: req.session.authenticated, inCart: req.session.cart? req.session.cart : false };
+  let data = { title: "junk1", authenticated: req.session.authenticated, inCart: req.session.cart ? req.session.cart : false };
   mongooseJS.StoreItem.find({ filename: req.params.filename }, function (err, fileInfo) {
     if (err) {
       res.render('index', { file: false, data: data });
@@ -144,6 +211,14 @@ app.get('/product/:filename', (req, res) => {
               file.m = fileInfo[0].m;
               file.l = fileInfo[0].l;
               file.xl = fileInfo[0].xl;
+              file.type = fileInfo[0].type;
+              file.ml30 = fileInfo[0].ml30;
+              file.ml50 = fileInfo[0].ml50;
+              file.ml100 = fileInfo[0].ml100;
+              file.ml250 = fileInfo[0].ml250;
+              file.g100 = fileInfo[0].g100;
+              file.wholecount = fileInfo[0].wholecount;
+              file.featured = fileInfo[0].featured;
             } else {
               file.isImage = false;
             }
@@ -155,8 +230,22 @@ app.get('/product/:filename', (req, res) => {
   });
 });
 
+app.post('/updateCount/:filename/:size/:count', (req, res) => {
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { [req.params.size]: req.params.count }, (err)=>{
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.get('/updateCart', (req, res) => {
+  res.render('updatecart', { data: req.session.cart });
+});
+
 app.get('/updateCart/:filename', (req, res) => {
-  res.render('updatecart', {data: req.session.cart, filename: req.params.filename});
+  res.render('updatecart', { data: req.session.cart, filename: req.params.filename });
 });
 
 // @route GET /image/:filename

@@ -33,11 +33,6 @@
 
         function updateCart(count, itemName) {
             let xhr = new XMLHttpRequest();
-            // xhr.onreadystatechange = function (res) {
-            //     if (res.currentTarget.status == 200) {
-            //         document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
-            //     } 
-            // }
             let url = "/updateCart/" + itemName + "/" + count.value;
             xhr.open("POST", url);
             xhr.send();
@@ -47,9 +42,45 @@
 </head>
 
 <body>
-
-    <button onclick="goBack()" style="margin-top: 10%; border-style: none;"
-        class="ml-3 mb-3"><%= "<" + filename%></button>
+    <!-- Navigation -->
+  <nav class="navbar navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+      <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav text-uppercase ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/">home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="products">shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger"
+              href="https://booksy.com/en-us/instant-experiences/widget/38311?instant_experiences_enabled=true&ig_ix=true">Booking</a>
+          </li>
+          <% if(data.authenticated) {%>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="logout">logout</a>
+          </li>
+          <%}%>
+        </ul>
+      </div>
+      <% if(data.cart) { %>
+          <a href="updateCart" class="navcart" style="color: red;"><i class="fa fa-shopping-cart" style="font-size:36px"></i></a>
+          <% } else {%>
+          <a href="updateCart" class="navcart"><i class="fa fa-shopping-cart" style="font-size:36px"></i></a>
+          <% } %>
+      </div>
+  </nav>
+    <a href="/"><img src="../img/legeit-transparent.png" class="legeit"></a>
 
     <table class="table table-bordered">
         <thead>
@@ -61,17 +92,40 @@
             </tr>
         </thead>
         <tbody>
-            <% for (let [key, value] of Object.entries(data)) {%>
+            <%  let total = 0;
+                for (let [key, value] of Object.entries(data)) {%>
             <tr>
                 <td><%= key%></td>
                 <td><%= value.size%></td>
-                <td><input type="number" step="1" value="<%= value.count %>" class="count-input" onchange="updateCart(this, '<%= key%>')">
+                <td><input type="number" step="1" value="<%= value.count %>" class="count-input"
+                        onchange="updateCart(this, '<%= key%>')">
                 </td>
                 <td><%= value.price * value.count %></td>
+                <% total = total + (value.price * value.count) %>
             </tr>
             <% } %>
+            <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                <td><%= total%></td>
+            </tr>
         </tbody>
     </table>
+
+
+    <footer class="footer" style="margin-top: 22%;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-left"></div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a><a
+                        class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a><a
+                        class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

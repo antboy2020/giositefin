@@ -43,7 +43,14 @@ function addStoreItem(req, fileInfo) {
       m: req.body.m,
       l: req.body.l,
       xl: req.body.xl,
-      type: req.body.type
+      type: req.body.type,
+      ml30: req.body.ml30,
+      ml50: req.body.ml50,
+      ml100: req.body.ml100,
+      ml250: req.body.ml250,
+      g100: req.body.g100,
+      wholecount: req.body.wholecount,
+      featured: req.body.featured
     });
     newStoreItem.save(function (err) {
       if (err) {

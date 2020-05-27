@@ -14,5 +14,11 @@ mongoose.model('StoreItem', new mongoose.Schema({
     m: Number,
     l: Number,
     xl: Number,
-    type: String
+    type: String,
+    ml30: Number,
+    ml50: Number,
+    ml100: Number,
+    ml250: Number,
+    g100: Number,
+    featured: Boolean
 }));

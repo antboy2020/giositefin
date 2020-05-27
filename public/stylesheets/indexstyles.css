@@ -12,8 +12,37 @@
   color: red;
 }
 
-#sizing {
-  width: 10%;
+#rcorners2 {
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+}
+
+.entry { max-width: 200px; padding: .5em; }
+
+#mainNav .navbar-nav .nav-item .nav-link {
+  color: #212529;
+}
+
+.navcart {
+  color: #212529;
+}
+
+.navcart:hover {
+  color: grey;
+}
+
+#mainNav .navbar-nav .nav-item.nav-item.active .nav-link,
+#mainNav .navbar-nav .nav-item.nav-item:hover .nav-link {
+  color: red;
+}
+
+#mainNav .navbar-toggler {
+  background-color: #212529;
+}
+
+#carouselExampleIndicators {
+  width: 80%;
+  margin-left: 10%;
 }
 
 .sidenav {
@@ -30,6 +59,12 @@
   text-align: center;
 }
 
+.legeit {
+  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
@@ -39,16 +74,9 @@
   transition: 0.3s;
 }
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
+#mainNav {
+  position: inherit;
+  background-color: #ffffff;
 }
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
@@ -70,10 +98,15 @@
 
   .count-input {
     border-style: ridge;
+    width: 30px;
   }
 
   #sizing {
     border-style: ridge;
-    width: 50%;
+  }
+
+  .legeit {
+    width: 80%;
+    margin-left: 12%;
   }
 }
