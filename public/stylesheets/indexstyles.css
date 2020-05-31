@@ -14,7 +14,7 @@
 
 #rcorners2 {
   border-radius: 25px;
-  border: 2px solid #73AD21;
+  border: 2px solid red;
 }
 
 .entry { max-width: 200px; padding: .5em; }
@@ -43,6 +43,11 @@
 #carouselExampleIndicators {
   width: 80%;
   margin-left: 10%;
+}
+
+#homePage #carousel-button{
+  bottom: 0px; 
+  right: -50%;
 }
 
 .sidenav {
@@ -103,6 +108,12 @@
 
   #sizing {
     border-style: ridge;
+    width: 50%;
+  }
+
+  #carousel-button {
+    bottom: 0px;
+    right: -50%;
   }
 
   .legeit {

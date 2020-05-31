@@ -43,7 +43,7 @@
 
 <body>
     <!-- Navigation -->
-  <nav class="navbar navbar-dark fixed-top" id="mainNav">
+  <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
     <div class="container">
       <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -73,10 +73,11 @@
           <%}%>
         </ul>
       </div>
-      <% if(data.cart) { %>
-          <a href="updateCart" class="navcart" style="color: red;"><i class="fa fa-shopping-cart" style="font-size:36px"></i></a>
+      <% if(Object.keys(data).length != 0) { %>
+          <img src="../img/shopping-cart-outline-red.png" style="width: 10%;"></i>
+
           <% } else {%>
-          <a href="updateCart" class="navcart"><i class="fa fa-shopping-cart" style="font-size:36px"></i></a>
+          <img src="../img/shopping-cart-outline.png" style="width: 10%;"></i>
           <% } %>
       </div>
   </nav>

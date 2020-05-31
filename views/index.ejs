@@ -48,9 +48,9 @@
 
 </head>
 
-<body>
+<body id="homePage">
   <!-- Navigation -->
-  <nav class="navbar navbar-dark fixed-top" id="mainNav">
+  <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
     <div class="container">
       <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -80,14 +80,12 @@
           <%}%>
         </ul>
       </div>
-      <img src="../img/shopping-cart-outline.png" style="color: red; width: 10%;"></i>
-<!-- <p id="rcorners2">hello its me</p> -->
+          <% if(data.cart && Object.keys(data.cart).length != 0) { %>
+          <img src="../img/shopping-cart-outline-red.png" style="width: 10%;"></i>
 
-      <!-- <% if(data.cart) { %>
-          <a href="updateCart" class="navcart" style="color: red;"><i class="fa fa-shopping-cart" style="font-size:36px"></i></a>
           <% } else {%>
-          <a href="updateCart" class="navcart"><i class="fa fa-shopping-cart" style="font-size:36px"></i></a>
-          <% } %> -->
+          <img src="../img/shopping-cart-outline.png" style="width: 10%;"></i>
+          <% } %>
       </div>
   </nav>
 
@@ -97,21 +95,30 @@
   <br>
 
 
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="10000">
+    <!-- <ol class="carousel-indicators">
       <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
+    </ol> -->
     <div class="carousel-inner">
       <div class="carousel-item active">
         <img class="d-block w-100" src="../img/header-bg.jpg" alt="First slide">
+        <div class="carousel-caption d-s-block" id="carousel-button">
+          <a class="btn btn-outline-secondary mr-4" href="https://google.com">Book Now</a>
+        </div>
       </div>
       <div class="carousel-item">
         <img class="d-block w-100" src="../img/header-bg.jpg" alt="Second slide">
+        <div class="carousel-caption d-s-block" id="carousel-button">
+          <a class="btn btn-outline-secondary mr-4" href="https://google.com">Book Now</a>
+        </div>
       </div>
       <div class="carousel-item">
         <img class="d-block w-100" src="../img/header-bg.jpg" alt="Third slide">
+        <div class="carousel-caption d-s-block" id="carousel-button">
+          <a class="btn btn-outline-secondary mr-4" href="https://google.com">Book Now</a>
+        </div>
       </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -192,7 +199,7 @@
         <input type="file" name="file" id="file" class="custom-file-input" />
         <label for="file" class="custom-file-label">Choose File</label>
       </div>
-    </form>
+      </form>
     <button onclick="sendPicture()" class="btn btn-danger btn-block">Upload</button>
   </div>
   <hr>

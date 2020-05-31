@@ -152,11 +152,9 @@ app.post('/updateCart/:filename/:count', (req, res) => {
   if (req.params.count == 0) {
     delete req.session.cart[req.params.filename];
     req.session.save();
-    res.render('index', { files: false, data: data });
   } else if (req.params.count > 0) {
     req.session.cart[req.params.filename].count = req.params.count;
     req.session.save();
-    res.render('index', { files: false, data: data });
   } else {
     res.sendStatus(500);
   }
@@ -240,6 +238,16 @@ app.post('/updateCount/:filename/:size/:count', (req, res) => {
   });
 });
 
+app.post('/updateFeatured/:filename/:featured', (req, res) => {
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { featured: req.params.featured }, (err)=>{
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 app.get('/updateCart', (req, res) => {
   res.render('updatecart', { data: req.session.cart });
 });
@@ -285,8 +293,7 @@ app.delete('/files/:id/:filename', (req, res) => {
         }
       });
     }
-
-    res.redirect('/');
+    res.redirect('/' + req.params.endpoint);
   });
 });
 
