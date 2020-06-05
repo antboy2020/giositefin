@@ -132,6 +132,12 @@ app.post('/upload', manageFiles.upload.single('file'), (req, res) => {
   res.redirect('/');
 });
 
+// @route POST /uploadSecondary
+// @desc  Uploads file to DB
+app.post('/uploadSecondaryPicture/:filename', manageFiles.upload.single('file'), (req, res) => {
+  res.redirect('/product/' + req.params.filename);
+});
+
 // @route POST /cart
 // @desc add items to cart
 app.post('/cart/:filename/:sizing', (req, res) => {
@@ -191,45 +197,66 @@ app.get('/product/:filename', (req, res) => {
     if (err) {
       res.render('index', { file: false, data: data });
     } else {
-      mongooseJS.gfs.files.find({ filename: req.params.filename }).toArray((err, file) => {
-        // Check if files
-        if (!file || file.length === 0) {
-          res.render('index', { files: false, data: data });
-        } else {
-          file.map(file => {
-            if (
-              file.contentType === 'image/jpeg' ||
-              file.contentType === 'image/png'
-            ) {
-              file.isImage = true;
-              file.price = fileInfo[0].price;
-              file.description = fileInfo[0].description;
-              file.xs = fileInfo[0].xs;
-              file.s = fileInfo[0].s;
-              file.m = fileInfo[0].m;
-              file.l = fileInfo[0].l;
-              file.xl = fileInfo[0].xl;
-              file.type = fileInfo[0].type;
-              file.ml30 = fileInfo[0].ml30;
-              file.ml50 = fileInfo[0].ml50;
-              file.ml100 = fileInfo[0].ml100;
-              file.ml250 = fileInfo[0].ml250;
-              file.g100 = fileInfo[0].g100;
-              file.wholecount = fileInfo[0].wholecount;
-              file.featured = fileInfo[0].featured;
-            } else {
-              file.isImage = false;
-            }
-          });
-          res.render('product', { file: file[0], data: data });
-        }
+      mongooseJS.gfs.files.find({ filename: req.params.filename }).toArray((err, files) => {
+        let file = files.filter(file => !file.filename.includes("secondary"));
+        let secondaryFiles = files.filter(file => file.filename.includes("secondary"));
+          // Check if files
+          if (!file || file.length === 0) {
+            res.render('index', { files: false, data: data });
+          } else {
+            file.map(file => {
+              if (
+                file.contentType === 'image/jpeg' ||
+                file.contentType === 'image/png'
+              ) {
+                file.isImage = true;
+                file.price = fileInfo[0].price;
+                file.description = fileInfo[0].description;
+                file.xs = fileInfo[0].xs;
+                file.s = fileInfo[0].s;
+                file.m = fileInfo[0].m;
+                file.l = fileInfo[0].l;
+                file.xl = fileInfo[0].xl;
+                file.type = fileInfo[0].type;
+                file.ml30 = fileInfo[0].ml30;
+                file.ml50 = fileInfo[0].ml50;
+                file.ml100 = fileInfo[0].ml100;
+                file.ml250 = fileInfo[0].ml250;
+                file.g100 = fileInfo[0].g100;
+                file.wholecount = fileInfo[0].wholecount;
+                file.featured = fileInfo[0].featured;
+              } else {
+                file.isImage = false;
+              }
+            });
+            res.render('product', { file: file[0], secondaryFiles: secondaryFiles, data: data });
+          }
+
       });
     }
   });
 });
 
+
+// mongooseJS.gfsSecondary.files.find({ filename: req.params.filename }).toArray((err, secondaryFiles) => {
+            //check for secondary product page files
+            // if (!secondaryFiles || secondaryFiles.length === 0) {
+            //   res.render('index', { files: false, data: data });
+            // } else {
+            //   secondaryFiles.map(file => {
+            //     if (
+            //       file.contentType === 'image/jpeg' ||
+            //       file.contentType === 'image/png'
+            //     ) {
+            //       file.isImage = true;
+            //       file.isSecondaryFile = true;
+            //     }
+            //   });
+            // }
+          // });
+
 app.post('/updateCount/:filename/:size/:count', (req, res) => {
-  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { [req.params.size]: req.params.count }, (err)=>{
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { [req.params.size]: req.params.count }, (err) => {
     if (err) {
       res.sendStatus(500);
     } else {
@@ -239,7 +266,7 @@ app.post('/updateCount/:filename/:size/:count', (req, res) => {
 });
 
 app.post('/updateFeatured/:filename/:featured', (req, res) => {
-  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { featured: req.params.featured }, (err)=>{
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { featured: req.params.featured }, (err) => {
     if (err) {
       res.sendStatus(500);
     } else {
@@ -282,8 +309,8 @@ app.get('/image/:filename', (req, res) => {
 
 // @route DELETE /files/:id
 // @desc  Delete file
-app.delete('/files/:id/:filename', (req, res) => {
-  mongooseJS.gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
+app.delete('/files/:filename', (req, res) => {
+  mongooseJS.gfs.remove({ filename: req.params.filename, root: 'uploads' }, (err, gridStore) => {
     if (err) {
       return res.status(404).json({ err: err });
     } else {
@@ -293,7 +320,8 @@ app.delete('/files/:id/:filename', (req, res) => {
         }
       });
     }
-    res.redirect('/' + req.params.endpoint);
+    let endpoint = req.params.endpoint ? req.params.endpoint : "";
+    res.redirect('/' + endpoint);
   });
 });
 

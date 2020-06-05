@@ -64,50 +64,58 @@
             xhr.open("POST", url);
             xhr.send();
         }
+
+        function sendPicture(filename) {
+            let xhr = new XMLHttpRequest();
+            let uploadForm = document.getElementById('uploadForm');
+            let form = new FormData(uploadForm);
+            xhr.open("POST", "/uploadSecondaryPicture/" + filename + "secondary");
+            xhr.send(form);
+        }
     </script>
 
 </head>
 
 <body>
     <!-- Navigation -->
-  <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
-    <div class="container">
-      <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false">
-        Menu
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav text-uppercase ml-auto">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/">home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="products">shop</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger"
-              href="https://booksy.com/en-us/instant-experiences/widget/38311?instant_experiences_enabled=true&ig_ix=true">Booking</a>
-          </li>
-          <% if(data.authenticated) {%>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="logout">logout</a>
-          </li>
-          <%}%>
+    <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
+        <div class="container">
+            <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/">home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="products">shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger"
+                            href="https://booksy.com/en-us/instant-experiences/widget/38311?instant_experiences_enabled=true&ig_ix=true">Booking</a>
+                    </li>
+                    <% if(data.authenticated) {%>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="logout">logout</a>
+                    </li>
+                    <%}%>
         </ul>
       </div>
       <% if(Object.keys(data.inCart).length != 0) { %>
-          <img src="../img/shopping-cart-outline-red.png" style="width: 10%;"></i>
+                    <img src="../img/shopping-cart-outline-red.png" style="width: 10%;"></i>
 
-          <% } else {%>
-          <img src="../img/shopping-cart-outline.png" style="width: 10%;"></i>
-          <% } %>
-      </div>
-  </nav>
+                    <% } else {%>
+                    <img src="../img/shopping-cart-outline.png" style="width: 10%;"></i>
+                    <% } %>
+            </div>
+    </nav>
     <a href="/"><img src="../img/legeit-transparent.png" class="legeit"></a>
     <br>
     <br>
@@ -116,8 +124,19 @@
     <br>
 
     <% if(data.authenticated) {%>
+    <div class="col-md-6 mb-4">
+        <form id="uploadForm">
+            <div class="col-md-6 m-auto">
+                <div class="custom-file mb-3">
+                    <input type="file" name="file" id="file" class="custom-file-input" />
+                    <label for="file" class="custom-file-label">Secondary Pic</label>
+                </div>
+        </form>
+        <button onclick="sendPicture('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
+    </div>
     <label for="featured">featured item:</label>
-    <select name="featured" id="featured" class="form-control mb-3" onchange="updateFeatured(this, '<%= file.filename %>')">
+    <select name="featured" id="featured" class="form-control mb-3"
+        onchange="updateFeatured(this, '<%= file.filename %>')">
         <% if(file.featured) {%>
         <option value="true">yes</option>
         <option value="false">no</option>
@@ -174,6 +193,7 @@
             </tr>
         </tbody>
         </table>
+        </div>
         <% }%>
 
         <!-- Picture -->
@@ -185,6 +205,13 @@
                     src="../image/<%= file.filename %>" alt="">
             </a>
         </div>
+        <% if(secondaryFiles.length == 0) { %>
+            <% console.log(secondaryFiles) %>
+        <div class="row">
+            <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
+                src="../image/<%= file.filename %>secondary" alt="">
+        </div>
+    <% } %>
         <div class="portfolio-caption" style="margin-left: 19%;">
             <div class="row">
                 <div class="col">
