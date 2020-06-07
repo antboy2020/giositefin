@@ -206,7 +206,6 @@
             </a>
         </div>
         <% if(secondaryFiles && secondaryFiles.length != 0) { %>
-            <% console.log(secondaryFiles) %>
         <div class="row">
             <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image" style="width: 10%; height: 10%;"
                 src="../image/<%= file.filename %>secondary" alt="">
@@ -230,8 +229,14 @@
                     <% if(data.inCart[file.filename + " (xs)"] || 
                 data.inCart[file.filename + " (s)"] || 
                 data.inCart[file.filename + " (m)"] || 
-                data.inCart[file.filename + " (l)"] || 
-                data.inCart[file.filename + " (xs)"]
+                data.inCart[file.filename + " (l)"] ||  
+                data.inCart[file.filename + " (xl)"] ||
+                data.inCart[file.filename + " (ml30)"] ||
+                data.inCart[file.filename + " (ml50)"] ||
+                data.inCart[file.filename + " (ml100)"] ||
+                data.inCart[file.filename + " (ml250)"] ||
+                data.inCart[file.filename + " (g100)"] ||
+                data.inCart[file.filename]
                 ) {%>
                     <div><button type="button" class="btn">In cart</button></div>
                     <% } %>
