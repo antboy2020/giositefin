@@ -66,14 +66,9 @@
             <a class="nav-link js-scroll-trigger"
               href="https://booksy.com/en-us/instant-experiences/widget/38311?instant_experiences_enabled=true&ig_ix=true">Booking</a>
           </li>
-          <% if(data.authenticated) {%>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="logout">logout</a>
-          </li>
-          <%}%>
         </ul>
       </div>
-      <% if(Object.keys(data).length != 0) { %>
+      <% if(data && Object.keys(data).length != 0) { %>
           <img src="../img/shopping-cart-outline-red.png" style="width: 10%;"></i>
 
           <% } else {%>
@@ -92,6 +87,7 @@
                 <th scope="col">Total</th>
             </tr>
         </thead>
+        <% if(data) {%>
         <tbody>
             <%  let total = 0;
                 for (let [key, value] of Object.entries(data)) {%>
@@ -106,12 +102,25 @@
             </tr>
             <% } %>
             <tr>
+                <td></td>
+                <td></td>
+                <td>Taxes</td>
+            <td><%= tax%></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Shipping</td>
+        <td><%= shipping%></td>
+    </tr>
+            <tr>
                     <td></td>
                     <td></td>
-                    <td></td>
-                <td><%= total%></td>
+                    <td>Total</td>
+                <td><%= total + tax + shipping%></td>
             </tr>
         </tbody>
+        <%}%>
     </table>
 
 

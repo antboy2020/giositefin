@@ -14,11 +14,11 @@ let storage = new GridFsStorage({
         }
         mongooseJS.gfs.files.find().toArray((err, files) => {
           files.forEach((file) => {
-            if (file.filename == req.body.name ? req.body.name : req.params.filename)
+            
+            if ((file.filename == req.body.name ) || (file.filename == req.params.filename))
               reject("filename exists");
           });
           const fileInfo = {
-            //req.body.name for main pictures, req.params.filename for secondary
             filename: req.body.name ? req.body.name : req.params.filename,
             bucketName: 'uploads'
           };
@@ -32,26 +32,7 @@ let storage = new GridFsStorage({
   }
 });
 
-// const secondaryPictureStorage = new GridFsStorage({
-//   url: mongooseJS.mongoURI,
-//   file: (req, file) => {
-//     return new Promise((resolve, reject) => {
-//       crypto.randomBytes(16, (err, buf) => {
-//         if (err) {
-//           return reject(err);
-//         }
-//         const fileInfo = {
-//           filename: req.params.filename + "secondary",
-//           bucketName: 'uploads'
-//         };
-//         resolve(fileInfo);
-//       });
-//     });
-//   }
-// });
-
 const upload = multer({ storage });
-// const uploadSecondaryPicture = multer({ storage: secondaryPictureStorage });
 
 function addStoreItem(req, fileInfo) {
   mongooseJS.StoreItem.findOne({ filename: req.body.name }, (err, file) => {
@@ -84,5 +65,4 @@ function addStoreItem(req, fileInfo) {
   })
 }
 
-// exports.uploadSecondaryPicture = uploadSecondaryPicture;
 exports.upload = upload;

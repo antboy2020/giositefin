@@ -8,6 +8,7 @@ const manageFiles = require('./script/manageFiles');
 const setPassport = require('./script/setPassport');
 const methodOverride = require('method-override');
 const expressSession = require('express-session');
+const stripe = require('stripe')('sk_test_ztd0iQr35Jsk2fcRHPYUWa9F00AAE3Dlob');
 
 const app = express();
 
@@ -237,24 +238,7 @@ app.get('/product/:filename', (req, res) => {
   });
 });
 
-
-// mongooseJS.gfsSecondary.files.find({ filename: req.params.filename }).toArray((err, secondaryFiles) => {
-            //check for secondary product page files
-            // if (!secondaryFiles || secondaryFiles.length === 0) {
-            //   res.render('index', { files: false, data: data });
-            // } else {
-            //   secondaryFiles.map(file => {
-            //     if (
-            //       file.contentType === 'image/jpeg' ||
-            //       file.contentType === 'image/png'
-            //     ) {
-            //       file.isImage = true;
-            //       file.isSecondaryFile = true;
-            //     }
-            //   });
-            // }
-          // });
-
+//reoute to update the count that is remaining in stock for store item
 app.post('/updateCount/:filename/:size/:count', (req, res) => {
   mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { [req.params.size]: req.params.count }, (err) => {
     if (err) {
@@ -265,6 +249,7 @@ app.post('/updateCount/:filename/:size/:count', (req, res) => {
   });
 });
 
+//route to change whether an item is featured on homepage
 app.post('/updateFeatured/:filename/:featured', (req, res) => {
   mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { featured: req.params.featured }, (err) => {
     if (err) {
@@ -275,8 +260,52 @@ app.post('/updateFeatured/:filename/:featured', (req, res) => {
   });
 });
 
+// TODO route to checkout
+app.get('/billing', (req, res) => {
+  let total = 0;
+  let clothesTotal = 0;
+  let barberTotal = 0;
+  let tax = 0;
+  let shipping = 0;
+  if(req.session.cart){
+   shipping = Object.keys(req.session.req).length == 1 ? 5.95 : 7.95;
+  for (let[key, value] of Object.entries(req.session.cart)) {
+    if(value.type == "clothing"){
+      clothesTotal += value.price * value.count
+    } else if (value.type == "barbering") {
+      barberTotal += value.price
+    }
+  }}
+  if(clothesTotal > 110) {
+    tax = (clothesTotal + barberTotal) * .04
+  } else {
+    tax = (barberTotal) * .04
+  }
+  res.render('billing', { data: req.session.cart, tax: tax, shipping: shipping });
+});
+
+// route to update and view cart
 app.get('/updateCart', (req, res) => {
-  res.render('updatecart', { data: req.session.cart });
+  let total = 0;
+  let clothesTotal = 0;
+  let barberTotal = 0;
+  let tax = 0;
+  let shipping = 0;
+  if(req.session.cart){
+   shipping = Object.keys(req.session.req).length == 1 ? 5.95 : 7.95;
+  for (let[key, value] of Object.entries(req.session.cart)) {
+    if(value.type == "clothing"){
+      clothesTotal += value.price * value.count
+    } else if (value.type == "barbering") {
+      barberTotal += value.price
+    }
+  }}
+  if(clothesTotal > 110) {
+    tax = (clothesTotal + barberTotal) * .04
+  } else {
+    tax = (barberTotal) * .04
+  }
+  res.render('updatecart', { data: req.session.cart, tax: tax, shipping: shipping });
 });
 
 app.get('/updateCart/:filename', (req, res) => {
