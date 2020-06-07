@@ -205,7 +205,7 @@
                     src="../image/<%= file.filename %>" alt="">
             </a>
         </div>
-        <% if(secondaryFiles.length == 0) { %>
+        <% if(secondaryFiles && secondaryFiles.length != 0) { %>
             <% console.log(secondaryFiles) %>
         <div class="row">
             <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image" style="width: 10%; height: 10%;"
