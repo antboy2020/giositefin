@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <base href="http://localhost:5000/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -58,14 +57,10 @@
             <a class="nav-link js-scroll-trigger" href="/">home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="products">shop</a>
+            <a class="nav-link js-scroll-trigger" href="/products">shop</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger"
-              href="https://booksy.com/en-us/instant-experiences/widget/38311?instant_experiences_enabled=true&ig_ix=true">Booking</a>
           </li>
         </ul>
       </div>
@@ -124,8 +119,11 @@
         <%}%>
     </table>
 
+    <div id="checkoutbutt" class="text-center mt-5"><a href="/billing"><button type="button" class="btn btn-outline-danger"
+        id="checkoutbutt">checkout</button></a></div>
 
-    <footer class="footer" style="margin-top: 22%;">
+
+    <footer class="footer" style="margin-top: 17%;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-4 text-lg-left"></div>

@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <base href="http://localhost:5000/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,10 +9,10 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet'
@@ -21,8 +20,8 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="css/agency.min.css" rel="stylesheet">
-    <link href="stylesheets/indexstyles.css" rel="stylesheet">
+    <link href="../css/agency.min.css" rel="stylesheet">
+    <link href="../stylesheets/indexstyles.css" rel="stylesheet">
 
     <script>
         function addToCart() {
@@ -30,8 +29,8 @@
             if (document.getElementById('addtocartbutt').innerText ==
                 'add to cart') {
                 // document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn mb-2">In Cart</button>';
-                document.getElementById('viewcartbutt').innerHTML = '<a href="updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a>';
-                document.getElementById('checkoutbutt').innerHTML = '<button type="button" class="btn btn-outline-danger" id="checkoutbutt">checkout</button>';
+                document.getElementById('viewcartbutt').innerHTML = '<a href="/updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a>';
+                document.getElementById('checkoutbutt').innerHTML = '<a href="/billing"><button type="button" class="btn btn-outline-danger" id="checkoutbutt">checkout</button></a>';
                 let dropDown = document.getElementById("sizing");
                 let selectedSize = dropDown.options[dropDown.selectedIndex].value;
                 let url = "/cart/" + document.getElementById('filename').innerText + "/" + selectedSize;
@@ -77,48 +76,44 @@
 </head>
 
 <body>
-  <!-- Navigation -->
-  <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
-    <div class="container">
-      <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false">
-        Menu
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav text-uppercase ml-auto">
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
+        <div class="container">
+            <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/">home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/products">shop</a>
+                    </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/">home</a>
+            <a class="nav-link js-scroll-trigger" href="booking">Booking</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="products">shop</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger"
-              href="https://booksy.com/en-us/instant-experiences/widget/38311?instant_experiences_enabled=true&ig_ix=true">Booking</a>
-          </li>
-          <% if(data.authenticated) {%>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="logout">logout</a>
-          </li>
-          <%}%>
+                    <% if(data.authenticated) {%>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="logout">logout</a>
+                    </li>
+                    <%}%>
         </ul>
       </div>
           <% if(data.inCart && Object.keys(data.inCart).length != 0) { %>
-          <a href="updateCart"style="width: 10%;"><img src="../img/shopping-cart-outline-red.png" style="width: 100%;"></i></a>
+                    <a href="/updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"
+                            style="width: 100%;"></i></a>
 
-          <% } else {%>
-          <a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline.png"  style="width: 100%;"></i></a>
-          <% } %>
-      </div>
-  </nav>
+                    <% } else {%>
+                    <a href="/updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline.png"
+                            style="width: 100%;"></i></a>
+                    <% } %>
+            </div>
+    </nav>
     <a href="/"><img src="../img/legeit-transparent.png" class="legeit"></a>
-    <br>
-    <br>
     <br>
     <br>
     <br>
@@ -205,17 +200,15 @@
                     src="../image/<%= file.filename %>" alt="">
             </a>
         </div>
-        <% if(secondaryFiles && secondaryFiles.length != 0) { %>
         <div class="row">
-            <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image" style="width: 10%; height: 10%;"
-                src="../image/<%= file.filename %>secondary" alt="">
+            <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
+                style="width: 10%; height: 10%;" src="../image/<%= file.filename %>secondary" alt="">
         </div>
         <% if(data.authenticated){ %>
         <form method="POST" action="/files/<%= file.filename %>secondary?_method=DELETE">
-          <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
+            <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
         </form>
         <% } %>
-    <% } %>
         <div class="portfolio-caption" style="margin-left: 19%;">
             <div class="row">
                 <div class="col">
@@ -266,10 +259,10 @@
                 data.inCart[file.filename + " (g100)"] ||
                 data.inCart[file.filename]
                 ) {%>
-                    <div id="viewcartbutt" class="mb-2"><a href="updateCart"><button type="button"
+                    <div id="viewcartbutt" class="mb-2"><a href="/updateCart"><button type="button"
                                 class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a></div>
-                    <div id="checkoutbutt"><button type="button" class="btn btn-outline-danger"
-                            id="checkoutbutt">checkout</button></div>
+                    <div id="checkoutbutt"><a href="/billing"><button type="button" class="btn btn-outline-danger"
+                            id="checkoutbutt">checkout</button></a></div>
                     <% } else {%>
                     <div id="viewcartbutt" class="mb-2"></div>
                     <div id="checkoutbutt"></div>
