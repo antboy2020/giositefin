@@ -342,6 +342,17 @@ app.post('/updateFeatured/:filename/:featured', (req, res) => {
   });
 });
 
+//route to update category
+app.post('/updateType/:filename/:type', (req, res) => {
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { type: req.params.type }, (err) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 async function readyCheckout(total) {
   let itemNotFound = true;
   let legeitCartName = "legeitcheckout";

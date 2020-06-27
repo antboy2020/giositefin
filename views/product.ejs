@@ -64,6 +64,13 @@
             xhr.send();
         }
 
+        function updateType(type, itemName) {
+            let xhr = new XMLHttpRequest();
+            let url = "/updateType/" + itemName + "/" + type.value;
+            xhr.open("POST", url);
+            xhr.send();
+        }
+
         function sendPicture(filename) {
             let xhr = new XMLHttpRequest();
             let uploadForm = document.getElementById('uploadForm');
@@ -98,7 +105,7 @@
           </li>
                     <% if(data.authenticated) {%>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="logout">logout</a>
+                        <a class="nav-link js-scroll-trigger" href="/logout">logout</a>
                     </li>
                     <%}%>
         </ul>
@@ -129,6 +136,17 @@
         </form>
         <button onclick="sendPicture('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
     </div>
+    <label for="type">Choose a type:</label>
+    <select name="type" id="type" class="form-control mb-3" onchange="updateType(this, '<%= file.filename %>')">
+    <% if(file.type == "barbering") {%>
+      <option value="barbering">barbering</option>
+      <option value="clothing">clothing</option>
+      <% } else { %>
+        <option value="clothing">clothing</option>
+        <option value="barbering">barbering</option>
+        <% } %>
+
+    </select>
     <label for="featured">featured item:</label>
     <select name="featured" id="featured" class="form-control mb-3"
         onchange="updateFeatured(this, '<%= file.filename %>')">
@@ -202,7 +220,7 @@
         </div>
         <div class="row">
             <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
-                style="width: 10%; height: 10%;" src="../image/<%= file.filename %>secondary" alt="">
+                src="../image/<%= file.filename %>secondary" alt="">
         </div>
         <% if(data.authenticated){ %>
         <form method="POST" action="/files/<%= file.filename %>secondary?_method=DELETE">
@@ -213,7 +231,7 @@
             <div class="row">
                 <div class="col">
                     <p id="filename"><%= file.filename %></p>
-                    <p><%= file.price %></p>
+                    <p>$ <%= file.price %></p>
                     <p class="text-muted colorizer">
                         <%= file.description%></p>
                 </div>
