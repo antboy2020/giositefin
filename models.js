@@ -20,5 +20,6 @@ mongoose.model('StoreItem', new mongoose.Schema({
     ml100: Number,
     ml250: Number,
     g100: Number,
-    featured: Boolean
+    featured: Boolean,
+    orderNumber: Number,
 }));

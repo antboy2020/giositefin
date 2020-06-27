@@ -12,17 +12,27 @@ let storage = new GridFsStorage({
         if (err) {
           return reject(err);
         }
+
+        if (req.path.includes("reupload")) {
+          mongooseJS.gfs.remove({ filename: req.params.filename, root: 'uploads' }, (err, gridStore) => {
+            if (err) {
+              return res.status(404).json({ err: err });
+            }
+          });
+        }
         mongooseJS.gfs.files.find().toArray((err, files) => {
           files.forEach((file) => {
-            
-            if ((file.filename == req.body.name ) || (file.filename == req.params.filename))
+
+            if (((file.filename == req.body.name) || (file.filename == req.params.filename)) && !req.path.includes("reupload")) {
               reject("filename exists");
+            }
           });
           const fileInfo = {
             filename: req.body.name ? req.body.name : req.params.filename,
             bucketName: 'uploads'
           };
-          if (req.body.name) {
+          if (req.body.name && req.path != "/reupload" && (file.contentType === 'image/jpeg' ||
+          file.contentType === 'image/png')) {
             addStoreItem(req, fileInfo);
           }
           resolve(fileInfo);
@@ -54,7 +64,8 @@ function addStoreItem(req, fileInfo) {
       ml250: req.body.ml250,
       g100: req.body.g100,
       wholecount: req.body.wholecount,
-      featured: req.body.featured
+      featured: req.body.featured,
+      orderNumber: req.body.orderNumber || 0,
     });
     newStoreItem.save(function (err) {
       if (err) {

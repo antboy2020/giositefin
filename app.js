@@ -76,39 +76,7 @@ app.get('/', async (req, res) => {
         if (!files || files.length === 0) {
           res.render('index', { files: false, data: data });
         } else {
-          let featuredFileNames = [];
-          fileInfo.forEach((info) => {
-            if (info.featured) {
-              featuredFileNames.push(info.filename);
-            }
-          });
-          featuredFiles = files.filter((file) => featuredFileNames.includes(file.filename));
-          featuredFiles.map(file => {
-            if (
-              file.contentType === 'image/jpeg' ||
-              file.contentType === 'image/png'
-            ) {
-              file.isImage = true;
-              let thisFileInfo = fileInfo.find((info) => info.filename == file.filename);
-              file.price = thisFileInfo.price;
-              file.description = thisFileInfo.description;
-              file.xs = thisFileInfo.xs;
-              file.s = thisFileInfo.s;
-              file.m = thisFileInfo.m;
-              file.l = thisFileInfo.l;
-              file.xl = thisFileInfo.xl;
-              file.type = thisFileInfo.type;
-              file.ml30 = thisFileInfo.ml30;
-              file.ml50 = thisFileInfo.ml50;
-              file.ml100 = thisFileInfo.ml100;
-              file.ml250 = thisFileInfo.ml250;
-              file.g100 = thisFileInfo.g100;
-              file.wholecount = thisFileInfo.wholecount;
-              file.featured = thisFileInfo.featured;
-            } else {
-              file.isImage = false;
-            }
-          });
+          let featuredFiles = fileInfo.filter((file) => file.featured);
           res.render('index', { files: featuredFiles, data: data });
         }
       });
@@ -118,50 +86,14 @@ app.get('/', async (req, res) => {
 
 // @route GET /products
 // full products page
-// @route GET /
-// @desc Loads form
 app.get('/products', (req, res) => {
   let data = { title: "junk1", authenticated: req.session.authenticated, cart: req.session.cart };
-  mongooseJS.StoreItem.find({}, function (err, fileInfo) {
-    if (err) {
+  mongooseJS.StoreItem.find({}, function (err, files) {
+    if (!files || files.length === 0) {
       res.render('products', { files: false, data: data });
     } else {
-      mongooseJS.gfs.files.find().toArray((err, files) => {
-        // Check if files
-        if (!files || files.length === 0) {
-          res.render('products', { files: false, data: data });
-        } else {
-          files.map(file => {
-            if (
-              file.contentType === 'image/jpeg' ||
-              file.contentType === 'image/png'
-            ) {
-              file.isImage = true;
-              let thisFileInfo = fileInfo.find((info) => info.filename == file.filename);
-              if (thisFileInfo) {
-                file.price = thisFileInfo.price;
-                file.description = thisFileInfo.description;
-                file.xs = thisFileInfo.xs;
-                file.s = thisFileInfo.s;
-                file.m = thisFileInfo.m;
-                file.l = thisFileInfo.l;
-                file.xl = thisFileInfo.xl;
-                file.type = thisFileInfo.type;
-                file.ml30 = thisFileInfo.ml30;
-                file.ml50 = thisFileInfo.ml50;
-                file.ml100 = thisFileInfo.ml100;
-                file.ml250 = thisFileInfo.ml250;
-                file.g100 = thisFileInfo.g100;
-                file.wholecount = thisFileInfo.wholecount;
-                file.featured = thisFileInfo.featured;
-              }
-            } else {
-              file.isImage = false;
-            }
-          });
-          res.render('products', { files: files, data: data });
-        }
-      });
+      files.sort((a, b) => (a.orderNumber > b.orderNumber) ? 1 : -1);
+      res.render('products', { files: files, data: data });
     }
   });
 });
@@ -174,6 +106,11 @@ app.get('/booking', (req, res) => {
 // @route POST /upload
 // @desc  Uploads file to DB
 app.post('/upload', manageFiles.upload.single('file'), (req, res) => {
+  res.redirect('/');
+});
+
+// route to reupload photo in product page
+app.post('/reupload/:filename', manageFiles.upload.single('file'), (req, res) => {
   res.redirect('/');
 });
 
@@ -228,7 +165,6 @@ app.get('/files', (req, res) => {
         err: 'No files exist'
       });
     }
-
     // Files exist
     return res.json(files);
   });
@@ -242,42 +178,7 @@ app.get('/product/:filename', (req, res) => {
     if (err) {
       res.render('index', { file: false, data: data });
     } else {
-      mongooseJS.gfs.files.find({ filename: req.params.filename }).toArray(async (err, files) => {
-        let file = files.filter(file => !file.filename.includes("secondary"));
-        // let secondaryFiles = files.filter(file => file.filename.includes("secondary"));
-        // Check if files
-        if (!file || file.length === 0) {
-          res.render('index', { files: false, data: data });
-        } else {
-          file.map(file => {
-            if (
-              file.contentType === 'image/jpeg' ||
-              file.contentType === 'image/png'
-            ) {
-              file.isImage = true;
-              file.price = fileInfo[0].price;
-              file.description = fileInfo[0].description;
-              file.xs = fileInfo[0].xs;
-              file.s = fileInfo[0].s;
-              file.m = fileInfo[0].m;
-              file.l = fileInfo[0].l;
-              file.xl = fileInfo[0].xl;
-              file.type = fileInfo[0].type;
-              file.ml30 = fileInfo[0].ml30;
-              file.ml50 = fileInfo[0].ml50;
-              file.ml100 = fileInfo[0].ml100;
-              file.ml250 = fileInfo[0].ml250;
-              file.g100 = fileInfo[0].g100;
-              file.wholecount = fileInfo[0].wholecount;
-              file.featured = fileInfo[0].featured;
-            } else {
-              file.isImage = false;
-            }
-          });
-          res.render('product', { file: file[0], data: data });
-        }
-
-      });
+      res.render('product', { file: file[0], data: data });
     }
   });
 });
@@ -334,6 +235,17 @@ app.post('/updateCount/:filename/:size/:count', (req, res) => {
 //route to change whether an item is featured on homepage
 app.post('/updateFeatured/:filename/:featured', (req, res) => {
   mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { featured: req.params.featured }, (err) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
+//route to change whether an item is featured on homepage
+app.post('/updateOrder/:filename/:order', (req, res) => {
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { orderNumber: req.params.order }, (err) => {
     if (err) {
       res.sendStatus(500);
     } else {
@@ -414,57 +326,6 @@ async function readyCheckout(total) {
   }
   return sessionId;
 }
-
-// TODO route to checkout
-// app.get('/billing/:cartTotal', async (req, res) => {
-//   let itemnotfound = true;
-//   let legeitcartname = "legeitcheckout";
-//   let productlist = await stripe.products.list({ active: true });
-//   if (productlist.data) {
-//     productlist.data.foreach((product)=> {
-//       if(product.name == legeitcartname) {
-//         itemnotfound = false;
-//         const session = await stripe.checkout.sessions.create({
-//           payment_method_types: ['card'],
-//           line_items: [{
-//             price_data: {
-//               currency: 'usd',
-//               product: product.id,
-//               unit_amount: 2000,
-//             },
-//           }],
-//           mode: 'payment',
-//           success_url: 'https://example.com/success?session_id={checkout_session_id}',
-//           cancel_url: 'https://example.com/cancel',
-//         });
-//       }
-//     })
-//   }
-//   if (itemnotfound) {
-//     const product = await stripe.products.create({
-//       name: legeitcartname,
-//     });
-//     const session = await stripe.checkout.sessions.create({
-//       payment_method_types: ['card'],
-//       line_items: [{
-//         price_data: {
-//           currency: 'usd',
-//           product: product.id,
-//           unit_amount: 2000,
-//         },
-//       }],
-//       mode: 'payment',
-//       success_url: 'https://example.com/success?session_id={checkout_session_id}',
-//       cancel_url: 'https://example.com/cancel',
-//     });
-//     // const price = await stripe.prices.create({
-//     //   product: product.id,
-//     //   unit_amount: req.params.carttotal * 100,
-//     //   currency: 'usd',
-//     // });
-//   }
-//   res.render('billing', { data: req.session.cart });
-// });
 
 // route to update and view cart
 app.get('/updateCart', (req, res) => {

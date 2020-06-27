@@ -27,9 +27,18 @@
 
   <!-- Custom styles for this template -->
   <link href="css/agency.min.css" rel="stylesheet">
-  <link href="stylesheets/indexstyles.css" rel="stylesheet">
+  <link href="stylesheets/giostyles.css" rel="stylesheet">
 
   <script>
+
+    function updateOrder(order, itemName) {
+      console.log(itemName);
+      let xhr = new XMLHttpRequest();
+      let url = "/updateOrder/" + itemName + "/" + order.value;
+      xhr.open("POST", url);
+      xhr.send();
+    }
+
     function sendPicture() {
       let xhr = new XMLHttpRequest();
       let uploadForm = document.getElementById('uploadForm');
@@ -49,7 +58,7 @@
 </head>
 
 <body>
-    <!-- Navigation -->
+  <!-- Navigation -->
   <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
     <div class="container">
       <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
@@ -71,16 +80,16 @@
           </li>
           <% if(data.authenticated) {%>
           <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="/logout">logout</a>
+            <a class="nav-link js-scroll-trigger" href="/logout">logout</a>
           </li>
           <%}%>
         </ul>
       </div>
           <% if(data.cart && Object.keys(data.cart).length != 0) { %>
-          <a href="updateCart"style="width: 10%;"><img src="../img/shopping-cart-outline-red.png" ></i></a>
+          <a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"></i></a>
 
           <% } else {%>
-          <a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline.png" ></i></a>
+          <a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline.png"></i></a>
           <% } %>
       </div>
   </nav>
@@ -170,8 +179,8 @@
     <div class="container">
       <div class="row">
         <% files.forEach(function(file) { %>
-          <% if(file.isImage && file.type == "clothing") { %>
-            <div class="col-md-3 col-sm-6 portfolio-item">
+        <% if(file.type == "clothing") { %>
+        <div class="col-md-3 col-sm-6 portfolio-item">
           <a href="/product/<%= file.filename %>">
             <img class="img-fluid image-resize" src="image/<%= file.filename %>" alt="">
           </a>
@@ -184,13 +193,16 @@
             </div>
           </div>
           <% if(data.authenticated){ %>
-          <form method="POST" action="/files/<%= file._id %>/<%= file.filename %>/<%= file.filename%>?_method=DELETE">
+          <form method="POST" action="/files/<%= file.filename %>?_method=DELETE">
             <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
           </form>
+          <div>
+            Order number: <input onchange="updateOrder(this, '<%= file.filename %>')" value="<%= file.orderNumber %>" type="number" name="order" id="order" class="form-control mb-3" />
+          </div>
           <% } %>
 
         </div>
-          <% } %>
+        <% } %>
         <% }) %>
       </div>
     </div>
@@ -199,8 +211,8 @@
     <div class="container">
       <div class="row">
         <% files.forEach(function(file) { %>
-          <% if(file.isImage && file.type == "barbering") { %>
-            <div class="col-md-3 col-sm-6 portfolio-item">
+        <% if(file.type == "barbering") { %>
+        <div class="col-md-3 col-sm-6 portfolio-item">
           <a href="/product/<%= file.filename %>">
             <img class="img-fluid image-resize" src="image/<%= file.filename %>" alt="">
           </a>
@@ -213,13 +225,18 @@
             </div>
           </div>
           <% if(data.authenticated){ %>
-          <form method="POST" action="/files/<%= file._id %>/<%= file.filename %>?_method=DELETE">
+          <form method="POST" action="/files/<%= file.filename %>?_method=DELETE">
             <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
           </form>
+
+          <div>
+            OrderNumber: <input onchange="updateOrder(this, '<%= file.filename %>')" type="number" name="order" id="order"
+              class="form-control mb-3" />
+          </div>
           <% } %>
 
         </div>
-          <% } %>
+        <% } %>
         <% }) %>
       </div>
     </div>

@@ -27,7 +27,7 @@
 
   <!-- Custom styles for this template -->
   <link href="css/agency.min.css" rel="stylesheet">
-  <link href="stylesheets/indexstyles.css" rel="stylesheet">
+  <link href="stylesheets/giostyles.css" rel="stylesheet">
 
   <script>
     function sendPicture() {
@@ -91,11 +91,6 @@
 
 
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="2500">
-    <!-- <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol> -->
     <div class="carousel-inner">
       <div class="carousel-item active">
         <img class="d-block w-100" src="../img/header-bg.jpg" alt="First slide">
@@ -200,14 +195,15 @@
   <hr>
   <%} else { %>
   <br>
-  <br>
   <%}%>
   <% if(files){ %>
+    <h4 style="text-align: center; margin-top: 10px;">Featured Items</h4>
+    <hr style="width: 50%; margin-top: 0px;">
+  <br>
   <div class="container">
     <div class="row">
       <% files.forEach(function(file) { %>
       <div class="col-md-3 col-sm-6 portfolio-item">
-        <% if(file.isImage) { %>
         <a href="/product/<%= file.filename %>">
           <img class="img-fluid image-resize" src="image/<%= file.filename %>" alt="">
         </a>
@@ -219,9 +215,6 @@
             </div>
           </div>
         </div>
-        <% } else { %>
-        <%= file.filename %>
-        <% } %>
         <% if(data.authenticated){ %>
         <form method="POST" action="/files/<%= file.filename %>?_method=DELETE">
           <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>

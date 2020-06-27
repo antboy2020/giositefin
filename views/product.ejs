@@ -21,7 +21,7 @@
 
     <!-- Custom styles for this template -->
     <link href="../css/agency.min.css" rel="stylesheet">
-    <link href="../stylesheets/indexstyles.css" rel="stylesheet">
+    <link href="../stylesheets/giostyles.css" rel="stylesheet">
 
     <script>
         function addToCart() {
@@ -78,6 +78,14 @@
             xhr.open("POST", "/uploadSecondaryPicture/" + filename + "secondary");
             xhr.send(form);
         }
+
+        function reupload(filename) {
+            let xhr = new XMLHttpRequest();
+            let uploadForm = document.getElementById('reuploadForm');
+            let form = new FormData(uploadForm);
+            xhr.open("POST", "/reupload/" + filename);
+            xhr.send(form);
+        }
     </script>
 
 </head>
@@ -100,9 +108,9 @@
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="/products">shop</a>
                     </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="booking">Booking</a>
-          </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="booking">Booking</a>
+                    </li>
                     <% if(data.authenticated) {%>
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="/logout">logout</a>
@@ -126,7 +134,18 @@
     <br>
 
     <% if(data.authenticated) {%>
-    <div class="col-md-6 mb-4">
+    <div>
+        <form id="reuploadForm">
+            <div class="col-md-6 m-auto">
+                <div class="custom-file mb-3">
+                    <input type="file" name="file" id="file" class="custom-file-input" />
+                    <label for="file" class="custom-file-label">Reupload Pic</label>
+                </div>
+        </form>
+        <button onclick="reupload('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
+    </div>
+    <br>
+    <div>
         <form id="uploadForm">
             <div class="col-md-6 m-auto">
                 <div class="custom-file mb-3">
@@ -138,10 +157,10 @@
     </div>
     <label for="type">Choose a type:</label>
     <select name="type" id="type" class="form-control mb-3" onchange="updateType(this, '<%= file.filename %>')">
-    <% if(file.type == "barbering") {%>
-      <option value="barbering">barbering</option>
-      <option value="clothing">clothing</option>
-      <% } else { %>
+        <% if(file.type == "barbering") {%>
+        <option value="barbering">barbering</option>
+        <option value="clothing">clothing</option>
+        <% } else { %>
         <option value="clothing">clothing</option>
         <option value="barbering">barbering</option>
         <% } %>
@@ -211,7 +230,6 @@
 
         <!-- Picture -->
         <% if(file){ %>
-        <% if(file.isImage) { %>
         <div class="mb-3">
             <a href="/product/<%= file.filename %>">
                 <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
@@ -280,7 +298,7 @@
                     <div id="viewcartbutt" class="mb-2"><a href="/updateCart"><button type="button"
                                 class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a></div>
                     <div id="checkoutbutt"><a href="/billing"><button type="button" class="btn btn-outline-danger"
-                            id="checkoutbutt">checkout</button></a></div>
+                                id="checkoutbutt">checkout</button></a></div>
                     <% } else {%>
                     <div id="viewcartbutt" class="mb-2"></div>
                     <div id="checkoutbutt"></div>
@@ -288,9 +306,6 @@
                 </div>
             </div>
         </div>
-        <% } else { %>
-        <%= file.filename %>
-        <% } %>
         <% } else { %>
         <p>Something went wrong</p>
         <% } %>

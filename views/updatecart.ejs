@@ -21,15 +21,10 @@
 
     <!-- Custom styles for this template -->
     <link href="css/agency.min.css" rel="stylesheet">
-    <link href="stylesheets/indexstyles.css" rel="stylesheet">
+    <link href="stylesheets/giostyles.css" rel="stylesheet">
     <!-- <link href="./styles3.css" rel="stylesheet"> -->
 
     <script>
-        function goBack() {
-            window.history.back();
-        }
-
-
         function updateCart(count, itemName) {
             let xhr = new XMLHttpRequest();
             let url = "/updateCart/" + itemName + "/" + count.value;
