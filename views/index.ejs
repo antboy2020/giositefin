@@ -29,23 +29,7 @@
   <link href="css/agency.min.css" rel="stylesheet">
   <link href="stylesheets/giostyles.css" rel="stylesheet">
 
-  <script>
-    function sendPicture() {
-      let xhr = new XMLHttpRequest();
-      let uploadForm = document.getElementById('uploadForm');
-      let form = new FormData(uploadForm);
-      xhr.onreadystatechange = function (res) {
-        if (res.currentTarget.status == 500) {
-          document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
-        } else if (res.currentTarget.status == 200) {
-          window.location.href = "/";
-        }
-      }
-      xhr.open("POST", "/upload");
-      xhr.send(form);
-    }
-  </script>
-
+    <script src="../customjs/globalscripts.js"></script>
 </head>
 
 <body id="homePage">

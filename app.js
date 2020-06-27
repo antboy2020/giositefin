@@ -178,7 +178,7 @@ app.get('/product/:filename', (req, res) => {
     if (err) {
       res.render('index', { file: false, data: data });
     } else {
-      res.render('product', { file: file[0], data: data });
+      res.render('product', { file: fileInfo[0], data: data });
     }
   });
 });
