@@ -90,7 +90,7 @@
                     <label for="file" class="custom-file-label">Secondary Pic</label>
                 </div>
         </form>
-        <button onclick="sendPicture('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
+        <button onclick="sendSecondaryPicture('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
     </div>
     <label for="type">Choose a type:</label>
     <select name="type" id="type" class="form-control mb-3" onchange="updateType(this, '<%= file.filename %>')">

@@ -206,7 +206,7 @@
           </form>
 
           <div>
-            OrderNumber: <input onchange="updateOrder(this, '<%= file.filename %>')" type="number" name="order" id="order"
+            OrderNumber: <input onchange="updateOrder(this, '<%= file.filename %>')" value="<%= file.orderNumber %>" type="number" name="order" id="order"
               class="form-control mb-3" />
           </div>
           <% } %>

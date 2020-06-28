@@ -31,8 +31,7 @@ let storage = new GridFsStorage({
             filename: req.body.name ? req.body.name : req.params.filename,
             bucketName: 'uploads'
           };
-          if (req.body.name && req.path != "/reupload" && (file.contentType === 'image/jpeg' ||
-          file.contentType === 'image/png')) {
+          if (req.params.filename && req.path != "/reupload") {
             addStoreItem(req, fileInfo);
           }
           resolve(fileInfo);

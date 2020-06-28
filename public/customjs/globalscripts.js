@@ -45,7 +45,7 @@ function updateType(type, itemName) {
     xhr.send();
 }
 
-function sendPicture(filename) {
+function sendSecondaryPicture(filename) {
     let xhr = new XMLHttpRequest();
     let uploadForm = document.getElementById('uploadForm');
     let form = new FormData(uploadForm);
@@ -67,21 +67,6 @@ function updateOrder(order, itemName) {
     let url = "/updateOrder/" + itemName + "/" + order.value;
     xhr.open("POST", url);
     xhr.send();
-}
-
-function sendPicture() {
-    let xhr = new XMLHttpRequest();
-    let uploadForm = document.getElementById('uploadForm');
-    let form = new FormData(uploadForm);
-    xhr.onreadystatechange = function (res) {
-        if (res.currentTarget.status == 500) {
-            document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
-        } else if (res.currentTarget.status == 200) {
-            window.location.href = "/";
-        }
-    }
-    xhr.open("POST", "/upload");
-    xhr.send(form);
 }
 
 function updateCart(count, itemName) {
