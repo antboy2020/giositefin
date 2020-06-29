@@ -201,7 +201,7 @@
             </div>
           </div>
           <% if(data.authenticated){ %>
-          <form method="POST" action="/files/<%= file.filename %>?_method=DELETE">
+          <form method="POST" action="/images/<%= file.filename %>?_method=DELETE">
             <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
           </form>
 
