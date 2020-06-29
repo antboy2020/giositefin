@@ -73,10 +73,10 @@
     <% if(data.authenticated) {%>
     <div>
         <form id="secondaryUploadForm">
-                <div class="custom-file mb-3">
-                    <input type="file" name="file" id="file" class="custom-file-input" />
-                    <label for="secondaryFile" class="custom-file-label">Secondary Pic</label>
-                </div>
+            <div class="custom-file mb-3">
+                <input type="file" name="file" id="file" class="custom-file-input" />
+                <label for="secondaryFile" class="custom-file-label">Secondary Pic</label>
+            </div>
         </form>
         <button onclick="sendSecondaryPicture('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
     </div>
@@ -168,6 +168,11 @@
             <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
                 src="../secondaryimage/<%= file.filename %>" alt="">
         </div>
+        <% if(data.authenticated){ %>
+        <form method="POST" action="/secondaryFiles/<%= file.filename %>?_method=DELETE">
+            <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
+        </form>
+        <% } %>
         <div class="portfolio-caption" style="margin-left: 19%;">
             <div class="row">
                 <div class="col">
