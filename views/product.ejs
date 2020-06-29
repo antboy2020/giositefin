@@ -169,7 +169,7 @@
                 src="../secondaryimage/<%= file.filename %>" alt="">
         </div>
         <% if(data.authenticated){ %>
-        <form method="POST" action="/secondaryFiles/<%= file.filename %>?_method=DELETE">
+        <form method="POST" action="/secondaryimages/<%= file.filename %>?_method=DELETE">
             <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
         </form>
         <% } %>

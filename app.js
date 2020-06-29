@@ -70,8 +70,8 @@ app.get('/', async (req, res) => {
   mongooseJS.StoreItem.find({ featured: true }, function (err, fileInfo) {
     if (err) {
       res.render('index', { files: false, data: data });
-    } else if (fileInfo.length < 1){
-      res.render('index', { files: false, data: data }); 
+    } else if (fileInfo.length < 1) {
+      res.render('index', { files: false, data: data });
     } else {
       res.render('index', { files: fileInfo, data: data })
     }
@@ -110,17 +110,7 @@ app.post(
     const targetPath = path.join(__dirname, "./uploads/" + req.body.name);
 
     if (path.extname(req.file.originalname).toLowerCase() === ".png" || path.extname(req.file.originalname).toLowerCase() === ".jpg") {
-      fs.rename(tempPath, targetPath, err => {
-        if (err) {
-          return console.log(err)
-        }
-
-        manageFiles.addStoreItem(req);
-        res
-          .status(200)
-          .contentType("text/plain")
-          .end("File uploaded!");
-      });
+      manageFiles.addStoreItem(req, fs, tempPath, targetPath);
     } else {
       fs.unlink(tempPath, err => {
         if (err) return handleError(err, res);
@@ -163,6 +153,41 @@ app.post(
       });
     }
   }
+);
+
+// route to delete store item
+app.delete('/images/:filename', (req, res) => {
+  mongooseJS.StoreItem.deleteOne({ filename: req.params.filename }, (err) => {
+    if (err) {
+      return "could not delete";
+    } else {
+      const targetPath = path.join(__dirname, "./uploads/" + req.params.filename);
+      fs.unlink(targetPath, (err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+
+        res.redirect("/");
+        //file removed
+      })
+    }
+  })
+});
+
+// route to delete secondary items
+app.delete('/secondaryimages/:filename', (req, res) => {
+  const targetPath = path.join(__dirname, "./secondaryuploads/" + req.params.filename);
+  fs.unlink(targetPath, (err) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+
+    res.redirect('/product' + req.params.filename);
+    //file removed
+  });
+}
 );
 
 // @route POST /cart
