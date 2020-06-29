@@ -380,8 +380,8 @@ app.delete('/files/:filename', (req, res) => {
         }
       });
     }
-    let endpoint = req.path ? req.path : "";
-    res.redirect(endpoint);
+    let endpoint = req.params.endpoint ? req.params.endpoint : "";
+    res.redirect('/' + endpoint);
   });
 });
 
