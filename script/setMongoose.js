@@ -1,8 +1,10 @@
 const Grid = require('gridfs-stream');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Mongo URI
-const mongoURI = 'mongodb://127.0.0.1:27017/gio-site-data';
+const mongoURI = 'mongodb://' +  process.env.MONGO_USERNAME+ ':' + process.env.MONGO_PASSWORD +'@127.0.0.1:27017/gio-site-data';
 mongoose.connect(mongoURI, { useUnifiedTopology: true, useNewUrlParser: true });
 
 // Create mongo connection
