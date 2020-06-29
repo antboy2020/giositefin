@@ -110,7 +110,7 @@ app.post(
     const targetPath = path.join(__dirname, "./uploads/" + req.body.name);
 
     if (path.extname(req.file.originalname).toLowerCase() === ".png" || path.extname(req.file.originalname).toLowerCase() === ".jpg") {
-      manageFiles.addStoreItem(req, fs, tempPath, targetPath);
+      manageFiles.addStoreItem(req, fs, tempPath, targetPath, res);
     } else {
       fs.unlink(tempPath, err => {
         if (err) return handleError(err, res);

@@ -1,7 +1,7 @@
 const mongooseJS = require('./setMongoose');
 
 
-function addStoreItem(req, fs, tempPath, targetPath) {
+function addStoreItem(req, fs, tempPath, targetPath, res) {
   mongooseJS.StoreItem.findOne({ filename: req.body.name }, (err, file) => {
     if (err) return err;
     if (!file) {
