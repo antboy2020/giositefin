@@ -423,4 +423,6 @@ app.get('/logout', function (req, res, next) {
   res.redirect('/');
 });
 
-module.exports = app;
+// module.exports = app;
+const port = 5000;
+app.listen(port, () => console.log(`Server started on port ${port}`));
