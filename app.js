@@ -72,8 +72,6 @@ app.get('/', async (req, res) => {
       res.render('index', { files: false, data: data });
     } else if (fileInfo.length < 1){
       res.render('index', { files: false, data: data }); 
-          res.render('index', { files: false, data: data });
-      res.render('index', { files: false, data: data }); 
     } else {
       res.render('index', { files: fileInfo, data: data })
     }
