@@ -168,11 +168,6 @@
             <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
                 src="../secondaryimage/<%= file.filename %>" alt="">
         </div>
-        <% if(data.authenticated){ %>
-        <form method="POST" action="/secondaryFiles/<%= file.filename %>?_method=DELETE">
-            <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
-        </form>
-        <% } %>
         <div class="portfolio-caption" style="margin-left: 19%;">
             <div class="row">
                 <div class="col">
