@@ -19,16 +19,6 @@ const StoreItem = mongoose.model('StoreItem');
 //Cart for session
 // const Cart = mongoose.model('Cart');
 
-// Init gfs
-var gfs;
-
-conn.once('open', () => {
-    // Init stream
-    gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads');
-    exports.gfs = gfs;
-});
-
 exports.mongoURI = mongoURI;
 exports.User = User;
 exports.StoreItem = StoreItem;

@@ -1,49 +1,7 @@
-const GridFsStorage = require('multer-gridfs-storage');
-const multer = require('multer');
-const crypto = require('crypto');
 const mongooseJS = require('./setMongoose');
 
-// Create storage engine
-let storage = new GridFsStorage({
-  url: mongooseJS.mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err);
-        }
 
-        if (req.path.includes("reupload")) {
-          mongooseJS.gfs.remove({ filename: req.params.filename, root: 'uploads' }, (err, gridStore) => {
-            if (err) {
-              return res.status(404).json({ err: err });
-            }
-          });
-        }
-        mongooseJS.gfs.files.find().toArray((err, files) => {
-          files.forEach((file) => {
-
-            if (((file.filename == req.body.name) || (file.filename == req.params.filename)) && !req.path.includes("reupload")) {
-              reject("filename exists");
-            }
-          });
-          const fileInfo = {
-            filename: req.body.name ? req.body.name : req.params.filename,
-            bucketName: 'uploads'
-          };
-          if (req.body.name && req.path != "/reupload") {
-            addStoreItem(req, fileInfo);
-          }
-          resolve(fileInfo);
-        });
-      });
-    });
-  }
-});
-
-const upload = multer({ storage });
-
-function addStoreItem(req, fileInfo) {
+function addStoreItem(req) {
   mongooseJS.StoreItem.findOne({ filename: req.body.name }, (err, file) => {
     if (err) return err;
     if (file) return Promise.reject("filename exists");
@@ -75,4 +33,4 @@ function addStoreItem(req, fileInfo) {
   })
 }
 
-exports.upload = upload;
+exports.addStoreItem = addStoreItem;

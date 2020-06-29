@@ -47,18 +47,19 @@ function updateType(type, itemName) {
 
 function sendSecondaryPicture(filename) {
     let xhr = new XMLHttpRequest();
-    let uploadForm = document.getElementById('uploadForm');
+    let uploadForm = document.getElementById('secondaryUploadForm');
     let form = new FormData(uploadForm);
-    xhr.open("POST", "/uploadSecondaryPicture/" + filename + "secondary");
+    xhr.onreadystatechange = function (res) {
+        if (res.currentTarget.status == 500) {
+            document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
+        } else if (res.currentTarget.status == 200) {
+            setTimeout(() => window.location.reload());
+        }
+    }
+    xhr.open("POST", "/uploadsecondary/" + filename);
     xhr.send(form);
-}
-
-function reupload(filename) {
-    let xhr = new XMLHttpRequest();
-    let uploadForm = document.getElementById('reuploadForm');
-    let form = new FormData(uploadForm);
-    xhr.open("POST", "/reupload/" + filename);
-    xhr.send(form);
+    // Make spinner show while loading
+    document.getElementById('secondaryUploadForm').innerHTML = '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>';
 }
 
 function updateOrder(order, itemName) {
@@ -82,11 +83,11 @@ function sendPicture() {
     let uploadForm = document.getElementById('uploadForm');
     let form = new FormData(uploadForm);
     xhr.onreadystatechange = function (res) {
-      if (res.currentTarget.status == 500) {
-        document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
-      } else if (res.currentTarget.status == 200) {
-        window.location.href = "/";
-      }
+        if (res.currentTarget.status == 500) {
+            document.getElementById('uploadError').innerHTML = "Could not upload try a different name or contact Admin";
+        } else if (res.currentTarget.status == 200) {
+            window.location.href = "/";
+        }
     }
     xhr.open("POST", "/upload");
     xhr.send(form);

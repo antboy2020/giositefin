@@ -72,25 +72,16 @@
 
     <% if(data.authenticated) {%>
     <div>
-        <form id="reuploadForm">
-            <div class="col-md-6 m-auto">
+        <form id="secondaryUploadForm">
                 <div class="custom-file mb-3">
                     <input type="file" name="file" id="file" class="custom-file-input" />
-                    <label for="file" class="custom-file-label">Reupload Pic</label>
-                </div>
-        </form>
-        <button onclick="reupload('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
-    </div>
-    <br>
-    <div>
-        <form id="uploadForm">
-            <div class="col-md-6 m-auto">
-                <div class="custom-file mb-3">
-                    <input type="file" name="file" id="file" class="custom-file-input" />
-                    <label for="file" class="custom-file-label">Secondary Pic</label>
+                    <label for="secondaryFile" class="custom-file-label">Secondary Pic</label>
                 </div>
         </form>
         <button onclick="sendSecondaryPicture('<%= file.filename%>')" class="btn btn-danger btn-block">Upload</button>
+    </div>
+    <div id="spinner">
+
     </div>
     <label for="type">Choose a type:</label>
     <select name="type" id="type" class="form-control mb-3" onchange="updateType(this, '<%= file.filename %>')">
@@ -175,10 +166,10 @@
         </div>
         <div class="row">
             <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
-                src="../image/<%= file.filename %>secondary" alt="">
+                src="../secondaryimage/<%= file.filename %>" alt="">
         </div>
         <% if(data.authenticated){ %>
-        <form method="POST" action="/files/<%= file.filename %>secondary?_method=DELETE">
+        <form method="POST" action="/secondaryFiles/<%= file.filename %>?_method=DELETE">
             <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
         </form>
         <% } %>

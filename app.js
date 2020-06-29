@@ -1,19 +1,21 @@
 const express = require('express');
-// const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 require('./models');
+const multer = require('multer');
+const fs = require('fs');
 const mongooseJS = require('./script/setMongoose');
 const manageFiles = require('./script/manageFiles');
 const setPassport = require('./script/setPassport');
 const methodOverride = require('method-override');
 const expressSession = require('express-session');
 const stripe = require('stripe')('sk_test_ztd0iQr35Jsk2fcRHPYUWa9F00AAE3Dlob');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 
 // Middleware
-// app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -27,6 +29,7 @@ app.use(setPassport.passport.initialize());
 app.use(setPassport.passport.session());
 
 const url = require('url');
+
 // @route GET /
 // @desc Loads form
 app.get('/', async (req, res) => {
@@ -36,9 +39,6 @@ app.get('/', async (req, res) => {
 
     let session = await stripe.checkout.sessions.retrieve(queryObject['session_id']);
     let customer = await stripe.customers.retrieve(session.customer);
-    //send email to customer with thanks and order number
-    //send email to gio with the customer email the items they purchased and the shipping addresss
-    //send email to me to let me know the customers used the account
     if (customer && customer.email) {
       var nodemailer = require('nodemailer');
 
@@ -70,16 +70,12 @@ app.get('/', async (req, res) => {
   mongooseJS.StoreItem.find({ featured: true }, function (err, fileInfo) {
     if (err) {
       res.render('index', { files: false, data: data });
-    } else {
-      mongooseJS.gfs.files.find().toArray((err, files) => {
-        // Check if files
-        if (!files || files.length === 0) {
+    } else if (fileInfo.length < 1){
+      res.render('index', { files: false, data: data }); 
           res.render('index', { files: false, data: data });
-        } else {
-          let featuredFiles = fileInfo.filter((file) => file.featured);
-          res.render('index', { files: featuredFiles, data: data });
-        }
-      });
+      res.render('index', { files: false, data: data }); 
+    } else {
+      res.render('index', { files: fileInfo, data: data })
     }
   });
 });
@@ -103,22 +99,73 @@ app.get('/booking', (req, res) => {
   res.render('booking', { data: data });
 })
 
-// @route POST /upload
-// @desc  Uploads file to DB
-app.post('/upload', manageFiles.upload.single('file'), (req, res) => {
-  res.redirect('/');
+const upload = multer({
+  dest: process.env.MULTER_PATH
+  // you might also want to set some limits: https://github.com/expressjs/multer#limits
 });
 
-// route to reupload photo in product page
-app.post('/reupload/:filename', manageFiles.upload.single('file'), (req, res) => {
-  res.redirect('/');
-});
+app.post(
+  "/upload",
+  upload.single("file" /* name attribute of <file> element in your form */),
+  (req, res) => {
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, "./uploads/" + req.body.name);
 
-// @route POST /uploadSecondary
-// @desc  Uploads file to DB
-app.post('/uploadSecondaryPicture/:filename', manageFiles.upload.single('file'), (req, res) => {
-  res.redirect('/product/' + req.params.filename);
-});
+    if (path.extname(req.file.originalname).toLowerCase() === ".png" || path.extname(req.file.originalname).toLowerCase() === ".jpg") {
+      fs.rename(tempPath, targetPath, err => {
+        if (err) {
+          return console.log(err)
+        }
+
+        manageFiles.addStoreItem(req);
+        res
+          .status(200)
+          .contentType("text/plain")
+          .end("File uploaded!");
+      });
+    } else {
+      fs.unlink(tempPath, err => {
+        if (err) return handleError(err, res);
+
+        res
+          .status(403)
+          .contentType("text/plain")
+          .end("Only .png files are allowed!");
+      });
+    }
+  }
+);
+
+app.post(
+  "/uploadsecondary/:filename",
+  upload.single("file" /* name attribute of <file> element in your form */),
+  (req, res) => {
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, "./secondaryuploads/" + req.params.filename);
+
+    if (path.extname(req.file.originalname).toLowerCase() === ".png" || path.extname(req.file.originalname).toLowerCase() === ".jpg") {
+      fs.rename(tempPath, targetPath, err => {
+        if (err) {
+          return console.log(err)
+        }
+
+        res
+          .status(200)
+          .contentType("text/plain")
+          .end("File uploaded!");
+      });
+    } else {
+      fs.unlink(tempPath, err => {
+        if (err) return handleError(err, res);
+
+        res
+          .status(403)
+          .contentType("text/plain")
+          .end("Only .png files are allowed!");
+      });
+    }
+  }
+);
 
 // @route POST /cart
 // @desc add items to cart
@@ -155,21 +202,6 @@ app.delete('/cart/:filename', (req, res) => {
   req.session.save();
 });
 
-// @route GET /files
-// @desc  Display all files in JSON
-app.get('/files', (req, res) => {
-  mongooseJS.gfs.files.find().toArray((err, files) => {
-    // Check if files
-    if (!files || files.length === 0) {
-      return res.status(404).json({
-        err: 'No files exist'
-      });
-    }
-    // Files exist
-    return res.json(files);
-  });
-});
-
 // @route GET /files/:filename
 // @desc  Display single file object
 app.get('/product/:filename', (req, res) => {
@@ -189,8 +221,6 @@ app.get('/billing', async (req, res) => {
   let sessionId = await readyCheckout(total);
   res.render('billing', { sessionId: sessionId });
 });
-
-
 
 function cartTotal(req) {
   let total = 0;
@@ -346,43 +376,13 @@ app.get('/updateCart/:filename', (req, res) => {
 // @route GET /image/:filename
 // @desc Display Image
 app.get('/image/:filename', (req, res) => {
-  mongooseJS.gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    // Check if file
-    if (!file || file.length === 0) {
-      return res.status(404).json({
-        err: 'No file exists'
-      });
-    }
-
-    // Check if image
-    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-      // Read output to browser
-      const readstream = mongooseJS.gfs.createReadStream(file.filename);
-      readstream.pipe(res);
-    } else {
-      res.status(404).json({
-        err: 'Not an image'
-      });
-    }
-  });
+  res.sendFile(path.join(__dirname, "./uploads/" + req.params.filename));
 });
 
-// @route DELETE /files/:id
-// @desc  Delete file
-app.delete('/files/:filename', (req, res) => {
-  mongooseJS.gfs.remove({ filename: req.params.filename, root: 'uploads' }, (err, gridStore) => {
-    if (err) {
-      return res.status(404).json({ err: err });
-    } else {
-      mongooseJS.StoreItem.deleteOne({ filename: req.params.filename }, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
-    let endpoint = req.params.endpoint ? req.params.endpoint : "";
-    res.redirect('/' + endpoint);
-  });
+// @route GET /image/:filename
+// @desc Display Image
+app.get('/secondaryimage/:filename', (req, res) => {
+  res.sendFile(path.join(__dirname, "./secondaryuploads/" + req.params.filename));
 });
 
 //signup page
