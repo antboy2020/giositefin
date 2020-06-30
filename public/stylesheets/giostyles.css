@@ -54,6 +54,10 @@ html {
   right: -50%;
 }
 
+.fa-lg {
+  vertical-align: -0.1em;
+}
+
 .sidenav {
   height: 100%;
   width: 0;
@@ -82,6 +86,8 @@ html {
   display: block;
   transition: 0.3s;
 }
+
+
 
 #mainNav {
   position: inherit;
