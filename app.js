@@ -271,7 +271,11 @@ function cartTotal(req) {
     tax = (barberTotal) * .04;
   }
   total = clothesTotal + barberTotal + tax + shipping;
-  return { total: total, tax: tax, shipping: shipping };
+  return { total: round(total,2), tax: round(tax,2), shipping: round(shipping,2) };
+}
+
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
 
 //reoute to update the count that is remaining in stock for store item

@@ -1,5 +1,9 @@
 const mongooseJS = require('./setMongoose');
 
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
+
 
 function addStoreItem(req, fs, tempPath, targetPath, res) {
   mongooseJS.StoreItem.findOne({ filename: req.body.name }, (err, file) => {
@@ -7,7 +11,7 @@ function addStoreItem(req, fs, tempPath, targetPath, res) {
     if (!file) {
       let newStoreItem = new mongooseJS.StoreItem({
         filename: req.body.name,
-        price: req.body.price,
+        price: round(req.body.price, 2),
         description: req.body.description,
         xs: req.body.xs,
         s: req.body.s,
