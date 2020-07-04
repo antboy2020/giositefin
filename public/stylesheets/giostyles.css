@@ -7,6 +7,10 @@
   width: 70%;
 }
 
+.count-input {
+  width: 50%;
+}
+
 #uploadError {
   color: red;
 }
@@ -112,7 +116,7 @@ html {
 
   .count-input {
     border-style: ridge;
-    width: 30px;
+    width: 40%;
   }
 
   #sizing {

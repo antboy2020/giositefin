@@ -40,6 +40,8 @@ app.get('/', async (req, res) => {
     let session = await stripe.checkout.sessions.retrieve(queryObject['session_id']);
     let customer = await stripe.customers.retrieve(session.customer);
     if (customer && customer.email) {
+      //make sure stripe email is being sent
+      updateCountOnSuccess(req);
       var nodemailer = require('nodemailer');
 
       var transporter = nodemailer.createTransport({
@@ -78,6 +80,18 @@ app.get('/', async (req, res) => {
   });
 });
 
+function updateCountOnSuccess(req){
+  for(const item in req.session.cart){
+    mongooseJS.StoreItem.updateOne({filename: req.session.cart[item].originalName}, { $inc: {xs: -req.session.cart[item].count}}, (err)=> {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        console.log("here updating");
+      }
+    })
+  }
+}
+
 // @route GET /products
 // full products page
 app.get('/products', (req, res) => {
@@ -107,7 +121,7 @@ app.post(
   upload.single("file" /* name attribute of <file> element in your form */),
   (req, res) => {
     const tempPath = req.file.path;
-    const targetPath = path.join(__dirname, "./uploads/" + req.body.name);
+    const targetPath = path.join(__dirname, "./uploads/" + req.body.name.trim());
 
     if (path.extname(req.file.originalname).toLowerCase() === ".png" || path.extname(req.file.originalname).toLowerCase() === ".jpg") {
       manageFiles.addStoreItem(req, fs, tempPath, targetPath, res);
@@ -198,7 +212,7 @@ app.post('/cart/:filename/:sizing', (req, res) => {
       res.render('index', { files: false, data: data });
     } else {
       let cart = req.session.cart || {};
-      cart[req.params.filename + " (" + req.params.sizing + ")"] = { price: fileInfo[0].price, type: fileInfo[0].type, count: "1", size: req.params.sizing };
+      cart[req.params.filename + " (" + req.params.sizing + ")"] = { price: fileInfo[0].price, type: fileInfo[0].type, count: "1", size: req.params.sizing, originalName: req.params.filename};
       req.session.cart = cart;
       req.session.save();
     }
@@ -271,15 +285,43 @@ function cartTotal(req) {
     tax = (barberTotal) * .04;
   }
   total = clothesTotal + barberTotal + tax + shipping;
-  return { total: total, tax: tax, shipping: shipping };
+  return { total: round(total, 2), tax: round(tax, 2), shipping: round(shipping, 2) };
+}
+
+function round(value, decimals) {
+  return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }
 
 //reoute to update the count that is remaining in stock for store item
 app.post('/updateCount/:filename/:size/:count', (req, res) => {
-  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { [req.params.size]: req.params.count }, (err) => {
+  updateStock(req.params.filename, req.params.size, req.params.count);
+});
+
+function updateStock(filename, size, count){
+  mongooseJS.StoreItem.updateOne({ filename: filename }, { [size]: count }, (err) => {
     if (err) {
       res.sendStatus(500);
     } else {
+      res.sendStatus(200);
+    }
+  });
+}
+
+//reoute to update the count that is remaining in stock for store item
+app.post('/updateAttribute/:filename/:attribute/:change', (req, res) => {
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { [req.params.attribute]: req.params.change }, (err) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      if (req.params.attribute == "filename") {
+        const prevPath = path.join(__dirname, "./uploads/" + req.params.filename);
+        const newPath = path.join(__dirname, "./uploads/" + req.params.change);
+        fs.rename(prevPath, newPath, err => {
+          if (err) {
+            return console.log(err)
+          }
+        });
+      }
       res.sendStatus(200);
     }
   });
@@ -334,7 +376,7 @@ async function readyCheckout(total) {
             price_data: {
               currency: 'usd',
               product: products[product].id,
-              unit_amount: total * 100,
+              unit_amount: round(total * 100, 2),
             },
             quantity: 1,
           }],
@@ -359,7 +401,7 @@ async function readyCheckout(total) {
         price_data: {
           currency: 'usd',
           product: product.id,
-          unit_amount: total * 100,
+          unit_amount: round(total * 100,2),
         },
         quantity: 1,
       }],

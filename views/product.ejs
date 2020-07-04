@@ -105,7 +105,7 @@
         <option value="true">yes</option>
         <%}%>
     </select>
-    <table class="table table-bordered">
+    <table class="table table-bordered" style="overflow-x: scroll;">
         <thead>
             <tr>
                 <th scope="col">XS</th>
@@ -113,6 +113,8 @@
                 <th scope="col">M</th>
                 <th scope="col">L</th>
                 <th scope="col">XL</th>
+                <th scope="col">XXL</th>
+                <th scope="col">nonmetric</th>
             </tr>
         </thead>
         <tbody>
@@ -127,25 +129,35 @@
                 value="<%= file.l %>" class="count-input"></td>
         <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="xl"
                 value="<%= file.xl %>" class="count-input"></td>
+        <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="xxl"
+                value="<%= file.xxl %>" class="count-input"></td>
+        <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="wholecount"
+                value="<%= file.wholecount %>" class="count-input"></td>
         </tr>
         </tbody>
         <thead>
             <tr>
+                <th scope="col">20ML</th>
                 <th scope="col">30ML</th>
                 <th scope="col">50ML</th>
                 <th scope="col">100ML</th>
+                <th scope="col">125ML</th>
                 <th scope="col">250ML</th>
                 <th scope="col">100G</th>
             </tr>
         </thead>
         <tbody>
             <tr>
+                <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml20"
+                        value="<%= file.ml20 %>" class="count-input"></td>
                 <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml30"
                         value="<%= file.ml30 %>" class="count-input"></td>
                 <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml50"
                         value="<%= file.ml50 %>" class="count-input"></td>
                 <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml100"
                         value="<%= file.ml100 %>" class="count-input"></td>
+                <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml125"
+                        value="<%= file.ml125 %>" class="count-input"></td>
                 <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml250"
                         value="<%= file.ml250 %>" class="count-input"></td>
                 <td><input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="g100"
@@ -176,6 +188,15 @@
         <div class="portfolio-caption" style="margin-left: 19%;">
             <div class="row">
                 <div class="col">
+                    <% if(data.authenticated) {%>
+                    <input onchange="updateAttribute(this, '<%= file.filename%>')" type="text" step="1" name="filename"
+                        value="<%= file.filename %>"class="form-control mb-3">
+                    <input onchange="updateAttribute(this, '<%= file.filename%>')" type="number" step="1" name="price"
+                        value="<%= file.price %>"class="form-control mb-3">
+                    <textarea name="description" id="description" cols="40" rows="5" class="form-control mb-3"
+                        placeholder="<%= file.description %>"
+                        onchange="updateAttribute(this, '<%= file.filename%>')"></textarea>
+                    <% } %>
                     <p id="filename"><%= file.filename %></p>
                     <p>$ <%= file.price %></p>
                     <p class="text-muted colorizer">
@@ -183,46 +204,29 @@
                 </div>
                 <div class="col">
                     <!-- Display the expanded buttons if this item is already in cart otherwise display the regular view -->
-                    <% if(data.inCart[file.filename + " (xs)"] || 
-                data.inCart[file.filename + " (s)"] || 
-                data.inCart[file.filename + " (m)"] || 
-                data.inCart[file.filename + " (l)"] ||  
-                data.inCart[file.filename + " (xl)"] ||
-                data.inCart[file.filename + " (ml30)"] ||
-                data.inCart[file.filename + " (ml50)"] ||
-                data.inCart[file.filename + " (ml100)"] ||
-                data.inCart[file.filename + " (ml250)"] ||
-                data.inCart[file.filename + " (g100)"] ||
-                data.inCart[file.filename]
-                ) {%>
+                    <% if(Object.keys(data.inCart).some(res => res.includes(file.filename))) {%>
                     <div><button type="button" class="btn">In cart</button></div>
                     <% } %>
+                    <% if(!file.wholecount) { %>
                     <select id="sizing" aria-labelledby="size-select" class="form-control mb-3">
                         <% if(file.xs) {%> <option value="xs">XS</option><% }%>
                         <% if(file.s) {%> <option value="s">S</option><% }%>
                         <% if(file.m) {%> <option value="m">M</option><% }%>
                         <% if(file.l) {%> <option value="l">L</option><% }%>
                         <% if(file.xl) {%> <option value="xl">XL</option><% }%>
+                        <% if(file.xxl) {%> <option value="xxl">XXL</option><% }%>
+                        <% if(file.ml20) {%> <option value="ml20">20ml</option><% }%>
                         <% if(file.ml30) {%> <option value="ml30">30ml</option><% }%>
                         <% if(file.ml50) {%> <option value="ml50">50ml</option><% }%>
                         <% if(file.ml100) {%> <option value="ml100">100ml</option><% }%>
+                        <% if(file.ml125) {%> <option value="ml125">125ml</option><% }%>
                         <% if(file.ml250) {%> <option value="ml250">250ml</option><% }%>
                         <% if(file.g100) {%> <option value="g100">100g</option><% }%>
                     </select>
+                    <% } %>
                     <div id="addtocartbutt"><button type="button" class="btn btn-outline-danger mb-2"
                             onclick="addToCart();">add to cart</button></div>
-                    <% if(data.inCart[file.filename + " (xs)"] || 
-                data.inCart[file.filename + " (s)"] || 
-                data.inCart[file.filename + " (m)"] || 
-                data.inCart[file.filename + " (l)"] || 
-                data.inCart[file.filename + " (xl)"] ||
-                data.inCart[file.filename + " (ml30)"] ||
-                data.inCart[file.filename + " (ml50)"] ||
-                data.inCart[file.filename + " (ml100)"] ||
-                data.inCart[file.filename + " (ml250)"] ||
-                data.inCart[file.filename + " (g100)"] ||
-                data.inCart[file.filename]
-                ) {%>
+                    <% if(Object.keys(data.inCart).some(res => res.includes(file.filename))) {%>
                     <div id="viewcartbutt" class="mb-2"><a href="/updateCart"><button type="button"
                                 class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a></div>
                     <div id="checkoutbutt"><a href="/billing"><button type="button" class="btn btn-outline-danger"
@@ -238,15 +242,17 @@
         <p>Something went wrong</p>
         <% } %>
 
-  <hr style="width: 50%; margin-top: 0px;">
+        <hr style="width: 50%; margin-top: 0px;">
         <footer class="footer" style="margin-top: 22%;">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-4 text-lg-left"></div>
                     <div class="col-lg-4 my-3 my-lg-0">
-                        <a
-                        class="btn btn-dark btn-social mx-2" href="https://instagram.com/le_geit_studio?igshid=y9z4gpco4cmx"><i class="fab fa-instagram fa-lg"></i></a><a
-                        class="btn btn-dark btn-social mx-2" href="https://www.facebook.com/untouchables.yanyoo"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a class="btn btn-dark btn-social mx-2"
+                            href="https://instagram.com/le_geit_studio?igshid=y9z4gpco4cmx"><i
+                                class="fab fa-instagram fa-lg"></i></a><a class="btn btn-dark btn-social mx-2"
+                            href="https://www.facebook.com/untouchables.yanyoo"><i
+                                class="fab fa-facebook-f fa-lg"></i></a>
                     </div>
                 </div>
             </div>
