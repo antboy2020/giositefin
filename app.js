@@ -423,13 +423,14 @@ async function readyCheckout(total) {
 
 // route to update and view cart
 app.get('/updateCart', (req, res) => {
+  let data = {authenticated: req.session.authenticated};
+    data['cart'] = req.session.cart;
   if (req.session.cart && Object.keys(req.session.cart).length > 0) {
 
     let cartPricingDetails = cartTotal(req);
-    res.render('updatecart', { data: req.session.cart, tax: cartPricingDetails.tax, shipping: cartPricingDetails.shipping });
+    res.render('updatecart', { data: data, tax: cartPricingDetails.tax, shipping: cartPricingDetails.shipping });
   } else {
-
-    res.render('updatecart', { data: req.session.cart, tax: null, shipping: null });
+    res.render('updatecart', { data: data, tax: null, shipping: null });
   }
 });
 
