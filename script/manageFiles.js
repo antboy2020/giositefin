@@ -1,9 +1,8 @@
-const mongooseJS = require('./setMongoose');
+const mongooseJS = require("./setMongoose");
 
 function round(value, decimals) {
-  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+  return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 }
-
 
 function addStoreItem(req, fs, tempPath, targetPath, res) {
   mongooseJS.StoreItem.findOne({ filename: req.body.name }, (err, file) => {
@@ -34,17 +33,13 @@ function addStoreItem(req, fs, tempPath, targetPath, res) {
       newStoreItem.save(function (err) {
         if (err) {
           console.log("could not save the storeitem");
-        }
-        else {
-          fs.rename(tempPath, targetPath, err => {
+        } else {
+          fs.rename(tempPath, targetPath, (err) => {
             if (err) {
-              return console.log(err)
+              return console.log(err);
             }
 
-            res
-              .status(200)
-              .contentType("text/plain")
-              .end("File uploaded!");
+            res.status(200).contentType("text/plain").end("File uploaded!");
           });
         }
       });

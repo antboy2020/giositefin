@@ -1,37 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <base href="http://localhost:5000/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <base href="http://localhost:5000/" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <script src="https://js.stripe.com/v3/"></script>
 
     <script>
-        let stripe = Stripe('pk_test_VKhF0HiSsd4U6u2kqFNm1cdI00VoaZvo3q');
+      let stripe = Stripe("pk_test_VKhF0HiSsd4U6u2kqFNm1cdI00VoaZvo3q");
 
-        let sessionId = "<%= sessionId %>";
-        console.log(sessionId);
+      let sessionId = "<%= sessionId %>";
+      console.log(sessionId);
 
-        stripe.redirectToCheckout({
-            // Make the id field from the Checkout Session creation API response
-            // available to this file, so you can provide it as parameter here
-            // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-            sessionId: sessionId
-        }).then(function (result) {
-            // If `redirectToCheckout` fails due to a browser or network
-            // error, display the localized error message to your customer
-            // using `result.error.message`.
+      stripe
+        .redirectToCheckout({
+          // Make the id field from the Checkout Session creation API response
+          // available to this file, so you can provide it as parameter here
+          // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+          sessionId: sessionId,
+        })
+        .then(function (result) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer
+          // using `result.error.message`.
         });
     </script>
+  </head>
 
-</head>
-
-<body>
-</body>
-
-
-
+  <body></body>
 </html>

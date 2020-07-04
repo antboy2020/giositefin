@@ -1,75 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+  <%- include('partials/head') %>
 
-<%- include('partials/head') %>
-
-<body>
-<%- include('partials/nav') %>
-    <a href="/"><img src="../img/legeit-transparent.png" class="legeit"></a>
+  <body>
+    <%- include('partials/nav') %>
+    <a href="/"><img src="../img/legeit-transparent.png" class="legeit" /></a>
 
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Size</th>
-                <th scope="col">Count</th>
-                <th scope="col">Total</th>
-            </tr>
-        </thead>
-        <% if(data.cart) {%>
-        <tbody>
-            <%  let total = 0;
-                for (let [key, value] of Object.entries(data.cart)) {%>
-            <tr>
-                <td><%= key%></td>
-                <td><%= value.size%></td>
-                <td><input type="number" step="1" value="<%= value.count %>" class="count-input"
-                        onchange="updateCart(this, '<%= key%>')">
-                </td>
-                <td><%= value.price * value.count %></td>
-                <% total = total + (value.price * value.count) %>
-            </tr>
-            <% } %>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>Taxes</td>
-            <td><%= tax%></td>
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Size</th>
+          <th scope="col">Count</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <% if(data.cart) {%>
+      <tbody>
+        <% let total = 0; for (let [key, value] of Object.entries(data.cart))
+        {%>
+        <tr>
+          <td><%= key%></td>
+          <td><%= value.size%></td>
+          <td>
+            <input
+              type="number"
+              step="1"
+              value="<%= value.count %>"
+              class="count-input"
+              onchange="updateCart(this, '<%= key%>')"
+            />
+          </td>
+          <td><%= value.price * value.count %></td>
+          <% total = total + (value.price * value.count) %>
+        </tr>
+        <% } %>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>Taxes</td>
+          <td><%= tax%></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td>Shipping</td>
-        <td><%= shipping%></td>
-    </tr>
-            <tr>
-                    <td></td>
-                    <td></td>
-                    <td>Total</td>
-                <td><%= total + tax + shipping%></td>
-            </tr>
-        </tbody>
-        <%}%>
+          <td></td>
+          <td></td>
+          <td>Shipping</td>
+          <td><%= shipping%></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>Total</td>
+          <td><%= total + tax + shipping%></td>
+        </tr>
+      </tbody>
+      <%}%>
     </table>
 
-    <div id="checkoutbutt" class="text-center mt-5"><a href="/billing"><button type="button" class="btn btn-outline-danger"
-        id="checkoutbutt">checkout</button></a></div>
+    <div id="checkoutbutt" class="text-center mt-5">
+      <a href="/billing"
+        ><button type="button" class="btn btn-outline-danger" id="checkoutbutt">
+          checkout
+        </button></a
+      >
+    </div>
 
+    <hr style="width: 50%; margin-top: 0px;" />
+    <%- include('partials/footer') %>
 
-  <hr style="width: 50%; margin-top: 0px;">
-<%- include('partials/footer') %>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-</body>
-
-
-
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
