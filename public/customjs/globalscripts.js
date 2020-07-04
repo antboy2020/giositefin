@@ -6,7 +6,7 @@ function addToCart() {
         document.getElementById('viewcartbutt').innerHTML = '<a href="/updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a>';
         document.getElementById('checkoutbutt').innerHTML = '<a href="/billing"><button type="button" class="btn btn-outline-danger" id="checkoutbutt">checkout</button></a>';
         let dropDown = document.getElementById("sizing");
-        let selectedSize = dropDown.options[dropDown.selectedIndex].value;
+        let selectedSize = dropDown ? dropDown.options[dropDown.selectedIndex].value : "wholecount";
         let url = "/cart/" + document.getElementById('filename').innerText + "/" + selectedSize;
         xhr.open("POST", url);
         xhr.send();
@@ -26,6 +26,26 @@ function updateStock(count, itemName) {
     console.log(itemName);
     let xhr = new XMLHttpRequest();
     let url = "/updateCount/" + itemName + "/" + count.name + "/" + count.value;
+    xhr.open("POST", url);
+    xhr.send();
+}
+
+function updateAttribute(attribute, itemName) {
+    console.log(attribute.value);
+    console.log(attribute.name);
+    console.log(itemName);
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function (res) {
+        if (res.currentTarget.status == 200) {
+            setTimeout(() => {
+                if(attribute.name == "filename")
+                    window.location.replace(reloadUrl);
+                else
+                    window.location.reload();
+            });
+        }
+    }
+    let url = "/updateAttribute/" + itemName + "/" + attribute.name + "/" + attribute.value;
     xhr.open("POST", url);
     xhr.send();
 }
