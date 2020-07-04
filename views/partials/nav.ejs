@@ -1,0 +1,35 @@
+
+  <nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
+    <div class="container">
+      <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav text-uppercase ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="/">home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="products">shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="booking">Booking</a>
+          </li>
+          <% if(data.authenticated) {%>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="logout">logout</a>
+          </li>
+          <%}%>
+        </ul>
+      </div>
+          <% if(data.cart && Object.keys(data.cart).length != 0) { %>
+          <a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"></i></a>
+
+          <% } else {%>
+          <a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline.png"></i></a>
+          <% } %>
+      </div>
+  </nav>
