@@ -117,10 +117,14 @@
                     src="../image/<%= file.filename %>" alt="">
             </a>
         </div>
-        <div>
-            <img class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
-                src="../secondaryimage/<%= file.filename %>" alt="">
+        <div id="secondaryImage" style="width: 225px;"
+        class="img-fluid image-resize product-image rounded mx-auto d-block product-image">
         </div>
+        <script>
+            let img = new Image();
+img.src = "../secondaryimage/<%= file.filename %>";
+img.onload=function(){document.getElementById('secondaryImage').appendChild(img);}
+        </script>
         <% if(data.authenticated){ %>
         <form method="POST" action="/secondaryimages/<%= file.filename %>?_method=DELETE">
             <button class="btn btn-danger btn-block mt-4 mb-3 button-width">Delete</button>
