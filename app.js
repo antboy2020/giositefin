@@ -294,17 +294,16 @@ function round(value, decimals) {
 
 //reoute to update the count that is remaining in stock for store item
 app.post('/updateCount/:filename/:size/:count', (req, res) => {
-  updateStock(req.params.filename, req.params.size, req.params.count);
-});
-
-function updateStock(filename, size, count){
-  mongooseJS.StoreItem.updateOne({ filename: filename }, { [size]: count }, (err) => {
+  mongooseJS.StoreItem.updateOne({ filename: req.params.filename }, { [req.params.size]: req.params.count }, (err) => {
     if (err) {
       res.sendStatus(500);
     } else {
       res.sendStatus(200);
     }
   });
+});
+
+function updateStock(filename, size, count){
 }
 
 //reoute to update the count that is remaining in stock for store item
