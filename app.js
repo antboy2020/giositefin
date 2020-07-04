@@ -405,8 +405,8 @@ async function readyCheckout(total) {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: 'http://localhost:5000',
-      cancel_url: 'https://localhost:5000',
+      success_url: process.env.STRIPE_SUCCESS_URL,
+      cancel_url: process.env.STRIPE_CANCEL_URL,
       shipping_address_collection: {
         allowed_countries: ['US', 'CA'],
       },
