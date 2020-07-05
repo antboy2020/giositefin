@@ -380,8 +380,8 @@ async function readyCheckout(total) {
             quantity: 1,
           }],
           mode: 'payment',
-          success_url: 'http://localhost:5000?session_id={CHECKOUT_SESSION_ID}',
-          cancel_url: 'http://localhost:5000',
+          success_url: 'http://155.138.218.81?session_id={CHECKOUT_SESSION_ID}',
+          cancel_url: 'http://155.138.218.81',
           shipping_address_collection: {
             allowed_countries: ['US', 'CA'],
           },
