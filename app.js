@@ -47,30 +47,30 @@ app.get("/", async (req, res) => {
       req.session.cart = null;
       updateCountOnSuccess(req);
       showModal = true;
-      var nodemailer = require("nodemailer");
+      // var nodemailer = require("nodemailer");
 
-      var transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "anthony.then95@gmail.com",
-          pass: "Astdlr.2020gsuite",
-        },
-      });
+      // var transporter = nodemailer.createTransport({
+      //   service: "gmail",
+      //   auth: {
+      //     user: process.env.EMAIL,
+      //     pass: process.env.EMAILPASSWORD,
+      //   },
+      // });
 
-      var mailOptions = {
-        from: "anthony.then95@gmail.com",
-        to: "anthony.then95@rocketmail.com",
-        subject: "Sending Email using Node.js",
-        text: "That was easy!",
-      };
+      // var mailOptions = {
+      //   from: process.env.EMAIL,
+      //   to: customer.email,
+      //   subject: "Sending Email using Node.js",
+      //   text: "That was easy!",
+      // };
 
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Email sent: " + info.response);
-        }
-      });
+      // transporter.sendMail(mailOptions, function (error, info) {
+      // if (error) {
+      // console.log(error);
+      // } else {
+      // console.log("Email sent: " + info.response);
+      // }
+      // });
     }
   }
   let data = {
