@@ -56,6 +56,11 @@ html {
   margin-left: 10%;
 }
 
+#carouselExampleIndicators2 {
+  width: 80%;
+  margin-left: 10%;
+}
+
 #homePage #carousel-button {
   bottom: 0px;
   right: -50%;
