@@ -1,0 +1,321 @@
+    1  exit
+    2  exit
+    3  exit
+    4  clear
+    5  vim /etc/ssh/ssh_config 
+    6  systemctl reload sshd
+    7  systemctl restart sshd
+    8  clear
+    9  curl -sL https://deb.nodesource.com/setup_14.x | bash -
+   10  ls -a
+   11  curl -sL https://deb.nodesource.com/setup_12.x | bash -
+   12  sudo apt-get install -y nodejs
+   13  echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.2 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+   14  sudo apt-get update
+   15  sudo apt-get install -y mongodb-org
+   16  sudo systemctl start mongod
+   17  monog
+   18  monog
+   19  mongo
+   20  history
+   21  sudo service mongod restart
+   22  clear
+   23  vim /etc//mongod.conf 
+   24  sudo service mongod restart
+   25  clear
+   26  sudo service mongod restart
+   27  vim /etc//mongod.conf 
+   28  mongo --port 27017 --authenticationDatabase "admin" -u "Astdlr.2020" -p
+   29  exit
+   30  ifconfig
+   31  cd giositefin/
+   32  pm2
+   33  pm2 ./bin/www
+   34  pm2 start ./bin/www --name legeit
+   35  cat ./bin/www
+   36  pm2 list
+   37  pm2 stop legeit
+   38  clear
+   39  vim /etc//mongod.conf 
+   40  sudo systemctl start mongod
+   41  pm2 start ./bin/www --name legeit
+   42  vim /etc//mongod.conf 
+   43  vim /etc//mongod.conf 
+   44  mongo
+   45  history
+   46  mongo --port 27017 --authenticationDatabase "admin" -u "myUserAdmin" -p
+   47  mongo --port 27017 --authenticationDatabase "admin" -u "myUserAdmin" -p
+   48  mongo --port 27017 --authenticationDatabase "admin" -u "admin" -p
+   49  clear
+   50  cd giositefin/
+   51  ls
+   52  ls uploadedimages/
+   53  ls uploads/
+   54  rm uploads/*Boost*
+   55  ls uploads/
+   56  rm uploads/*Logo*
+   57  ls uploads/
+   58  ls uploads/
+   59  ls uploads/
+   60  rm uploads/*Logo*
+   61  ls uploads
+   62  git pull origin master
+   63  git push
+   64  pm2 stop legeit
+   65  pm2 start ./bin/www --name legeit
+   66  git pull
+   67  git pull origin master 
+   68  git push
+   69  pm2 stop legeit
+   70  pm2 start ./bin/www --name legeit
+   71  git pull origin master 
+   72  git push
+   73  pm2 stop legeit
+   74  pm2 start ./bin/www --name legeit
+   75  git push
+   76  git pull
+   77  git pull origin master 
+   78  clear
+   79  git push
+   80  pm2 stop legeit
+   81  pm2 start ./bin/www --name legeit
+   82  git pull origin master 
+   83  git push
+   84  clear
+   85  git pull
+   86  git pull
+   87  git pull origin master 
+   88  clear
+   89  ifconfig
+   90  cd giositefin/
+   91  git pull
+   92  clear
+   93  pm2 stop legeit
+   94  clear
+   95  cat .env 
+   96  git checkout -b "prod"
+   97  vim .env 
+   98  ls
+   99  pwd
+  100  ls
+  101  mkdir uploadedimages
+  102  mkdir uploads secondaryuploads
+  103  ls
+  104  vim app.js 
+  105  pm2 start ./bin/www --name legeit
+  106  ifconfig
+  107  pm2 stop legeit
+  108  pm2 start ./bin/www --name legeit
+  109  clear
+  110  pm2 stop legeit
+  111  pm2 start ./bin/www --name legeit
+  112  ifconfig
+  113  cat .env 
+  114  sudo systemctl restart mongod
+  115  pm2 stop legeit
+  116  pm2 start ./bin/www --name legeit
+  117  pm2 stop legeit
+  118  pm2 start ./bin/www --name legeit
+  119  ifconfig
+  120  sudo systemctl start mongod
+  121  pm2 stop legeit
+  122  sudo systemctl start mongod
+  123  pm2 start ./bin/www --name legeit
+  124  pm2 logs
+  125  npm install
+  126  pm2 stop legeit
+  127  pm2 start ./bin/www --name legeit
+  128  vim app.js 
+  129  git status
+  130  cat package.json 
+  131  pm2 logs
+  132  sudo systemctl restart mongod
+  133  mongo
+  134  mongo --port 27017 --authenticationDatabase "admin" -u "admin" -p
+  135  pm2 -h
+  136  pm2 list
+  137  git status
+  138  git checkout -- *
+  139  git status
+  140  git checkout -- app.js package-lock.json
+  141  git status
+  142  pm2 stop legeit
+  143  pm2 start ./bin/www --name legeit
+  144  pm2 logs
+  145  clear
+  146  vim app.js 
+  147  pm2 stop legeit
+  148  pm2 start ./bin/www --name legeit
+  149  pm2 logs
+  150  git pull
+  151  git status
+  152  git pull origin master
+  153  git diff app.js
+  154  git stash .
+  155  git stash
+  156  git status
+  157  git pull origin master
+  158  git status
+  159  git stash apply
+  160  git diff app.js
+  161  pm2 stop legeit
+  162  pm2 start ./bin/www --name legeit
+  163  git pull origin master
+  164  pm2 stop legeit
+  165  pm2 start ./bin/www --name legeit
+  166  vim ./bin/www 
+  167  vim .env 
+  168  pm2 stop legeit
+  169  pm2 start ./bin/www --name legeit
+  170  vim ./bin/www 
+  171  pm2 stop legeit
+  172  pm2 start ./bin/www --name legeit
+  173  git status
+  174  git diff app.js
+  175  git add .
+  176  git commit -m "port change and stuff"
+  177  git push
+  178  git push --set-upstream origin prod
+  179  git push
+  180  clear
+  181  git pull origin master
+  182  git pull origin master
+  183  git status
+  184  pm2 stop legeit
+  185  pm2 start ./bin/www --name legeit
+  186  git status
+  187  git push
+  188  git pull origin master 
+  189  git status
+  190  git push
+  191  pm2 stop legeit
+  192  pm2 start ./bin/www --name legeit
+  193  git pull origin master
+  194  cat public/customjs/globalscripts.js 
+  195  git pull origin master
+  196  git push
+  197  pm2 stop legeit
+  198  pm2 start ./bin/www --name legeit
+  199  pm2 logs
+  200  git pull origin master
+  201  git status
+  202  git push
+  203  clear
+  204  pm2 stop legeit
+  205  pm2 start ./bin/www --name legeit
+  206  git pull origin master
+  207  git push
+  208  pm2 logs
+  209  pm2 stop legeit
+  210  pm2 start ./bin/www --name legeit
+  211  git pull origin master
+  212  git push
+  213  pm2 stop legeit
+  214  pm2 start ./bin/www --name legeit
+  215  pm2 logs
+  216  pm2 logs
+  217  cd giositefin/
+  218  git pull origin master
+  219  pm2 stop legeit
+  220  pm2 start ./bin/www --name legeit
+  221  git status
+  222  git push
+  223  git status
+  224  clear
+  225  pm2 logs
+  226  pm2 flush
+  227  clear
+  228  pm2 logs
+  229  pm2 stop legeit
+  230  git pull origin master
+  231  pm2 start ./bin/www --name legeit
+  232  pm2 flush
+  233  pm2 logs
+  234  git pull origin master
+  235  git status
+  236  git push
+  237  clear
+  238  pm2 stop legeit
+  239  pm2 start ./bin/www --name legeit
+  240  vim .env 
+  241  pm2 restart ./bin/www --name legeit
+  242  vim app.js 
+  243  pm2 stop legeit
+  244  pm2 restart ./bin/www --name legeit
+  245  pm2 stop legeit
+  246  pm2 restart ./bin/www --name legeit
+  247  pm2 stop legeit
+  248  pm2 start ./bin/www --name legeit
+  249  vim .env
+  250  vim app.js 
+  251  pm2 restart ./bin/www --name legeit
+  252  cat /etc/sudoers
+  253  history
+  254  cat /etc/ssh/ssh_config 
+  255  history
+  256  clear
+  257  cd giositefin/
+  258  git pull
+  259  git status
+  260  git pull origin master
+  261  git add .
+  262  git commit -m "prod changes"
+  263  git push
+  264  git pull origin master
+  265  git status
+  266  vim app.js 
+  267  git diff app.js
+  268  vim app.js 
+  269  git add app.js 
+  270  git status
+  271  vim app.js 
+  272  git commit -m "merge"
+  273  git push
+  274  pm2 stop legeit
+  275  pm2 start ./bin/www --name legeit
+  276  ls
+  277  clear
+  278  sudo apt-get update
+  279  sudo apt-get install nginx
+  280  sudo apt-get uninstall nginx
+  281  sudo apt-get remove nginx
+  282  clear
+  283  pm2 stop legeit
+  284  vim .env 
+  285  vim bin/www 
+  286  sudo apt-get install nginx
+  287  clear
+  288  vim bin/www 
+  289  pm2 start ./bin/www --name legeit
+  290  vim /etc/nginx/sites-available/default 
+  291  sudo service nginx restart
+  292  sudo apt-get install certbot python-certbot-nginx
+  293  vim /etc/nginx/sites-available/default 
+  294  vim /etc/nginx/sites-available/default 
+  295  certbot --nginx
+  296  systemctl reload sshd
+  297  sudo service nginx restart
+  298  certbot --nginx
+  299  ifconfig
+  300  certbot --nginx
+  301  certbot --nginx
+  302  certbot --nginx
+  303  certbot --help
+  304  certbot certificates
+  305  history
+  306  sudo apt-get remove certbot python-certbot-nginx
+  307  sudo apt-get install certbot python-certbot-nginx
+  308  certbot --nginx
+  309  ls /var/log/letsencrypt/
+  310  rm -rf /var/log/letsencrypt/letsencrypt.log 
+  311  certbot --nginx
+  312  rm -rf /etc/letsencrypt/
+  313  certbot --nginx
+  314  history
+  315  vim /etc/nginx/sites-available/default 
+  316  sudo service nginx restart
+  317  certbot --nginx
+  318  echo $HISTFILESIZE
+  319  echo $HISTSIZE
+  320  history
+  321  history >> giositefin/serversetup.txt

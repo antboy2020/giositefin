@@ -21,11 +21,14 @@
 }
 
 html {
-  width:100vw;
- overflow-x: scroll;
+  width: 100vw;
+  overflow-x: scroll;
 }
 
-.entry { max-width: 200px; padding: .5em; }
+.entry {
+  max-width: 200px;
+  padding: 0.5em;
+}
 
 #mainNav .navbar-nav .nav-item .nav-link {
   color: #212529;
@@ -53,8 +56,18 @@ html {
   margin-left: 10%;
 }
 
-#homePage #carousel-button{
-  bottom: 0px; 
+#carouselExampleIndicators2 {
+  width: 80%;
+  margin-left: 10%;
+}
+
+.homePageItemTitleFonts {
+  font-family: "Arial Bold";
+  font-size: medium;
+}
+
+#homePage #carousel-button {
+  bottom: 0px;
   right: -50%;
 }
 
@@ -90,8 +103,6 @@ html {
   display: block;
   transition: 0.3s;
 }
-
-
 
 #mainNav {
   position: inherit;
