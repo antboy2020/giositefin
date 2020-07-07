@@ -61,6 +61,10 @@ html {
   margin-left: 10%;
 }
 
+.homePageItemTitleFonts {
+  font-family: "Arial Bold";
+}
+
 #homePage #carousel-button {
   bottom: 0px;
   right: -50%;
