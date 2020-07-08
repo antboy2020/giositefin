@@ -595,6 +595,9 @@ app.get("/logout", function (req, res, next) {
   res.redirect("/");
 });
 
-module.exports = app;
-//const port = 5000;
-//app.listen(port, () => console.log(`Server started on port ${port}`));
+if (process.env.ENV == "dev") {
+  const port = 5000;
+  app.listen(port, () => console.log(`Server started on port ${port}`));
+} else if (process.env.ENV == "prod") {
+  module.exports = app;
+}
