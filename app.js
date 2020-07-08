@@ -463,8 +463,8 @@ async function readyCheckout(total) {
             },
           ],
           mode: "payment",
-          success_url: "http://localhost:5000?session_id={CHECKOUT_SESSION_ID}",
-          cancel_url: "http://localhost:5000",
+          success_url: process.env.STRIPE_SUCCESS_URL + "?session_id={CHECKOUT_SESSION_ID}",
+          cancel_url: process.env.STRIPE_SUCCESS_URL,
           shipping_address_collection: {
             allowed_countries: ["US", "CA"],
           },
