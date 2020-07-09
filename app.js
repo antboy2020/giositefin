@@ -44,8 +44,8 @@ app.get("/", async (req, res) => {
     let customer = await stripe.customers.retrieve(session.customer);
     if (customer && customer.email) {
       //make sure stripe email is being sent
-      req.session.cart = null;
       updateCountOnSuccess(req);
+      req.session.cart = null;
       showModal = true;
       // var nodemailer = require("nodemailer");
 
@@ -95,7 +95,7 @@ function updateCountOnSuccess(req) {
     for (const item in req.session.cart) {
       mongooseJS.StoreItem.updateOne(
         { filename: req.session.cart[item].originalName },
-        { $inc: { xs: -req.session.cart[item].count } },
+        { $inc: { [req.session.cart[item].size]: -req.session.cart[item].count } },
         (err) => {
           if (err) {
             res.sendStatus(500);
