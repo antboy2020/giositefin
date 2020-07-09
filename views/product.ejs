@@ -315,10 +315,8 @@
         </div>
         <div class="col">
           <!-- Display the expanded buttons if this item is already in cart otherwise display the regular view -->
-          <% if(Object.keys(data.inCart).some(res =>
-          res.includes(file.filename))) {%>
-          <div><button type="button" class="btn">In cart</button></div>
-          <% } %> <% if(!file.wholecount) { %>
+          <% if(Object.keys(data.cart).some(res => res.includes(file.filename)))
+          {%> <% } %> <% if(!file.wholecount) { %>
           <select
             id="sizing"
             aria-labelledby="size-select"
@@ -352,18 +350,9 @@
             <option value="g100">100g</option
             ><% }%>
           </select>
-          <% } %>
-          <div id="addtocartbutt">
-            <button
-              type="button"
-              class="btn btn-outline-danger mb-2"
-              onclick="addToCart();"
-            >
-              add to cart
-            </button>
-          </div>
-          <% if(Object.keys(data.inCart).some(res =>
+          <% } %> <% if(Object.keys(data.cart).some(res =>
           res.includes(file.filename))) {%>
+          <button type="button" class="btn mb-2">In Cart</button>
           <div id="viewcartbutt" class="mb-2">
             <a href="/updateCart"
               ><button
@@ -387,6 +376,15 @@
             >
           </div>
           <% } else {%>
+          <div id="addtocartbutt">
+            <button
+              type="button"
+              class="btn btn-outline-danger mb-2"
+              onclick="addToCart();"
+            >
+              add to cart
+            </button>
+          </div>
           <div id="viewcartbutt" class="mb-2"></div>
           <div id="checkoutbutt"></div>
           <% } %>
@@ -397,7 +395,7 @@
     <p>Something went wrong</p>
     <% } %>
 
-    <hr style="width: 50%; margin-top: 0px;" />
+    <hr style="width: 50%;" />
     <%- include('partials/footer') %>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
