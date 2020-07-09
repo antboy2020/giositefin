@@ -17,8 +17,7 @@
       </thead>
       <% if(data.cart) {%>
       <tbody>
-        <% let total = 0; for (let [key, value] of Object.entries(data.cart))
-        {%>
+        <% for (let [key, value] of Object.entries(data.cart)) {%>
         <tr>
           <td><%= key%></td>
           <td><%= value.size%></td>
@@ -32,7 +31,6 @@
             />
           </td>
           <td><%= value.price * value.count %></td>
-          <% total = total + (value.price * value.count) %>
         </tr>
         <% } %>
         <tr>
@@ -51,7 +49,7 @@
           <td></td>
           <td></td>
           <td>Total</td>
-          <td><%= total + tax + shipping%></td>
+          <td><%= total %></td>
         </tr>
       </tbody>
       <%}%>
