@@ -1,61 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/head') %>
+<%- include('partials/head') %>
 
-  <body>
-    <%- include('partials/nav') %>
-    <a href="/"><img src="../img/legeit-transparent.png" class="legeit" /></a>
-    <br />
-    <br />
-    <br />
+<body>
+  <%- include('partials/nav') %>
+  <a href="/"><img src="../img/legeit-transparent.png" class="legeit" /></a>
+  <br />
+  <br />
+  <br />
 
-    <% if(data.authenticated) {%>
-    <div>
-      <form id="secondaryUploadForm">
-        <div class="custom-file mb-3">
-          <input type="file" name="file" id="file" class="custom-file-input" />
-          <label for="secondaryFile" class="custom-file-label"
-            >Secondary Pic</label
-          >
-        </div>
-      </form>
-      <button
-        onclick="sendSecondaryPicture('<%= file.filename%>')"
-        class="btn btn-danger btn-block"
-      >
-        Upload
-      </button>
-    </div>
-    <div id="spinner"></div>
-    <label for="type">Choose a type:</label>
-    <select
-      name="type"
-      id="type"
-      class="form-control mb-3"
-      onchange="updateType(this, '<%= file.filename %>')"
-    >
-      <% if(file.type == "barbering") {%>
-      <option value="barbering">barbering</option>
-      <option value="clothing">clothing</option>
-      <% } else { %>
-      <option value="clothing">clothing</option>
-      <option value="barbering">barbering</option>
-      <% } %>
-    </select>
-    <label for="featured">featured item:</label>
-    <select
-      name="featured"
-      id="featured"
-      class="form-control mb-3"
-      onchange="updateFeatured(this, '<%= file.filename %>')"
-    >
-      <% if(file.featured) {%>
-      <option value="true">yes</option>
-      <option value="false">no</option>
-      <% } else {%>
-      <option value="false">no</option>
-      <option value="true">yes</option>
-      <%}%>
+  <% if(data.authenticated) {%>
+  <div>
+    <form id="secondaryUploadForm">
+      <div class="custom-file mb-3">
+        <input type="file" name="file" id="file" class="custom-file-input" />
+        <label for="secondaryFile" class="custom-file-label">Secondary Pic</label>
+      </div>
+    </form>
+    <button onclick="sendSecondaryPicture('<%= file.filename%>')" class="btn btn-danger btn-block">
+      Upload
+    </button>
+  </div>
+  <div id="spinner"></div>
+  <label for="type">Choose a type:</label>
+  <select name="type" id="type" class="form-control mb-3" onchange="updateType(this, '<%= file.filename %>')">
+    <% if(file.type == "barbering") {%>
+    <option value="barbering">barbering</option>
+    <option value="clothing">clothing</option>
+    <% } else { %>
+    <option value="clothing">clothing</option>
+    <option value="barbering">barbering</option>
+    <% } %>
+  </select>
+  <label for="featured">featured item:</label>
+  <select name="featured" id="featured" class="form-control mb-3"
+    onchange="updateFeatured(this, '<%= file.filename %>')">
+    <% if(file.featured) {%>
+    <option value="true">yes</option>
+    <option value="false">no</option>
+    <% } else {%>
+    <option value="false">no</option>
+    <option value="true">yes</option>
+    <%}%>
     </select>
     <table class="table table-bordered" style="overflow-x: scroll;">
       <thead>
@@ -74,172 +60,94 @@
           <td>
             <input
               onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="xs"
-              value="<%= file.xs %>"
-              class="count-input"
-            />
-          </td>
+    type="number"
+    step="1"
+    name="xs"
+    value="<%= file.xs %>"
+    class="count-input"
+    />
+    </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="s"
-              value="<%= file.s %>"
-              class="count-input"
-            />
-          </td>
+    <td>
+      <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="s" value="<%= file.s %>"
+        class="count-input" />
+    </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="m"
-              value="<%= file.m %>"
-              class="count-input"
-            />
-          </td>
+    <td>
+      <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="m" value="<%= file.m %>"
+        class="count-input" />
+    </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="l"
-              value="<%= file.l %>"
-              class="count-input"
-            />
-          </td>
+    <td>
+      <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="l" value="<%= file.l %>"
+        class="count-input" />
+    </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="xl"
-              value="<%= file.xl %>"
-              class="count-input"
-            />
-          </td>
+    <td>
+      <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="xl" value="<%= file.xl %>"
+        class="count-input" />
+    </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="xxl"
-              value="<%= file.xxl %>"
-              class="count-input"
-            />
-          </td>
+    <td>
+      <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="xxl"
+        value="<%= file.xxl %>" class="count-input" />
+    </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="wholecount"
-              value="<%= file.wholecount %>"
-              class="count-input"
-            />
-          </td>
-        </tr>
-      </tbody>
-      <thead>
-        <tr>
-          <th scope="col">20ML</th>
-          <th scope="col">30ML</th>
-          <th scope="col">50ML</th>
-          <th scope="col">100ML</th>
-          <th scope="col">125ML</th>
-          <th scope="col">250ML</th>
-          <th scope="col">100G</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="ml20"
-              value="<%= file.ml20 %>"
-              class="count-input"
-            />
-          </td>
+    <td>
+      <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="wholecount"
+        value="<%= file.wholecount %>" class="count-input" />
+    </td>
+    </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th scope="col">20ML</th>
+        <th scope="col">30ML</th>
+        <th scope="col">50ML</th>
+        <th scope="col">100ML</th>
+        <th scope="col">125ML</th>
+        <th scope="col">250ML</th>
+        <th scope="col">100G</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml20"
+            value="<%= file.ml20 %>" class="count-input" />
+        </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="ml30"
-              value="<%= file.ml30 %>"
-              class="count-input"
-            />
-          </td>
+        <td>
+          <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml30"
+            value="<%= file.ml30 %>" class="count-input" />
+        </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="ml50"
-              value="<%= file.ml50 %>"
-              class="count-input"
-            />
-          </td>
+        <td>
+          <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml50"
+            value="<%= file.ml50 %>" class="count-input" />
+        </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="ml100"
-              value="<%= file.ml100 %>"
-              class="count-input"
-            />
-          </td>
+        <td>
+          <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml100"
+            value="<%= file.ml100 %>" class="count-input" />
+        </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="ml125"
-              value="<%= file.ml125 %>"
-              class="count-input"
-            />
-          </td>
+        <td>
+          <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml125"
+            value="<%= file.ml125 %>" class="count-input" />
+        </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="ml250"
-              value="<%= file.ml250 %>"
-              class="count-input"
-            />
-          </td>
+        <td>
+          <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="ml250"
+            value="<%= file.ml250 %>" class="count-input" />
+        </td>
 
-          <td>
-            <input
-              onchange="updateStock(this, '<%= file.filename%>')"
-              type="number"
-              step="1"
-              name="g100"
-              value="<%= file.g100 %>"
-              class="count-input"
-            />
-          </td>
-        </tr>
-      </tbody>
+        <td>
+          <input onchange="updateStock(this, '<%= file.filename%>')" type="number" step="1" name="g100"
+            value="<%= file.g100 %>" class="count-input" />
+        </td>
+      </tr>
+    </tbody>
     </table>
     <% }%>
 
@@ -247,19 +155,12 @@
     <% if(file){ %>
     <div class="mb-3">
       <a href="/product/<%= file.filename %>">
-        <img
-          style="width: 225px;"
-          class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
-          src="../image/<%= file.filename %>"
-          alt=""
-        />
+        <img style="width: 225px;" class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
+          src="../image/<%= file.filename %>" alt="" />
       </a>
     </div>
-    <div
-      id="secondaryImage"
-      style="width: 225px;"
-      class="img-fluid image-resize product-image rounded mx-auto d-block product-image"
-    ></div>
+    <div id="secondaryImage" style="width: 225px;"
+      class="img-fluid image-resize product-image rounded mx-auto d-block product-image"></div>
     <script>
       let img = new Image();
       img.src = "../secondaryimage/<%= file.filename %>";
@@ -268,10 +169,7 @@
       };
     </script>
     <% if(data.authenticated){ %>
-    <form
-      method="POST"
-      action="/secondaryimages/<%= file.filename %>?_method=DELETE"
-    >
+    <form method="POST" action="/secondaryimages/<%= file.filename %>?_method=DELETE">
       <button class="btn btn-danger btn-block mt-4 mb-3 button-width">
         Delete
       </button>
@@ -281,31 +179,12 @@
       <div class="row">
         <div class="col">
           <% if(data.authenticated) {%>
-          <input
-            onchange="updateAttribute(this, '<%= file.filename%>')"
-            type="text"
-            step="1"
-            name="filename"
-            value="<%= file.filename %>"
-            class="form-control mb-3"
-          />
-          <input
-            onchange="updateAttribute(this, '<%= file.filename%>')"
-            type="number"
-            step="1"
-            name="price"
-            value="<%= file.price %>"
-            class="form-control mb-3"
-          />
-          <textarea
-            name="description"
-            id="description"
-            cols="40"
-            rows="5"
-            class="form-control mb-3"
-            placeholder="<%= file.description %>"
-            onchange="updateAttribute(this, '<%= file.filename%>')"
-          ></textarea>
+          <input onchange="updateAttribute(this, '<%= file.filename%>')" type="text" step="1" name="filename"
+            value="<%= file.filename %>" class="form-control mb-3" />
+          <input onchange="updateAttribute(this, '<%= file.filename%>')" type="number" step="1" name="price"
+            value="<%= file.price %>" class="form-control mb-3" />
+          <textarea name="description" id="description" cols="40" rows="5" class="form-control mb-3"
+            placeholder="<%= file.description %>" onchange="updateAttribute(this, '<%= file.filename%>')"></textarea>
           <% } %>
           <p id="filename"><%= file.filename %></p>
           <p>$ <%= file.price %></p>
@@ -317,79 +196,42 @@
           <!-- Display the expanded buttons if this item is already in cart otherwise display the regular view -->
           <% if(Object.keys(data.cart).some(res => res.includes(file.filename)))
           {%> <% } %> <% if(!file.wholecount) { %>
-          <select
-            id="sizing"
-            aria-labelledby="size-select"
-            class="form-control mb-3"
-          >
+          <select id="sizing" aria-labelledby="size-select" class="form-control mb-3">
             <% if(file.xs) {%>
-            <option value="xs">XS</option
-            ><% }%> <% if(file.s) {%>
-            <option value="s">S</option
-            ><% }%> <% if(file.m) {%>
-            <option value="m">M</option
-            ><% }%> <% if(file.l) {%>
-            <option value="l">L</option
-            ><% }%> <% if(file.xl) {%>
-            <option value="xl">XL</option
-            ><% }%> <% if(file.xxl) {%>
-            <option value="xxl">XXL</option
-            ><% }%> <% if(file.ml20) {%>
-            <option value="ml20">20ml</option
-            ><% }%> <% if(file.ml30) {%>
-            <option value="ml30">30ml</option
-            ><% }%> <% if(file.ml50) {%>
-            <option value="ml50">50ml</option
-            ><% }%> <% if(file.ml100) {%>
-            <option value="ml100">100ml</option
-            ><% }%> <% if(file.ml125) {%>
-            <option value="ml125">125ml</option
-            ><% }%> <% if(file.ml250) {%>
-            <option value="ml250">250ml</option
-            ><% }%> <% if(file.g100) {%>
-            <option value="g100">100g</option
-            ><% }%>
+            <option value="xs">XS</option><% }%> <% if(file.s) {%>
+            <option value="s">S</option><% }%> <% if(file.m) {%>
+            <option value="m">M</option><% }%> <% if(file.l) {%>
+            <option value="l">L</option><% }%> <% if(file.xl) {%>
+            <option value="xl">XL</option><% }%> <% if(file.xxl) {%>
+            <option value="xxl">XXL</option><% }%> <% if(file.ml20) {%>
+            <option value="ml20">20ml</option><% }%> <% if(file.ml30) {%>
+            <option value="ml30">30ml</option><% }%> <% if(file.ml50) {%>
+            <option value="ml50">50ml</option><% }%> <% if(file.ml100) {%>
+            <option value="ml100">100ml</option><% }%> <% if(file.ml125) {%>
+            <option value="ml125">125ml</option><% }%> <% if(file.ml250) {%>
+            <option value="ml250">250ml</option><% }%> <% if(file.g100) {%>
+            <option value="g100">100g</option><% }%>
           </select>
           <% } %> <% if(Object.keys(data.cart).some(res =>
           res.includes(file.filename))) {%>
           <div id="addtocartbutt">
-            <button
-              type="button"
-              class="btn btn-danger mb-2"
-              onclick="addToCart();"
-            >
+            <button type="button" class="btn btn-danger mb-2" onclick="addToCart();">
               add to cart
             </button>
           </div>
           <div id="viewcartbutt" class="mb-2">
-            <a href="/updateCart"
-              ><button
-                type="button"
-                class="btn btn-outline-danger"
-                id="addtocartbutt"
-              >
+            <a href="/updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">
                 view cart
-              </button></a
-            >
+              </button></a>
           </div>
           <div id="checkoutbutt">
-            <a href="/billing"
-              ><button
-                type="button"
-                class="btn btn-outline-danger"
-                id="checkoutbutt"
-              >
+            <a href="/billing"><button type="button" class="btn btn-outline-danger" id="checkoutbutt">
                 checkout
-              </button></a
-            >
+              </button></a>
           </div>
           <% } else {%>
           <div id="addtocartbutt">
-            <button
-              type="button"
-              class="btn btn-outline-danger mb-2"
-              onclick="addToCart();"
-            >
+            <button type="button" class="btn btn-outline-danger mb-2" onclick="addToCart();">
               add to cart
             </button>
           </div>
@@ -405,20 +247,15 @@
 
     <hr style="width: 50%;" />
     <%- include('partials/footer') %>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+      crossorigin="anonymous"></script>
+</body>
+
 </html>
