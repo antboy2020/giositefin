@@ -331,7 +331,7 @@ function cartTotal(req) {
       }
     }
   }
-  if (clothesTotal > 110) {
+  if (clothesTotal >= 110) {
     tax = (clothesTotal + barberTotal) * 0.04;
   } else {
     tax = barberTotal * 0.04;
@@ -516,6 +516,7 @@ app.get("/updateCart", (req, res) => {
     let cartPricingDetails = cartTotal(req);
     res.render("updatecart", {
       data: data,
+      total: cartPricingDetails.total,
       tax: cartPricingDetails.tax,
       shipping: cartPricingDetails.shipping,
     });

@@ -352,7 +352,15 @@
           </select>
           <% } %> <% if(Object.keys(data.cart).some(res =>
           res.includes(file.filename))) {%>
-          <button type="button" class="btn mb-2">In Cart</button>
+          <div id="addtocartbutt">
+            <button
+              type="button"
+              class="btn btn-danger mb-2"
+              onclick="addToCart();"
+            >
+              add to cart
+            </button>
+          </div>
           <div id="viewcartbutt" class="mb-2">
             <a href="/updateCart"
               ><button
