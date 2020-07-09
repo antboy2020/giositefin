@@ -363,7 +363,7 @@ app.post("/updateCount/:filename/:size/:count", (req, res) => {
   );
 });
 
-function updateStock(filename, size, count) {}
+function updateStock(filename, size, count) { }
 
 //reoute to update the count that is remaining in stock for store item
 app.post("/updateAttribute/:filename/:attribute/:change", (req, res) => {
