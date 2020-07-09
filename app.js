@@ -289,7 +289,7 @@ app.get("/product/:filename", (req, res) => {
   let data = {
     title: "junk1",
     authenticated: req.session.authenticated,
-    inCart: req.session.cart ? req.session.cart : false,
+    cart: req.session.cart ? req.session.cart : false,
   };
   mongooseJS.StoreItem.find({ filename: req.params.filename }, function (
     err,
