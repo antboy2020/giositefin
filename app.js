@@ -9,9 +9,9 @@ const manageFiles = require("./script/manageFiles");
 const setPassport = require("./script/setPassport");
 const methodOverride = require("method-override");
 const expressSession = require("express-session");
-const stripe = require("stripe")("sk_test_ztd0iQr35Jsk2fcRHPYUWa9F00AAE3Dlob");
 const dotenv = require("dotenv");
 dotenv.config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
@@ -307,7 +307,7 @@ app.get("/billing", async (req, res) => {
   let total = cartTotal(req).total;
   req.session.hitCheckout = true;
   let sessionId = await readyCheckout(total);
-  res.render("billing", { sessionId: sessionId, stripe_key: process.env.STRIPE_KEY });
+  res.render("billing", { sessionId: sessionId, stripe_key: process.env.STRIPE_PUBLISHABLE_KEY });
 });
 
 function cartTotal(req) {
