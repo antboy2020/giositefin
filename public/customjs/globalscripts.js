@@ -3,8 +3,9 @@ function addToCart() {
   if (document.getElementById("addtocartbutt").innerText == "add to cart") {
     // document.getElementById("addtocartbutt").innerHTML =
     //   '<button type="button" class="btn mb-2">In Cart</button>';
+    document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn btn-danger mb-2" onclick="addToCart();">add to cart</button>'
     document.getElementById("viewcartbutt").innerHTML =
-      '<a href="/updateCart"><button type="button" class="btn btn-danger" id="addtocartbutt">view cart</button></a>';
+      '<a href="/updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a>';
     document.getElementById("checkoutbutt").innerHTML =
       '<a href="/billing"><button type="button" class="btn btn-outline-danger" id="checkoutbutt">checkout</button></a>';
     let dropDown = document.getElementById("sizing");
