@@ -11,13 +11,14 @@ function addToCart() {
     let selectedSize = dropDown
       ? dropDown.options[dropDown.selectedIndex].value
       : "wholecount";
+    let count = selectedSize == "wholecount" ? dropDown.options[dropDown.selectedIndex].innerText : "1";
     let url =
       "/cart/" +
-        document.getElementById("filename").innerText +
-        "/" +
-        selectedSize +
-        "/" +
-        selectedSize == "wholecount" ? dropDown.innerText : "1";
+      document.getElementById("filename").innerText +
+      "/" +
+      selectedSize +
+      "/" +
+      count;
     document.getElementById("shopping-cart-icon").innerHTML =
       '<a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"></i></a>';
     xhr.open("POST", url);
