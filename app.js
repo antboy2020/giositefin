@@ -34,10 +34,6 @@ app.get("/", async (req, res) => {
   let showModal = false;
   const queryObject = url.parse(req.url, true).query;
   if (queryObject["session_id"]) {
-    let stripe = require("stripe")(
-      "sk_test_ztd0iQr35Jsk2fcRHPYUWa9F00AAE3Dlob"
-    );
-
     let session = await stripe.checkout.sessions.retrieve(
       queryObject["session_id"]
     );
@@ -306,6 +302,7 @@ app.get("/billing", async (req, res) => {
   console.log("hello");
   let total = cartTotal(req).total;
   req.session.hitCheckout = true;
+  total = ".50";
   let sessionId = await readyCheckout(total);
   res.render("billing", { sessionId: sessionId, stripe_key: process.env.STRIPE_PUBLISHABLE_KEY });
 });
