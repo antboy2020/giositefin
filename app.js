@@ -287,7 +287,6 @@ app.delete("/cart/:filename", (req, res) => {
 // @desc  Display single file object
 app.get("/product/:filename", (req, res) => {
   let data = {
-    title: "junk1",
     authenticated: req.session.authenticated,
     cart: req.session.cart ? req.session.cart : false,
   };
