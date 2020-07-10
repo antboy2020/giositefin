@@ -308,7 +308,7 @@ app.get("/billing", async (req, res) => {
   let total = cartTotal(req).total;
   req.session.hitCheckout = true;
   let sessionId = await readyCheckout(total);
-  res.render("billing", { sessionId: sessionId });
+  res.render("billing", { sessionId: sessionId, stripe_key: process.env.STRIPE_KEY });
 });
 
 function cartTotal(req) {

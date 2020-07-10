@@ -10,7 +10,7 @@
   <script src="https://js.stripe.com/v3/"></script>
 
   <script>
-    let stripe = Stripe("pk_test_VKhF0HiSsd4U6u2kqFNm1cdI00VoaZvo3q");
+    let stripe = Stripe("<%= stripe_key%>");
 
     let sessionId = "<%= sessionId %>";
     console.log(sessionId);
