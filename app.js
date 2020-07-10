@@ -509,8 +509,8 @@ async function readyCheckout(total) {
 app.get("/updateCart", (req, res) => {
   let data = { authenticated: req.session.authenticated };
   data["cart"] = req.session.cart;
+  let cartPricingDetails = cartTotal(req);
   if (req.session.cart && Object.keys(req.session.cart).length > 0) {
-    let cartPricingDetails = cartTotal(req);
     res.render("updatecart", {
       data: data,
       total: cartPricingDetails.total,
@@ -518,7 +518,7 @@ app.get("/updateCart", (req, res) => {
       shipping: cartPricingDetails.shipping,
     });
   } else {
-    res.render("updatecart", { data: data, tax: null, shipping: null });
+    res.render("updatecart", { data: data, total: cartPricingDetails.total, tax: null, shipping: null });
   }
 });
 
