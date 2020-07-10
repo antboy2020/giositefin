@@ -212,7 +212,12 @@
             <option value="ml250">250ml</option><% }%> <% if(file.g100) {%>
             <option value="g100">100g</option><% }%>
           </select>
-          <% } %> <% if(Object.keys(data.cart).some(res =>
+          <% } else if(file.wholecount){ %>
+          <select id="sizing" aria-labelledby="size-select" class="form-control mb-3">
+            <option value="wholecount">1</option>
+          </select>
+          <% } %>
+          <% if(Object.keys(data.cart).some(res =>
           res.includes(file.filename))) {%>
           <div id="addtocartbutt">
             <button type="button" class="btn btn-danger mb-2" onclick="addToCart();">
