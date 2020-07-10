@@ -241,7 +241,7 @@ app.delete("/secondaryimages/:filename", (req, res) => {
 
 // @route POST /cart
 // @desc add items to cart
-app.post("/cart/:filename/:sizing", (req, res) => {
+app.post("/cart/:filename/:sizing/:count", (req, res) => {
   mongooseJS.StoreItem.find({ filename: req.params.filename }, function (
     err,
     fileInfo
@@ -253,7 +253,7 @@ app.post("/cart/:filename/:sizing", (req, res) => {
       cart[req.params.filename + " (" + req.params.sizing + ")"] = {
         price: fileInfo[0].price,
         type: fileInfo[0].type,
-        count: "1",
+        count: req.params.count,
         size: req.params.sizing,
         originalName: req.params.filename,
       };

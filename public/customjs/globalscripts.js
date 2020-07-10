@@ -13,9 +13,11 @@ function addToCart() {
       : "wholecount";
     let url =
       "/cart/" +
-      document.getElementById("filename").innerText +
-      "/" +
-      selectedSize;
+        document.getElementById("filename").innerText +
+        "/" +
+        selectedSize +
+        "/" +
+        selectedSize == "wholecount" ? dropDown.innerText : "1";
     document.getElementById("shopping-cart-icon").innerHTML =
       '<a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"></i></a>';
     xhr.open("POST", url);
