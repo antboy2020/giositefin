@@ -51,18 +51,13 @@ html {
   background-color: #212529;
 }
 
-#carouselExampleIndicators {
-  width: 80%;
-  margin-left: 10%;
-}
-
-#carouselExampleIndicators2 {
-  width: 80%;
-  margin-left: 10%;
-}
-
 .homePageItemTitleFonts {
   font-size: medium;
+}
+
+.carousel-inner > .item {
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
 }
 
 #homePage #carousel-button {
@@ -116,6 +111,15 @@ nav .container {
   .picture-gallery {
     margin-left: 10%;
     margin-right: 10%;
+  }
+  #carouselExampleIndicators {
+    width: 80%;
+    margin-left: 10%;
+  }
+
+  #carouselExampleIndicators2 {
+    width: 80%;
+    margin-left: 10%;
   }
 }
 
