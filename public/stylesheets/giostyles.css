@@ -31,7 +31,6 @@ html {
 }
 
 #mainNav .navbar-nav .nav-item .nav-link {
-  padding: 0;
   color: #212529;
 }
 
@@ -100,6 +99,7 @@ html {
 }
 
 #mainNav {
+  padding: 0;
   position: inherit;
   background-color: #ffffff;
 }
