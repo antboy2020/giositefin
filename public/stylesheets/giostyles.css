@@ -31,6 +31,7 @@ html {
 }
 
 #mainNav .navbar-nav .nav-item .nav-link {
+  padding: 0;
   color: #212529;
 }
 
