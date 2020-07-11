@@ -64,8 +64,12 @@ function updateAttribute(attribute, itemName) {
     attribute.name +
     "/" +
     attribute.value;
-  xhr.open("POST", url);
-  xhr.send();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+  var data = {};
+  data.value = attribute.value;
+  var json = JSON.stringify(data);
+  xhr.send(json);
 }
 
 function updateFeatured(featured, itemName) {

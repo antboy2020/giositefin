@@ -364,7 +364,7 @@ function updateStock(filename, size, count) { }
 app.post("/updateAttribute/:filename/:attribute/:change", (req, res) => {
   mongooseJS.StoreItem.updateOne(
     { filename: req.params.filename },
-    { [req.params.attribute]: req.params.change },
+    { [req.params.attribute]: req.body.value },
     (err) => {
       if (err) {
         res.sendStatus(500);
@@ -437,7 +437,10 @@ app.post("/updateType/:filename/:type", (req, res) => {
 
 async function readyCheckout(total) {
   let itemNotFound = true;
-  let legeitCartName = "legeitcheckout";
+  let legeitCartName = itemName;
+  // for (const item in req.session.cart) {
+
+  // create a new item for each new item the same way as below,
   let sessionId = "";
   let productList = await stripe.products.list({ active: true });
   let products = productList.data;
