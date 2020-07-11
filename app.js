@@ -43,6 +43,7 @@ app.get("/", async (req, res) => {
       updateCountOnSuccess(req);
       req.session.cart = null;
       showModal = true;
+      // start sending mails again
       // var nodemailer = require("nodemailer");
 
       // var transporter = nodemailer.createTransport({
@@ -437,9 +438,19 @@ app.post("/updateType/:filename/:type", (req, res) => {
 
 async function readyCheckout(total) {
   let itemNotFound = true;
-  let legeitCartName = itemName;
+  let legeitCartName = "legeitcheckout";
+  // leave the specifications in stripe for v2 and maybe not at all potentially
+  // let line_items = [{}];
   // for (const item in req.session.cart) {
+  //   let line_item = {};
+  //   line_item.price_data = {
+  //     currency: "usd",
+  //     product: item.originalName,
+  //     unit_amount: round(total)
 
+  //   };
+
+  // }
   // create a new item for each new item the same way as below,
   let sessionId = "";
   let productList = await stripe.products.list({ active: true });
