@@ -9,191 +9,98 @@
 
   <!-- photos -->
   <% if(data.authenticated) {%>
-  <div class="col-md-6 m-auto">
-    <h1 class="text-center display-4 my-4">Upload a file</h1>
-    <h1 id="uploadError"></h1>
-    <form id="uploadForm">
+  <%- include('partials/uploadForm') %>
+  <hr />
+  <%} else { %> <%}%> <% if(files){ %>
+  <div>
+    <h4 class="ml-3">Clothing</h4>
+    <hr style="width: 90%;" />
+    <div class="container">
       <div class="row">
-        <div class="col">
-          Name:
-          <input type="text" name="name" id="name" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          Price:
-          <input type="text" name="price" id="price" class="form-control mb-3" />
-        </div>
-      </div>
-      Description:
-      <textarea name="description" id="description" cols="40" rows="5" class="form-control mb-3"></textarea>
-      <label for="type">Choose a type:</label>
-      <select name="type" id="type" class="form-control mb-3">
-        <option value="barbering">barbering</option>
-        <option value="clothing">clothing</option>
-      </select>
-      <label for="featured">featured item:</label>
-      <select name="featured" id="featured" class="form-control mb-3">
-        <option value="true">yes</option>
-        <option value="false">no</option>
-      </select>
-      <div class="row">
-        <div class="col">
-          xs:
-          <input type="text" name="xs" id="xs" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          s: <input type="text" name="s" id="s" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          m: <input type="text" name="m" id="m" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          l: <input type="text" name="l" id="l" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          xl:
-          <input type="text" name="xl" id="xl" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          xxl:
-          <input type="text" name="xxl" id="xxl" class="form-control mb-3" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          20ml:
-          <input type="text" name="ml20" id="ml20" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          30ml:
-          <input type="text" name="ml30" id="ml30" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          50ml:
-          <input type="text" name="ml50" id="ml50" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          100ml:
-          <input type="text" name="ml100" id="ml100" class="form-control mb-3" />
-        </div>
-        <div class="col">
-          125ml:
-          <input type="text" name="ml125" id="ml125" class="form-control mb-3" />
-        </div>
-        <div class="row">
-          <div class="col">
-            250ml:
-            <input type="text" name="ml250" id="ml250" class="form-control mb-3" />
-          </div>
-          <div class="col">
-            100g:
-            <input type="text" name="g100" id="g100" class="form-control mb-3" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            nonmetric count:
-            <input type="text" name="wholecount" id="wholecount" class="form-control mb-3" />
-          </div>
-        </div>
-        <div class="custom-file mb-3">
-          <input type="file" name="file" id="file" class="custom-file-input" />
-          <label for="file" class="custom-file-label">Choose File</label>
-        </div>
-        <button onclick="sendPicture()" class="btn btn-danger btn-block">
-          Upload
-        </button>
-      </div>
-      <hr />
-      <%} else { %> <%}%> <% if(files){ %>
-      <div>
-        <h4 class="ml-3">Clothing</h4>
-        <hr style="width: 90%;" />
-        <div class="container">
-          <div class="row">
-            <% files.forEach(function(file) { %> <% if(file.type ==
+        <% files.forEach(function(file) { %> <% if(file.type ==
               "clothing") { %>
-            <div class="col-md-3 col-sm-6 portfolio-item">
-              <a href="/product/<%= file.filename %>">
-                <img class="img-fluid image-resize mb-1" src="image/<%= file.filename %>" alt="" />
-              </a>
-              <div class="portfolio-caption">
-                <h4 class="homePageItemTitleFonts"><%= file.filename %></h4>
-                <div class="row">
-                  <div class="col">
-                    <p>$ <%= file.price %></p>
-                  </div>
-                </div>
+        <div class="col-md-3 col-sm-6 portfolio-item">
+          <a href="/product/<%= file.filename %>">
+            <img class="img-fluid image-resize mb-1" src="image/<%= file.filename %>" alt="" />
+          </a>
+          <div class="portfolio-caption">
+            <h4 class="homePageItemTitleFonts"><%= file.filename %></h4>
+            <div class="row">
+              <div class="col">
+                <p>$ <%= file.price %></p>
               </div>
-              <% if(data.authenticated){ %>
-              <form method="POST" action="/images/<%= file.filename %>?_method=DELETE">
-                <button class="btn btn-danger btn-block mt-4 mb-3 button-width">
-                  Delete
-                </button>
-              </form>
-              <div>
-                Order number:
-                <input onchange="updateOrder(this, '<%= file.filename %>')" value="<%= file.orderNumber %>"
-                  type="number" name="order" id="order" class="form-control mb-3" />
-              </div>
-              <% } %>
             </div>
-            <% } %> <% }) %>
           </div>
-        </div>
-        <h4 class="ml-3">Barbering</h4>
-        <hr style="width: 90%;" />
-        <div class="container">
-          <div class="row">
-            <% files.forEach(function(file) { %> <% if(file.type ==
-              "barbering") { %>
-            <div class="col-md-3 col-sm-6 portfolio-item">
-              <a href="/product/<%= file.filename %>">
-                <img class="img-fluid image-resize mb-1" src="image/<%= file.filename %>" alt="" />
-              </a>
-              <div class="portfolio-caption">
-                <h4 class="homePageItemTitleFonts"><%= file.filename %></h4>
-                <div class="row">
-                  <div class="col">
-                    <p>$ <%= file.price %></p>
-                  </div>
-                </div>
-              </div>
-              <% if(data.authenticated){ %>
-              <form method="POST" action="/images/<%= file.filename %>?_method=DELETE">
-                <button class="btn btn-danger btn-block mt-4 mb-3 button-width">
-                  Delete
-                </button>
-              </form>
-
-              <div>
-                OrderNumber:
-                <input onchange="updateOrder(this, '<%= file.filename %>')" value="<%= file.orderNumber %>"
-                  type="number" name="order" id="order" class="form-control mb-3" />
-              </div>
-              <% } %>
-            </div>
-            <% } %> <% }) %>
+          <% if(data.authenticated){ %>
+          <form method="POST" action="/images/<%= file.filename %>?_method=DELETE">
+            <button class="btn btn-danger btn-block mt-4 mb-3 button-width">
+              Delete
+            </button>
+          </form>
+          <div>
+            Order number:
+            <input onchange="updateOrder(this, '<%= file.filename %>')" value="<%= file.orderNumber %>" type="number"
+              name="order" id="order" class="form-control mb-3" />
           </div>
+          <% } %>
         </div>
+        <% } %> <% }) %>
       </div>
-      <% } else { %>
-      <p>No files to show</p>
-      <% } %>
-      <br />
-      <hr style="width: 50%; margin-top: 0px;" />
+    </div>
+    <h4 class="ml-3">Barbering</h4>
+    <hr style="width: 90%;" />
+    <div class="container">
+      <div class="row">
+        <% files.forEach(function(file) { %> <% if(file.type ==
+              "barbering") { %>
+        <div class="col-md-3 col-sm-6 portfolio-item">
+          <a href="/product/<%= file.filename %>">
+            <img class="img-fluid image-resize mb-1" src="image/<%= file.filename %>" alt="" />
+          </a>
+          <div class="portfolio-caption">
+            <h4 class="homePageItemTitleFonts"><%= file.filename %></h4>
+            <div class="row">
+              <div class="col">
+                <p>$ <%= file.price %></p>
+              </div>
+            </div>
+          </div>
+          <% if(data.authenticated){ %>
+          <form method="POST" action="/images/<%= file.filename %>?_method=DELETE">
+            <button class="btn btn-danger btn-block mt-4 mb-3 button-width">
+              Delete
+            </button>
+          </form>
 
-      <%- include('partials/footer') %>
+          <div>
+            OrderNumber:
+            <input onchange="updateOrder(this, '<%= file.filename %>')" value="<%= file.orderNumber %>" type="number"
+              name="order" id="order" class="form-control mb-3" />
+          </div>
+          <% } %>
+        </div>
+        <% } %> <% }) %>
+      </div>
+    </div>
+  </div>
+  <% } else { %>
+  <p>No files to show</p>
+  <% } %>
+  <br />
+  <hr style="width: 50%; margin-top: 0px;" />
 
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    </form>
+  <%- include('partials/footer') %>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  </form>
   </div>
 </body>
 
