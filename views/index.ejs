@@ -80,6 +80,20 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+  <script>
+    var ptoggle = document.getElementById("carouselExampleIndicators");
+    function toggleSlide(x) {
+      if (x.matches) { // If media query matches
+        ptoggle.classList.toggle("slide");
+      } else {
+        ptoggle.classList.toggle("slide");
+      }
+    }
+    var x = window.matchMedia("(max-width: 700px)");
+    toggleSlide(x); // Call listener function at run time
+    x.addListener(toggleSlide); // Attach listener function on state 
+    changes
+  </script>
 
   <!-- photos -->
   <% if(data.authenticated) {%>
