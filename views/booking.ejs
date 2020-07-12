@@ -45,6 +45,22 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+  <script>
+    !(function (d) {
+      // All code will go in here. We've renamed 'document' to 'd'.
+      var ptoggle = document.getElementById("carouselExampleIndicators");
+      function toggleSlide(x) {
+        if (x.matches) { // If media query matches
+          ptoggle.classList.toggle("slide");
+        } else {
+          ptoggle.classList.toggle("slide");
+        }
+      }
+      var x = window.matchMedia("(max-width: 700px)");
+      toggleSlide(x); // Call listener function at run time
+      x.addListener(toggleSlide); // Attach listener function on state 
+    }(document));
+  </script>
 
   <br />
   <div class="ml-4 mr-4">
@@ -101,6 +117,23 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+  <script>
+    !(function (d) {
+      // All code will go in here. We've renamed 'document' to 'd'.
+      var ptoggle = document.getElementById("carouselExampleIndicators2");
+      function toggleSlide(x) {
+        if (x.matches) { // If media query matches
+          ptoggle.classList.toggle("slide");
+        } else {
+          ptoggle.classList.toggle("slide");
+        }
+      }
+      var x = window.matchMedia("(max-width: 700px)");
+      toggleSlide(x); // Call listener function at run time
+      x.addListener(toggleSlide); // Attach listener function on state 
+    }(document));
+
+  </script>
   <br />
   <div class="ml-4 mr-4">
     <h5>
