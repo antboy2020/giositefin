@@ -35,9 +35,13 @@
         </svg>
         </a>
         <% var count = 0; 
+          console.log(count);
         if(data.cart) {
         Object.values(data.cart).forEach(shoppingItem => {
-         count = (+count + shoppingItem.count); 
+          console.log(count);
+          console.log(shoppingItem.count);
+         count = ((+count) + (+shoppingItem.count)); 
+          console.log(count);
         });} %>
         <span class='badge badge-warning' id='lblCartCount'> </span>
         <script>

@@ -120,7 +120,7 @@ function updateCart(count, itemName) {
   let url = "/updateCart/" + itemName + "/" + count.value;
   xhr.open("POST", url);
   xhr.send();
-  window.location.replace("updateCart");
+  // window.location.reload();
 }
 
 function sendPicture() {
