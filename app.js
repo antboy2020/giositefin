@@ -248,7 +248,7 @@ app.post("/cart/:filename/:sizing/:count", (req, res) => {
     } else {
       let cart = req.session.cart || {};
       if (cart[req.params.filename + " (" + req.params.sizing + ")"]) {
-        cart[req.params.filename + " (" + req.params.sizing + ")"].count = (+cart[req.params.filename + " (" + req.params.sizing + ")"].count + 1);
+        cart[req.params.filename + " (" + req.params.sizing + ")"].count = (+cart[req.params.filename + " (" + req.params.sizing + ")"].count + (+1));
       } else {
         cart[req.params.filename + " (" + req.params.sizing + ")"] = {
           price: fileInfo[0].price,
@@ -260,6 +260,7 @@ app.post("/cart/:filename/:sizing/:count", (req, res) => {
       }
       req.session.cart = cart;
       req.session.save();
+      res.sendStatus(200);
     }
   });
 });
