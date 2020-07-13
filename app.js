@@ -247,13 +247,17 @@ app.post("/cart/:filename/:sizing/:count", (req, res) => {
       res.render("index", { files: false, data: data });
     } else {
       let cart = req.session.cart || {};
-      cart[req.params.filename + " (" + req.params.sizing + ")"] = {
-        price: fileInfo[0].price,
-        type: fileInfo[0].type,
-        count: req.params.count,
-        size: req.params.sizing,
-        originalName: req.params.filename,
-      };
+      if (cart[req.params.filename + " (" + req.params.sizing + ")"]) {
+        cart[req.params.filename + " (" + req.params.sizing + ")"].count = (+cart[req.params.filename + " (" + req.params.sizing + ")"].count + 1);
+      } else {
+        cart[req.params.filename + " (" + req.params.sizing + ")"] = {
+          price: fileInfo[0].price,
+          type: fileInfo[0].type,
+          count: req.params.count,
+          size: req.params.sizing,
+          originalName: req.params.filename,
+        };
+      }
       req.session.cart = cart;
       req.session.save();
     }
@@ -528,7 +532,7 @@ app.get("/updateCart", (req, res) => {
       shipping: cartPricingDetails.shipping,
     });
   } else {
-    res.render("updatecart", { data: data, total: cartPricingDetails.total, tax: null, shipping: null });
+    res.render("updatecart", { data: data, total: null, tax: null, shipping: null });
   }
 });
 

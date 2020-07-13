@@ -1,6 +1,7 @@
 function addToCart() {
   let xhr = new XMLHttpRequest();
   if (document.getElementById("addtocartbutt").innerText == "add to cart") {
+    document.getElementById("lblCartCount").innerHTML = (+document.getElementById("lblCartCount").innerHTML + 1);
     // document.getElementById("addtocartbutt").innerHTML =
     //   '<button type="button" class="btn mb-2">In Cart</button>';
     document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn btn-danger mb-2" onclick="addToCart();">add to cart</button>'
@@ -20,8 +21,8 @@ function addToCart() {
       selectedSize +
       "/" +
       count;
-    document.getElementById("shopping-cart-icon").innerHTML =
-      '<a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"></i></a>';
+    // document.getElementById("shopping-cart-icon").innerHTML =
+    //   '<a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"></i></a>';
     xhr.open("POST", url);
     xhr.send();
   } else {
