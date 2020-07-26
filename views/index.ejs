@@ -3,41 +3,16 @@
 <%- include('partials/head') %>
 
 <body id="homePage">
+  <% if(data.showModal) {%>
+  <%- include('partials/modal') %>
+  <script>
+    showModal(
+      `Thank you for your purchase. We will notify you as soon as your item has shipped.`);
+  </script>
+  <%}%>
   <%- include('partials/nav') %>
   <a href="/"><img src="../img/legeit-transparent.png" class="legeit" /></a>
   <br />
-  <% if(data.showModal) {%>
-  <script>
-    $(document).ready(function () {
-      $("#myModal").modal();
-    });
-  </script>
-  <% } %>
-  <!-- Modal -->
-  <div id="myModal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">
-            Lé Geit Studio
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Thank you for your purchase. We will notify you as soon as your item
-          has shipped.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <% var slideImages = [{image: "../img/homecarousel1.jpeg", href: "booking"}, {image: "../img/homecarousel2.jpeg", href: "booking"}, {image: "../img/homecarousel3.jpeg", href: "booking"}, {image: "../img/homecarousel4.jpeg", href: "booking"}]; %>
   <%- include('partials/carousel', {slideImages: slideImages, carouselId: "indexCarousel"}) %>

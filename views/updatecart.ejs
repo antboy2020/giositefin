@@ -6,7 +6,7 @@
   <%- include('partials/nav') %>
   <a href="/"><img src="../img/legeit-transparent.png" class="legeit" /></a>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered" style="max-width: 90%; margin: auto;">
     <thead>
       <tr>
         <th scope="col">Item</th>
@@ -25,37 +25,105 @@
           <input type="number" step="1" value="<%= value.count %>" class="count-input"
             onchange="updateCart(this, '<%= key%>')" />
         </td>
-        <td><%= value.price * value.count %></td>
+        <td>$<%= value.price * value.count %></td>
       </tr>
       <% } %>
       <tr>
         <td></td>
         <td></td>
         <td>Taxes</td>
-        <td><%= tax%></td>
+        <td>$<%= tax%></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td>Shipping</td>
-        <td><%= shipping%></td>
+        <td>$<%= shipping%></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td>Total</td>
-        <td><%= total %></td>
+        <td>$<%= total %></td>
       </tr>
     </tbody>
     <%}%>
     </table>
 
-    <div id="checkoutbutt" class="text-center mt-5">
-      <a href="/billing"
-        ><button type="button" class="btn btn-outline-danger" id="checkoutbutt">
+  <%- include('partials/modal') %>
+    <div id="checkoutbutt" style="text-align: center;">
+      <script>
+        function showCheckoutModal() {
+          let cart = JSON.parse('<%- JSON.stringify(data.cart) %>');
+          let items = [];
+          let itemTotal = 0;
+          for (const [key, val] of Object.entries(cart)) {
+            itemTotal += (+ val.price) * (+ val.count);
+            items.push({
+              name: val.originalName,
+              quantity: val.count,
+              unit_amount: {
+                currency_code: "usd",
+                value: val.price
+              }
+            })
+          }
+
+          showModal(
+            `<div id="paypal-button-container" style="width: 80%; margin: auto;"></div>`);
+          paypal.Buttons({
+            createOrder: function (data, actions) {
+              // This function sets up the details of the transaction, including the amount and line item details.
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: (+ itemTotal) + (+ "<%= shipping %>") + (+ "<%= tax %>"),
+                      breakdown: {
+                        item_total: {
+                          currency_code: "usd",
+                          value: itemTotal.toString()
+                        },
+                        shipping: {
+                          currency_code: "usd",
+                          value: "<%= shipping %>"
+                        },
+                        tax_total: {
+                          currency_code: "usd",
+                          value: "<%= tax %>"
+                        }
+                      }
+                    },
+                    description: "Le Geit Checkout",
+                    items: items
+                  }
+                ]
+              });
+            },
+            onApprove: function (data, actions) {
+              // This function captures the funds from the transaction.
+              return actions.order.capture().then(function (details) {
+                // This function shows a transaction success message to your buyer.
+                // alert('Transaction completed by ' + details.payer.name.given_name);
+                let url = "/successfulTransaction";
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function (res) {
+                  if (res.currentTarget.status == 200) {
+                    window.location.href = "/";
+                  }
+                };
+                xhr.open("POST", url);
+                xhr.send();
+              });
+            }
+          }).render('#paypal-button-container');
+          //This function displays Smart Payment Buttons on your web page.
+          // This function displays Smart Payment Buttons on your web page.
+        }
+      </script>
+      <a onclick="showCheckoutModal()"><button type="button" class="btn btn-outline-danger mt-3" id="checkoutbutt">
           checkout
-        </button></a
-      >
+        </button></a>
     </div>
 
     <hr style="width: 50%;" />

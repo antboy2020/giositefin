@@ -2,8 +2,15 @@
 <html lang="en">
 <%- include('partials/head') %>
 
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ensures optimal rendering on mobile devices. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+</head>
+
 <body>
   <%- include('partials/nav') %>
+  <%- include('partials/modal') %>
   <a href="/"><img src="../img/legeit-transparent.png" class="legeit" /></a>
   <br />
   <br />
@@ -237,11 +244,6 @@
           <div id="viewcartbutt" class="mb-2">
             <a href="/updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">
                 view cart
-              </button></a>
-          </div>
-          <div id="checkoutbutt">
-            <a href="/billing"><button type="button" class="btn btn-outline-danger" id="checkoutbutt">
-                checkout
               </button></a>
           </div>
           <% } else {%>

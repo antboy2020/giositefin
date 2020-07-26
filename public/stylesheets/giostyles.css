@@ -186,3 +186,11 @@ nav .container {
     top: -2px;
     right: -2px; 
     }
+
+    .divider {
+      display: inline-block;
+      border-bottom: gray 1px solid;
+      margin-left: 5%;
+      margin-right: 5%;
+      width: 33%;
+    }
