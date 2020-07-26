@@ -1,14 +1,10 @@
 function addToCart() {
   let xhr = new XMLHttpRequest();
   if (document.getElementById("addtocartbutt").innerText == "add to cart") {
-    // document.getElementById("lblCartCount").innerHTML = (+document.getElementById("lblCartCount").innerHTML + 1);
-    // document.getElementById("addtocartbutt").innerHTML =
-    //   '<button type="button" class="btn mb-2">In Cart</button>';
-    document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn btn-danger mb-2" onclick="addToCart();">add to cart</button>'
-    document.getElementById("viewcartbutt").innerHTML =
-      '<a href="/updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a>';
-    document.getElementById("checkoutbutt").innerHTML =
-      '<a href="/billing"><button type="button" class="btn btn-outline-danger" id="checkoutbutt">checkout</button></a>';
+    // document.getElementById("viewcartbutt").innerHTML =
+    //   '<a href="/updateCart"><button type="button" class="btn btn-outline-danger" id="addtocartbutt">view cart</button></a>';
+    // document.getElementById("checkoutbutt").innerHTML =
+    //   '<a onclick="alert("hello");"><button type="button" class="btn btn-outline-danger" id="checkoutbutt">checkout</button></a>';
     let dropDown = document.getElementById("sizing");
     let selectedSize = dropDown
       ? dropDown.options[dropDown.selectedIndex].value
@@ -21,8 +17,6 @@ function addToCart() {
       selectedSize +
       "/" +
       count;
-    // document.getElementById("shopping-cart-icon").innerHTML =
-    //   '<a href="updateCart" style="width: 10%;"><img src="../img/shopping-cart-outline-red.png"></i></a>';
     xhr.onreadystatechange = function (res) {
       if (res.currentTarget.status == 200) {
         window.location.reload();
@@ -31,7 +25,6 @@ function addToCart() {
     xhr.open("POST", url);
     xhr.send();
   } else {
-    // document.getElementById('addtocartbutt').innerHTML = '<button type="button" class="btn btn-outline-warning mb-2" onclick="addToCart();">add to cart</button>';
     document.getElementById("viewcartbutt").innerHTML = "";
     document.getElementById("checkoutbutt").innerHTML = "";
     let url = "/cart/" + document.getElementById("filename").innerText;

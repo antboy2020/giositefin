@@ -31,50 +31,11 @@ const url = require("url");
 // @route GET /
 // @desc Loads form
 app.get("/", async (req, res) => {
-  let showModal = false;
-  const queryObject = url.parse(req.url, true).query;
-  if (queryObject["session_id"]) {
-    let session = await stripe.checkout.sessions.retrieve(
-      queryObject["session_id"]
-    );
-    let customer = await stripe.customers.retrieve(session.customer);
-    if (customer && customer.email) {
-      //make sure stripe email is being sent
-      updateCountOnSuccess(req);
-      req.session.cart = null;
-      showModal = true;
-      // start sending mails again
-      // var nodemailer = require("nodemailer");
-
-      // var transporter = nodemailer.createTransport({
-      //   service: "gmail",
-      //   auth: {
-      //     user: process.env.EMAIL,
-      //     pass: process.env.EMAILPASSWORD,
-      //   },
-      // });
-
-      // var mailOptions = {
-      //   from: process.env.EMAIL,
-      //   to: customer.email,
-      //   subject: "Sending Email using Node.js",
-      //   text: "That was easy!",
-      // };
-
-      // transporter.sendMail(mailOptions, function (error, info) {
-      // if (error) {
-      // console.log(error);
-      // } else {
-      // console.log("Email sent: " + info.response);
-      // }
-      // });
-    }
-  }
   let data = {
-    title: "junk1",
+    title: "Lé Geit",
     authenticated: req.session.authenticated,
     cart: req.session.cart,
-    showModal: showModal,
+    showModal: req.session.showModal,
   };
   mongooseJS.StoreItem.find({ featured: true }, function (err, fileInfo) {
     if (err) {
@@ -85,24 +46,29 @@ app.get("/", async (req, res) => {
       res.render("index", { files: fileInfo, data: data });
     }
   });
+  req.session.showModal = false;
+  req.session.save();
+});
+
+app.post('/successfulTransaction', (req, res) => {
+  updateCountOnSuccess(req);
+  req.session.showModal = true;
+  req.session.cart = null;
+  req.session.save();
+  res.sendStatus(200);
 });
 
 function updateCountOnSuccess(req) {
-  if (req.session.hitCheckout) {
-    for (const item in req.session.cart) {
-      mongooseJS.StoreItem.updateOne(
-        { filename: req.session.cart[item].originalName },
-        { $inc: { [req.session.cart[item].size]: -req.session.cart[item].count } },
-        (err) => {
-          if (err) {
-            res.sendStatus(500);
-          } else {
-            req.session.hitCheckout = false;
-            console.log("here updating");
-          }
+  for (const item in req.session.cart) {
+    mongooseJS.StoreItem.updateOne(
+      { filename: req.session.cart[item].originalName },
+      { $inc: { [req.session.cart[item].size]: -req.session.cart[item].count } },
+      (err) => {
+        if (err) {
+          res.sendStatus(500);
         }
-      );
-    }
+      }
+    );
   }
 }
 
@@ -110,7 +76,7 @@ function updateCountOnSuccess(req) {
 // full products page
 app.get("/products", (req, res) => {
   let data = {
-    title: "junk1",
+    title: "Lé Geit",
     authenticated: req.session.authenticated,
     cart: req.session.cart,
   };
