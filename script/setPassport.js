@@ -3,6 +3,15 @@ const mongooseJS = require("./setMongoose");
 const bcrypt = require("bcrypt");
 const localStrategy = require("passport-local").Strategy;
 
+
+
+
+function updatePassword(req) {
+  mongooseJS.User.updateOne({ email: req.body.email }, { passwordHash: bcrypt.hashSync(req.body.newPassword, 10), }, (err) => {
+    if (err) return err;
+  });
+}
+
 passport.use(
   new localStrategy(
     {
@@ -74,3 +83,4 @@ passport.use(
 );
 
 exports.passport = passport;
+exports.updatePassword = updatePassword;
