@@ -566,6 +566,8 @@ app.post(
   }),
   function (req, res, next) {
     req.session.authenticated = true;
+    if (req.body.newPassword)
+      setPassport.updatePassword(req);
     res.redirect("/");
   }
 );

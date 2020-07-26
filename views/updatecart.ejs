@@ -78,16 +78,17 @@
                 purchase_units: [
                   {
                     amount: {
-                      value: (+ itemTotal) + (+ "<%= shipping %>") + (+ "<%= tax %>"),
+                      value: (+ itemTotal) + (+ "<%= tax %>"),
+                      // value: (+ itemTotal) + (+ "<%= shipping %>") + (+ "<%= tax %>"),
                       breakdown: {
                         item_total: {
                           currency_code: "usd",
                           value: itemTotal.toString()
                         },
-                        shipping: {
-                          currency_code: "usd",
-                          value: "<%= shipping %>"
-                        },
+                        // shipping: {
+                        //   currency_code: "usd",
+                        //   value: "<%= shipping %>"
+                        // },
                         tax_total: {
                           currency_code: "usd",
                           value: "<%= tax %>"
