@@ -236,9 +236,11 @@ app.post("/updateCart/:filename/:count", (req, res) => {
   if (req.params.count == 0) {
     delete req.session.cart[req.params.filename];
     req.session.save();
+    res.sendStatus(200);
   } else if (req.params.count > 0) {
     req.session.cart[req.params.filename].count = req.params.count;
     req.session.save();
+    res.sendStatus(200);
   } else {
     res.sendStatus(500);
   }
