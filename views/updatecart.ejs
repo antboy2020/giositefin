@@ -58,7 +58,7 @@
           let items = [];
           let itemTotal = 0;
           for (const [key, val] of Object.entries(cart)) {
-            itemTotal += (+ val.price) * (+ val.count);
+            itemTotal += round((+ val.price) * (+ val.count), 2);
             items.push({
               name: val.originalName,
               quantity: val.count,
@@ -78,7 +78,7 @@
                 purchase_units: [
                   {
                     amount: {
-                      value: round((+ itemTotal) + (+ "<%= tax %>"), 2),
+                      value: (+ itemTotal) + (+ "<%= tax %>"),
                       // value: (+ itemTotal) + (+ "<%= shipping %>") + (+ "<%= tax %>"),
                       breakdown: {
                         item_total: {
