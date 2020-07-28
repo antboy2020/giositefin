@@ -116,6 +116,11 @@ function updateOrder(order, itemName) {
 function updateCart(count, itemName) {
   let xhr = new XMLHttpRequest();
   let url = "/updateCart/" + itemName + "/" + count.value;
+  xhr.onreadystatechange = function (res) {
+    if (res.currentTarget.status == 200) {
+      window.location.reload();
+    }
+  };
   xhr.open("POST", url);
   xhr.send();
   // window.location.reload();
