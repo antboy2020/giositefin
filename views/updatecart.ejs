@@ -19,32 +19,34 @@
     <tbody>
       <% for (let [key, value] of Object.entries(data.cart)) {%>
       <tr>
-        <td><%= key%></td>
+        <td><%= key%>
+          <i class="fa fa-trash-o ml-2" style="font-size:24px" onclick="updateCart({value: '0'}, '<%= key%>')"></i>
+        </td>
         <td><%= value.size%></td>
         <td>
           <input type="number" step="1" value="<%= value.count %>" class="count-input"
             onchange="updateCart(this, '<%= key%>')" />
         </td>
-        <td>$<%= round(value.price * value.count,2) %></td>
+        <td>$<%= (value.price * value.count).toFixed(2) %></td>
       </tr>
       <% } %>
       <tr>
         <td></td>
         <td></td>
         <td>Taxes</td>
-        <td>$<%= tax%></td>
+        <td>$<%= tax.toFixed(2)%></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td>Shipping</td>
-        <td>$<%= shipping%></td>
+        <td>$<%= shipping.toFixed(2)%></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td>Total</td>
-        <td>$<%= total %></td>
+        <td>$<%= total.toFixed(2) %></td>
       </tr>
     </tbody>
     <%}%>
@@ -78,20 +80,20 @@
                 purchase_units: [
                   {
                     amount: {
-                      value: (+ itemTotal) + (+ "<%= tax %>"),
-                      // value: (+ itemTotal) + (+ "<%= shipping %>") + (+ "<%= tax %>"),
+                      value: (+ itemTotal.toFixed(2)) + (+ "<%= tax.toFixed(2) %>"),
+                      // value: (+ itemTotal.toFixed(2)) + (+ "<%= shipping.toFixed(2) %>") + (+ "<%= tax.toFixed(2) %>"),
                       breakdown: {
                         item_total: {
                           currency_code: "usd",
-                          value: itemTotal.toString()
+                          value: itemTotal.toFixed(2)
                         },
                         // shipping: {
                         //   currency_code: "usd",
-                        //   value: "<%= shipping %>"
+                        //   value: "<%= shipping.toFixed(2) %>"
                         // },
                         tax_total: {
                           currency_code: "usd",
-                          value: "<%= tax %>"
+                          value: "<%= tax.toFixed(2) %>"
                         }
                       }
                     },

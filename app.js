@@ -498,12 +498,12 @@ app.get("/updateCart", (req, res) => {
   if (req.session.cart && Object.keys(req.session.cart).length > 0) {
     res.render("updatecart", {
       data: data,
-      total: cartPricingDetails.total,
-      tax: cartPricingDetails.tax,
-      shipping: cartPricingDetails.shipping,
+      total: cartPricingDetails.total ? cartPricingDetails.total : 0,
+      tax: cartPricingDetails.tax ? cartPricingDetails.tax : 0,
+      shipping: cartPricingDetails.shipping ? cartPricingDetails.shipping : 0,
     });
   } else {
-    res.render("updatecart", { data: data, total: null, tax: null, shipping: null });
+    res.render("updatecart", { data: data, total: 0, tax: 0, shipping: 0 });
   }
 });
 

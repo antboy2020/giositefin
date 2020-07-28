@@ -189,12 +189,12 @@
           <input onchange="updateAttribute(this, '<%= file.filename%>')" type="text" step="1" name="filename"
             value="<%= file.filename %>" class="form-control mb-3" />
           <input onchange="updateAttribute(this, '<%= file.filename%>')" type="number" step="1" name="price"
-            value="<%= file.price %>" class="form-control mb-3" />
+            value="<%= file.price.toFixed(2) %>" class="form-control mb-3" />
           <textarea name="description" id="description" cols="40" rows="5" class="form-control mb-3"
             onchange="updateAttribute(this, '<%= file.filename%>')"><%= file.description %></textarea>
           <% } %>
           <p id="filename"><%= file.filename %></p>
-          <p>$ <%= file.price %></p>
+          <p>$ <%= file.price.toFixed(2) %></p>
           <textarea style="background-color:white; border: none" name="description" id="description" cols="40" rows="5"
             class="form-control mb-3" onchange="updateAttribute(this, '<%= file.filename%>')"
             disabled><%= file.description %></textarea>
