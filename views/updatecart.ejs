@@ -78,7 +78,7 @@
                 purchase_units: [
                   {
                     amount: {
-                      value: (+ itemTotal) + (+ "<%= tax %>"),
+                      value: round((+ itemTotal) + (+ "<%= tax %>"), 2),
                       // value: (+ itemTotal) + (+ "<%= shipping %>") + (+ "<%= tax %>"),
                       breakdown: {
                         item_total: {
