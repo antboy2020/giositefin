@@ -25,7 +25,7 @@
           <input type="number" step="1" value="<%= value.count %>" class="count-input"
             onchange="updateCart(this, '<%= key%>')" />
         </td>
-        <td>$<%= value.price * value.count %></td>
+        <td>$<%= round(value.price * value.count,2) %></td>
       </tr>
       <% } %>
       <tr>
