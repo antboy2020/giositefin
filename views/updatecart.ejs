@@ -19,10 +19,10 @@
     <tbody>
       <% for (let [key, value] of Object.entries(data.cart)) {%>
       <tr>
-        <td><%= key%>
+        <td><%= key.replace('(wholecount)','')%>
           <i class="fa fa-trash-o ml-2" style="font-size:24px" onclick="updateCart({value: '0'}, '<%= key%>')"></i>
         </td>
-        <td><%= value.size%></td>
+        <td><%= value.size.replace('wholecount', '')%></td>
         <td>
           <input type="number" step="1" value="<%= value.count %>" class="count-input"
             onchange="updateCart(this, '<%= key%>')" />
