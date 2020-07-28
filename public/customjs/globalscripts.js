@@ -126,6 +126,10 @@ function updateCart(count, itemName) {
   // window.location.reload();
 }
 
+function round(value, decimals) {
+  return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+}
+
 function sendPicture() {
   let xhr = new XMLHttpRequest();
   let uploadForm = document.getElementById("uploadForm");
