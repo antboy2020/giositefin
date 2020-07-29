@@ -88,14 +88,16 @@
                 purchase_units: [
                   {
                     amount: {
-                      // value: (+ itemTotal.toFixed(2)) + (+ "<%= shipping.toFixed(2) %>") + (+ "<%= tax.toFixed(2) %>"),
-                      value: (+ itemTotal.toFixed(2)) + (+ "<%= tax.toFixed(2) %>"),
+                      value: (+ itemTotal.toFixed(2)) + (+ "<%= shipping.toFixed(2) %>") + (+ "<%= tax.toFixed(2) %>"),
                       breakdown: {
                         item_total: {
                           currency_code: "usd",
                           value: itemTotal.toFixed(2)
                         },
-                        // shipping },
+                        shipping: {
+                          currency_code: "usd",
+                          value: "<%= shipping.toFixed(2) %>"
+                        },
                         tax_total: {
                           currency_code: "usd",
                           value: "<%= tax.toFixed(2) %>"
