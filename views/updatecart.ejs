@@ -3,6 +3,7 @@
 <%- include('partials/head') %>
 
 <body>
+  <div class="u-loading" id="spinner"></div>
   <%- include('partials/nav') %>
   <a href="/"><img src="../img/legeit-transparent.png" class="legeit" /></a>
 
@@ -74,23 +75,26 @@
           showModal(
             `<div id="paypal-button-container" style="width: 80%; margin: auto;"></div>`);
           paypal.Buttons({
+            style: {
+              size: 'responsive',
+            },
+            onClick: function () {
+              document.getElementById("spinner").style.display = "block";
+            },
             createOrder: function (data, actions) {
               // This function sets up the details of the transaction, including the amount and line item details.
               return actions.order.create({
                 purchase_units: [
                   {
                     amount: {
-                      value: (+ itemTotal.toFixed(2)) + (+ "<%= tax.toFixed(2) %>"),
                       // value: (+ itemTotal.toFixed(2)) + (+ "<%= shipping.toFixed(2) %>") + (+ "<%= tax.toFixed(2) %>"),
+                      value: (+ itemTotal.toFixed(2)) + (+ "<%= tax.toFixed(2) %>"),
                       breakdown: {
                         item_total: {
                           currency_code: "usd",
                           value: itemTotal.toFixed(2)
                         },
-                        // shipping: {
-                        //   currency_code: "usd",
-                        //   value: "<%= shipping.toFixed(2) %>"
-                        // },
+                        // shipping },
                         tax_total: {
                           currency_code: "usd",
                           value: "<%= tax.toFixed(2) %>"
@@ -118,6 +122,10 @@
                 xhr.open("POST", url);
                 xhr.send();
               });
+            },
+            onCancel: function () {
+
+              document.getElementById("spinner").style.display = "none";
             }
           }).render('#paypal-button-container');
           //This function displays Smart Payment Buttons on your web page.

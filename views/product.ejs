@@ -172,7 +172,7 @@
       let img = new Image();
       img.src = "../secondaryimage/<%= file.filename %>";
       img.onload = function () {
-        document.getElementById("secondaryImage").appendChild(img);
+        document.getElementById("secondaryImage").appendChild(img).classList.add("mb-3");
       };
     </script>
     <% if(data.authenticated){ %>
