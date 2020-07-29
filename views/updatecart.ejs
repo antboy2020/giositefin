@@ -78,8 +78,9 @@
             style: {
               size: 'responsive',
             },
-            onClick: function () {
-              document.getElementById("spinner").style.display = "block";
+            onClick: function (source) {
+              if (source.fundingSource != "card")
+                document.getElementById("spinner").style.display = "block";
             },
             createOrder: function (data, actions) {
               // This function sets up the details of the transaction, including the amount and line item details.
