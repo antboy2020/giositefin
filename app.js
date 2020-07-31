@@ -43,6 +43,7 @@ app.get("/", async (req, res) => {
     } else if (fileInfo.length < 1) {
       res.render("index", { files: false, data: data });
     } else {
+      fileInfo.sort((a, b) => (a.featuredOrderNumber > b.featuredOrderNumber ? 1 : -1));
       res.render("index", { files: fileInfo, data: data });
     }
   });
@@ -379,11 +380,24 @@ app.post("/updateFeatured/:filename/:featured", (req, res) => {
   );
 });
 
-//route to change whether an item is featured on homepage
 app.post("/updateOrder/:filename/:order", (req, res) => {
   mongooseJS.StoreItem.updateOne(
     { filename: req.params.filename },
     { orderNumber: req.params.order },
+    (err) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(200);
+      }
+    }
+  );
+});
+
+app.post("/updateFeaturedOrder/:filename/:order", (req, res) => {
+  mongooseJS.StoreItem.updateOne(
+    { filename: req.params.filename },
+    { featuredOrderNumber: req.params.order },
     (err) => {
       if (err) {
         res.sendStatus(500);
