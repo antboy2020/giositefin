@@ -60,9 +60,7 @@ function updateAttribute(attribute, itemName) {
     "/updateAttribute/" +
     itemName +
     "/" +
-    attribute.name +
-    "/" +
-    attribute.value;
+    attribute.name;
   xhr.open("POST", url, true);
   xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
   var data = {};
