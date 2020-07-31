@@ -336,7 +336,7 @@ app.post("/updateCount/:filename/:size/:count", (req, res) => {
 function updateStock(filename, size, count) { }
 
 //reoute to update the count that is remaining in stock for store item
-app.post("/updateAttribute/:filename/:attribute/:change", (req, res) => {
+app.post("/updateAttribute/:filename/:attribute", (req, res) => {
   mongooseJS.StoreItem.updateOne(
     { filename: req.params.filename },
     { [req.params.attribute]: req.body.value },
@@ -351,7 +351,7 @@ app.post("/updateAttribute/:filename/:attribute/:change", (req, res) => {
           );
           const newPath = path.join(
             __dirname,
-            "./uploads/" + req.params.change
+            "./uploads/" + req.body.value
           );
           fs.rename(prevPath, newPath, (err) => {
             if (err) {
