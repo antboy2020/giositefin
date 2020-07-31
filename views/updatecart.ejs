@@ -63,7 +63,7 @@
           for (const [key, val] of Object.entries(cart)) {
             itemTotal += round((+ val.price) * (+ val.count), 2);
             items.push({
-              name: val.originalName,
+              name: val.originalName + " " + val.size,
               quantity: val.count,
               unit_amount: {
                 currency_code: "usd",
