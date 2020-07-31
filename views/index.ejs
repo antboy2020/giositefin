@@ -48,6 +48,11 @@
             Delete
           </button>
         </form>
+        <div>
+          FeaturedOrderNumber:
+          <input onchange="updateFeaturedOrder(this, '<%= file.filename %>')" value="<%= file.featuredOrderNumber %>"
+            type="number" name="feauredOrder" id="order" class="form-control mb-3" />
+        </div>
         <% } %>
       </div>
       <% }) %>

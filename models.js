@@ -31,5 +31,6 @@ mongoose.model(
     g100: Number,
     featured: Boolean,
     orderNumber: Number,
+    featuredOrderNumber: Number,
   })
 );

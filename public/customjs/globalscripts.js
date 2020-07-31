@@ -113,6 +113,14 @@ function updateOrder(order, itemName) {
   xhr.send();
 }
 
+function updateFeaturedOrder(order, itemName) {
+  console.log(itemName);
+  let xhr = new XMLHttpRequest();
+  let url = "/updateFeaturedOrder/" + itemName + "/" + order.value;
+  xhr.open("POST", url);
+  xhr.send();
+}
+
 function updateCart(count, itemName) {
   let xhr = new XMLHttpRequest();
   let url = "/updateCart/" + itemName + "/" + count.value;
