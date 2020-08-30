@@ -6,6 +6,12 @@
             <div class="col">
                 Name:
                 <input type="text" name="name" id="name" class="form-control mb-3" />
+                <script>
+                    let name = document.querySelector("#name");
+                    name.onchange = function (name) {
+                        name.target.value = name.target.value.replace(/'/g, "").replace(/"/g, "");
+                    }
+                </script>
             </div>
             <div class="col">
                 Price:
