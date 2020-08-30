@@ -44,14 +44,11 @@ function updateStock(count, itemName) {
 }
 
 function updateAttribute(attribute, itemName) {
-  console.log(attribute.value);
-  console.log(attribute.name);
-  console.log(itemName);
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function (res) {
     if (res.currentTarget.status == 200) {
       setTimeout(() => {
-        if (attribute.name == "filename") window.location.replace(reloadUrl);
+        if (attribute.name == "filename") window.location.href = window.location.href.replace(itemName, attribute.value);
         else window.location.reload();
       });
     }
@@ -64,7 +61,7 @@ function updateAttribute(attribute, itemName) {
   xhr.open("POST", url, true);
   xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
   var data = {};
-  data.value = attribute.value;
+  data.value = attribute.value.replace(/'/g, "").replace(/"/g, "");
   var json = JSON.stringify(data);
   xhr.send(json);
 }
