@@ -48,7 +48,7 @@ function updateAttribute(attribute, itemName) {
   xhr.onreadystatechange = function (res) {
     if (res.currentTarget.status == 200) {
       setTimeout(() => {
-        if (attribute.name == "filename") window.location.href = window.location.href.replace(itemName, attribute.value);
+        if (attribute.name == "filename") window.location.href = window.location.href.replace(itemName.replace(/ /g, "%20"), attribute.value);
         else window.location.reload();
       });
     }
