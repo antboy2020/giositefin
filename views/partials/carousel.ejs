@@ -9,18 +9,17 @@
                 <% } %>
                 <img class="d-block w-100" src="<%= slideImages[i].image %>" alt="First slide" />
                 <div class="carousel-caption d-s-block text-center" id="carousel-button">
-                    <% if(slideImages[i].href == "booking") {%>
-                    <a class="btn btn-outline-light mr-4" href="<%= slideImages[i].href %>">Book
+                    <% if(slideImages[i].href == "booking" || slideImages[i].href.includes("book") || slideImages[i].href.includes("insta")) {%>
+                    <% if(slideImages[i].buttonColor == "black") { %>
+                    <a class="btn btn-outline-light mr-4" style="color: black;" href="<%= slideImages[i].href %>">Book
                         Now</a>
                     <% } else {%>
-                    <% if(i != 1) { %>
-                    <a class="btn btn-outline-light mr-4" href="<%= slideImages[i].href %>">Shop
-                        Now</a>
-                    <% } else { %>
-                    <a class="btn btn-outline-light mr-4" style="color: black;" href="<%= slideImages[i].href %>">Shop
+                    <a class="btn btn-outline-light mr-4" href="<%= slideImages[i].href %>">Book
                         Now</a>
                     <% } %>
-
+                    <% } else {%>
+                    <a class="btn btn-outline-light mr-4" href="<%= slideImages[i].href %>">Shop
+                        Now</a>
                     <% } %>
 
                 </div>
