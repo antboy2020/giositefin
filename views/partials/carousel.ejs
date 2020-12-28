@@ -13,8 +13,14 @@
                     <a class="btn btn-outline-light mr-4" href="<%= slideImages[i].href %>">Book
                         Now</a>
                     <% } else {%>
+                    <% if(i != 1) { %>
                     <a class="btn btn-outline-light mr-4" href="<%= slideImages[i].href %>">Shop
                         Now</a>
+                    <% } else { %>
+                    <a class="btn btn-outline-light mr-4" style="color: black;" href="<%= slideImages[i].href %>">Shop
+                        Now</a>
+                    <% } %>
+
                     <% } %>
 
                 </div>
