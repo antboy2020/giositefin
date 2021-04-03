@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark fixed-top mt-4" id="mainNav">
+<nav class="navbar navbar-dark mt-4" id="mainNav">
   <div class="container">
     <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a> -->
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -18,35 +18,34 @@
           <a class="nav-link js-scroll-trigger" href="booking">Booking</a>
         </li>
         <% if(data.authenticated) {%>
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="logout">logout</a>
-        </li>
-        <%}%>
-        </ul>
-      </div>
-      </div>
-      <!-- <svg class="svg symbol symbol--cart high-dpi" width="24" height="28" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.20513 7.11364H4.96283C3.37199 7.11364 2.05776 8.35543 1.96765 9.94371L1.17984 23.8301C1.08221 25.551 2.45138 27 4.17502 27H19.825C21.5486 27 22.9178 25.551 22.8202 23.8301L22.0324 9.94371C21.9422 8.35542 20.628 7.11364 19.0372 7.11364H16.7949M7.20513 7.11364V5C7.20513 2.79086 8.99599 1 11.2051 1H12.7949C15.004 1 16.7949 2.79086 16.7949 5V7.11364M7.20513 7.11364H16.7949" stroke="black" stroke-width="1.5"></path></svg> -->
-      <div class="mr-5 wrapper" style="width: 10%;" id="shopping-cart-icon">
-          <a href="updateCart" style="color: black">
-        <svg class="svg-icon icon-cart" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 20">
-  
-          <title>Cart Icon</title>
-        
-          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M3.69409 1.5H0V0H4.86572L7.81445 11.8106C7.84204 11.9219 7.94214 12 8.05688 12H19.1235C19.2297 12 19.3242 11.9331 19.3594 11.833L21.8237 4.83301C21.8809 4.67039 21.7603 4.5 21.5879 4.5H7.5L7.16357 3H21.5879C22.7947 3 23.6392 4.19275 23.2385 5.3311L20.7744 12.3311C20.5278 13.0315 19.866 13.5 19.1235 13.5H8.05688C7.25366 13.5 6.55371 12.9532 6.35913 12.1739L3.69409 1.5ZM19 16.25C19 17.0784 18.3284 17.75 17.5 17.75C16.6716 17.75 16 17.0784 16 16.25C16 15.4216 16.6716 14.75 17.5 14.75C18.3284 14.75 19 15.4216 19 16.25ZM9.5 17.75C10.3284 17.75 11 17.0784 11 16.25C11 15.4216 10.3284 14.75 9.5 14.75C8.67163 14.75 8 15.4216 8 16.25C8 17.0784 8.67163 17.75 9.5 17.75Z" transform="translate(0 1)"></path>
-        </svg>
-        </a>
-        <% var count = 0; 
-          console.log(count);
-        if(data.cart) {
-        Object.values(data.cart).forEach(shoppingItem => {
-          console.log(count);
-          console.log(shoppingItem.count);
-         count = ((+count) + (+shoppingItem.count)); 
-          console.log(count);
-        });} %>
-        <span class='badge badge-warning' id='lblCartCount'> </span>
-        <script>
-          document.getElementById("lblCartCount").innerHTML = "<%= count %>";
-        </script>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="logout">logout</a>
+          </li>
+          <%}%>
+      </ul>
     </div>
+  </div>
+  <!-- <svg class="svg symbol symbol--cart high-dpi" width="24" height="28" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.20513 7.11364H4.96283C3.37199 7.11364 2.05776 8.35543 1.96765 9.94371L1.17984 23.8301C1.08221 25.551 2.45138 27 4.17502 27H19.825C21.5486 27 22.9178 25.551 22.8202 23.8301L22.0324 9.94371C21.9422 8.35542 20.628 7.11364 19.0372 7.11364H16.7949M7.20513 7.11364V5C7.20513 2.79086 8.99599 1 11.2051 1H12.7949C15.004 1 16.7949 2.79086 16.7949 5V7.11364M7.20513 7.11364H16.7949" stroke="black" stroke-width="1.5"></path></svg> -->
+  <div class="mr-5 wrapper" style="width: 10%;" id="shopping-cart-icon">
+    <a href="updateCart" style="color: black">
+      <svg class="svg-icon icon-cart" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 20">
+
+        <title>Cart Icon</title>
+
+        <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
+          d="M3.69409 1.5H0V0H4.86572L7.81445 11.8106C7.84204 11.9219 7.94214 12 8.05688 12H19.1235C19.2297 12 19.3242 11.9331 19.3594 11.833L21.8237 4.83301C21.8809 4.67039 21.7603 4.5 21.5879 4.5H7.5L7.16357 3H21.5879C22.7947 3 23.6392 4.19275 23.2385 5.3311L20.7744 12.3311C20.5278 13.0315 19.866 13.5 19.1235 13.5H8.05688C7.25366 13.5 6.55371 12.9532 6.35913 12.1739L3.69409 1.5ZM19 16.25C19 17.0784 18.3284 17.75 17.5 17.75C16.6716 17.75 16 17.0784 16 16.25C16 15.4216 16.6716 14.75 17.5 14.75C18.3284 14.75 19 15.4216 19 16.25ZM9.5 17.75C10.3284 17.75 11 17.0784 11 16.25C11 15.4216 10.3284 14.75 9.5 14.75C8.67163 14.75 8 15.4216 8 16.25C8 17.0784 8.67163 17.75 9.5 17.75Z"
+          transform="translate(0 1)"></path>
+      </svg>
+    </a>
+    <% var count=0; console.log(count); if(data.cart) { Object.values(data.cart).forEach(shoppingItem=> {
+      console.log(count);
+      console.log(shoppingItem.count);
+      count = ((+count) + (+shoppingItem.count));
+      console.log(count);
+      });} %>
+      <span class='badge badge-warning' id='lblCartCount'> </span>
+      <script>
+        document.getElementById("lblCartCount").innerHTML = "<%= count %>";
+      </script>
+  </div>
 </nav>
