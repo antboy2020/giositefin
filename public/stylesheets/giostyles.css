@@ -251,7 +251,6 @@ html {
   position: fixed;
   width: 100%;
   z-index: 10000;
-  top: -24px;
 }
 
 nav .container {
